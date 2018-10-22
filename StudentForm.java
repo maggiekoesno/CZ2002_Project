@@ -3,7 +3,13 @@ import java.util.Scanner;
 public class StudentForm {
   private static int choice;
   private Scanner sc = new Scanner(System.in);
-  
+  public void static main(String[] args){
+    StudentForm sf = new StudentForm();
+    int choice = 0;
+    while(choice ){
+      
+    }
+  }
   public StudentForm() {
     choice = -1;
   }

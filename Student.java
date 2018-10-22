@@ -4,7 +4,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class Student {
   private String name; // Elbert Widjaja
-  private String major; // Computer Science
+  private String major; // CSC
   private String enroll; // AY1819 S1
   private String matric; // U1720411A
 
@@ -26,7 +26,10 @@ public class Student {
   }
 
   public String toString() {
-    System.out.println();
+    return (
+      "Name: " + name + "\n" + "Major: " + major + "\n" +
+      "Enrolled in: " + enroll + "\n" + "Matric No.: " + matric + "\n"
+    );
   }
 
   public String getName() {
@@ -46,6 +49,12 @@ public class Student {
   }
 
   public static void main(String[] args) {
-    
+    Student[] students = new Student[]{
+      new Student("Jason Sebastian", "CSC", "AY1718", "U1720042J");      
+    }
+
+    for (Student s : students) {
+      System.out.println(s.toString());
+    }
   }
 }
