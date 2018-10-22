@@ -3,19 +3,19 @@ import java.util.Scanner;
 public class StudentForm {
   private static int choice;
   private Scanner sc = new Scanner(System.in);
-  public void static main(String[] args){
-    StudentForm sf = new StudentForm();
-    int choice = 0;
-    while(choice ){
-      
-    }
-  }
+  
+  // public static void main(String[] args){ //tester
+  //   StudentForm sf = new StudentForm();
+  //   int choice = 0;
+  //   while(choice!= -1 ){
+  //     choice = sf.display();
+  //   }
+  // }
   public StudentForm() {
     choice = -1;
   }
 
   public int display() {
-
     System.out.println("1. Add a student\n" + "2. Add a course\n"
         + "3. Register student for a course (this include registering for Tutorial/Lab classes)\n"
         + "4. Check available slot in a class (vacancy in a class)\n"
@@ -28,8 +28,9 @@ public class StudentForm {
 
     System.out.print("Enter your choice: ");
     choice = sc.nextInt();
-    while (choice < 1 && choice > 10) {
-      System.out.println("Invalid Choice. Try again");
+    while (choice < 1 || choice > 10){
+        System.out.println("Invalid Choice. Try again");
+        choice = sc.nextInt();
     }
     return choice;
   }

@@ -1,27 +1,25 @@
 import java.lang.IllegalArgumentException;
-import java.lang.Object;
-import org.apache.commons.lang3.text.WordUtils;
 
 public class Student {
-  private String name; // Elbert Widjaja
-  private String major; // CSC
-  private String enroll; // AY1819 S1
-  private String matric; // U1720411A
+  private String name;
+  private String major;
+  private String enroll;
+  private String matric;
 
   public Student(String name, String major, String enroll, String matric) {
-    this.name = WordUtils.capitalize(name);
-    this.major = major;
+    this.name = name.substring(0, 1).toUpperCase() + name.substring(1);
+    this.major = major.toUpperCase();
 
-    if (!enroll.matches("AY\\d{4} S[1-2]")) {
+    if (!enroll.matches("[aA][yY]\\d{4} [sS][1-2]")) {
       throw new IllegalArgumentException("Oops, your enrollment seems a bit inappropriate.");
     } else {
-      this.enroll = enroll;
+      this.enroll = enroll.toUpperCase();
     }
 
     if (!matric.matches("\\D\\d{7}\\D")) {
       throw new IllegalArgumentException("Oops, you have entered an invalid matric number.");
     } else {
-      this.matric = matric;
+      this.matric = matric.toUpperCase();
     }
   }
 
@@ -49,12 +47,20 @@ public class Student {
   }
 
   public static void main(String[] args) {
-    Student[] students = new Student[]{
-      new Student("Jason Sebastian", "CSC", "AY1718", "U1720042J");      
-    }
-
-    for (Student s : students) {
-      System.out.println(s.toString());
+    try {
+      Student[] students = new Student[]{
+        new Student("Alice", "ACC", "AY1718 S1", "U1723456A"),
+        new Student("bob", "bus", "ay1718 s1", "u1734567b"),
+        new Student("eve", "ene", "ay1617 s2", "u1645678e")
+      };
+  
+      for (Student s : students) {
+        System.out.println(s.toString());
+      }
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }

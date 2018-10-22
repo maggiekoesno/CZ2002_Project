@@ -58,9 +58,9 @@ public class Course {
    * 
    * @param vacancies key-value pair of group name and number of vacancy
    */
-  public void addGroups(HashMap<String, Integer> vacancies) {
+  public void addGroups(HashMap<String, Integer> vacancies) throws IllegalArgumentException {
     if (courseType == CourseType.TUT || courseType == CourseType.LAB) {
-      int tempLectureVacancy;
+      int tempLectureVacancy = -1;
       int totalVacancy = 0;
 
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
@@ -107,10 +107,11 @@ public class Course {
    * 
    * @param groupName group name to be registered at
    */
-  public void register(String groupName) {
+  public void register(String groupName) throws IllegalCourseTypeException, GroupFullException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
-        "You should call register() instead, since course " + courseName + " does not have any tutorial/lab groups."
+        "You should call register() instead, since course " + courseName +
+        " does not have any tutorial/lab groups."
       );
     }
     
@@ -134,7 +135,7 @@ public class Course {
    * 
    * // register();
    */
-  public void register() {
+  public void register() throws IllegalCourseTypeException, LectureFullException {
     if (courseType != CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "To register on " + courseName + ", you must register based on your tutorial/lab group."
@@ -142,7 +143,7 @@ public class Course {
     }
 
     if (lectureVacancy == 0) {
-      throw new LectureFullException();
+      throw new LectureFullException(courseName);
     }
     lectureVacancy--;
     System.out.println(
@@ -155,7 +156,7 @@ public class Course {
    * 
    * @return lecture vacancy
    */
-  public int checkLectureVacancy() {
+  public int checkLectureVacancy() throws IllegalCourseTypeException {
     if (courseType != CourseType.LEC) {
       throw new IllegalCourseTypeException("You should check your group's vacancy instead.");
     }
@@ -172,7 +173,7 @@ public class Course {
    * @param groupName group name to be checked at
    * @return group vacancy
    */
-  public int checkGroupVacancy(String groupName) {
+  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "Course " + courseName + " does not have any tutorial/lab group."
@@ -186,7 +187,7 @@ public class Course {
    */
   public void printAllGroups() {
     for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-      System.out.println(entry.getKey(), entry.getValue());      
+      System.out.println(entry.getKey() + ": " + entry.getValue());      
     }
   }
 
@@ -195,7 +196,7 @@ public class Course {
    * 
    * @param weightage weightage to be inserted
    */
-  public void setWeightage(HashMap<String, String[]> weightage) {
+  public void setWeightage(HashMap<String, String[]> weightage) throws IllegalArgumentException {
     if (!validateWeightage(weightage)) {
      throw new IllegalArgumentException("Illegal weightage argument."); 
     }
@@ -204,7 +205,7 @@ public class Course {
   }
 
   private boolean validateWeightage(HashMap<String, String[]> weightage) {
-    validateWeightage(weightage, "");
+    return validateWeightage(weightage, "");
   }
 
   /**
@@ -231,7 +232,7 @@ public class Course {
           flag = flag && validateWeightage(weightage, entry.getKey());
         }
         String w = entry.getValue()[WEIGHT];
-        total += (int) w.substring(0, w.length() - 1);
+        total += Integer.parseInt(w.substring(0, w.length() - 1));
       }
     }
 
@@ -282,5 +283,29 @@ public class Course {
    */
   public Map<String, String[]> getWeightage() {
     return weightage;
+  }
+
+  public static void main(String[] args) {
+    Course[] courses = new Course[]{
+      new Course("CZ2001", CourseType.LEC),
+      new Course("CZ2002", CourseType.TUT),
+      new Course("CZ2003", CourseType.LAB)
+    };
+
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+    map.put("_LEC", 50);
+
+    courses[0].addGroups(map);
+
+    map.put("SSP1", 20);
+    map.put("BCG2", 30);
+
+    courses[1].addGroups(map);    
+    courses[2].addGroups(map);
+
+    // for (Course c : courses) {
+    //   System.out.println(c.getCourseId());
+    // }
   }
 }

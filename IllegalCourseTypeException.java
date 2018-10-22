@@ -1,6 +1,6 @@
 public class IllegalCourseTypeException extends Exception {
   public IllegalCourseTypeException(String message) {
-    super;
+    super();
     System.out.println(message);
   }
 }

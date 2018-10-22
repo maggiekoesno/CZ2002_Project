@@ -17,7 +17,13 @@ public class FacultyMember {
     this.faculty = faculty;
     this.isCourseCoordinator = false;
   }
-
+  // Debug purposes
+  // public static void main(String[] args){
+  //   FacultyMember test = new FacultyMember("Elbert", "U1720411A", "CSC", true);
+  //   FacultyMember test2 = new FacultyMember("Jason", "U1231244B", "MAS");
+  //   System.out.println(test.name + test.id + test.faculty + test.isCourseCoordinator);
+  //   System.out.println(test2.name + test2.id + test2.faculty + test2.isCourseCoordinator);
+  // }
   public String getName() {
     return this.name;
   }
