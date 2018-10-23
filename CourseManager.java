@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class CourseManager {
     private HashSet<Course> courseList;
 
-    private static String fileName = "courses.txt"; // The name of the file to open.
+    private static String fileName = "data/courses.txt"; // The name of the file to open.
 
     public Course getCourse(int courseId) {
         Iterator value = courseList.iterator();

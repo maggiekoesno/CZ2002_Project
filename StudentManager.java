@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class StudentManager {
   private HashSet<Student> studentList;
 
-  private static String fileName = "students.txt"; // The name of the file to open.
+  private static String fileName = "data/students.txt"; // The name of the file to open.
   
   public void loadFromTextFile() {
     String line = null;
