@@ -1,4 +1,4 @@
-package helper;
+package scrame.helper;
 
 public class Weightage {
     

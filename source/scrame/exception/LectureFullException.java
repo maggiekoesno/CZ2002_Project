@@ -1,4 +1,4 @@
-package exception;
+package scrame.exception;
 
 public class LectureFullException extends Exception {
   public LectureFullException(String courseName) {

@@ -1,4 +1,4 @@
-package exception;
+package scrame.exception;
 
 public class IllegalCourseTypeException extends Exception {
   public IllegalCourseTypeException(String message) {

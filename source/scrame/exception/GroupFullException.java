@@ -1,4 +1,4 @@
-package exception;
+package scrame.exception;
 
 public class GroupFullException extends Exception {
   public GroupFullException(String courseName, String groupName) {

@@ -1,13 +1,13 @@
-package CZ2002_Project.entity;
+package scrame.entity;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import entity.CourseType;
-import exception.IllegalCourseTypeException;
-import exception.GroupFullException;
-import exception.LectureFullException;
+import scrame.entity.CourseType;
+import scrame.exception.IllegalCourseTypeException;
+import scrame.exception.GroupFullException;
+import scrame.exception.LectureFullException;
 
 public class Course {
   public static final int WEIGHT = 0;
@@ -292,6 +292,14 @@ public class Course {
     return courseType;
   }
 
+  /**
+   * Getter method for lecture vacancy.
+   * 
+   * @return lecture vacancy
+   */
+  public int getLectureVacancy(){
+    return lectureVacancy;
+  }
   /**
    * Getter method for tutorial/lab groups.
    * 

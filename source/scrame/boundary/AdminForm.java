@@ -1,4 +1,4 @@
-package oopwe.boundary;
+package scrame.boundary;
 
 import java.util.Scanner;
 

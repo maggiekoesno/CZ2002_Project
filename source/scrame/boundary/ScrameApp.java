@@ -1,11 +1,11 @@
-package boundary;
+package scrame.boundary;
 
 import java.util.Scanner;
 
-import boundary.AdminForm;
-import boundary.StudentForm;
-import manager.StudentManager;
-import manager.courseManager;
+import scrame.boundary.AdminForm;
+import scrame.boundary.StudentForm;
+import scrame.manager.StudentManager;
+import scrame.manager.courseManager;
 
 public class ScrameApp {
   

@@ -1,11 +1,11 @@
-package manager; 
+package scrame.manager; 
 
 import java.util.Scanner;
 import java.util.HashMap;
 
-import manager.StudentManager;
-import manager.CourseManager;
-import entity.Course;
+import scrame.manager.StudentManager;
+import scrame.manager.CourseManager;
+import scrame.entity.Course;
 
 public class RegistrationManager {
     

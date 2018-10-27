@@ -1,11 +1,11 @@
-package manager;
+package scrame.manager;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.util.Scanner;
 
-import entity.Student;
+import scrame.entity.Student;
 
 public class StudentManager {
   private HashSet<Student> studentList;
