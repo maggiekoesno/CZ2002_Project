@@ -10,13 +10,13 @@ public class StudentManager {
   
   public void loadFromTextFile() {
     String line = null;
-
+    String line_arr[] = new String[4];
     try {
       BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
 
       while ((line = bufferedReader.readLine()) != null) {
         line.split(",");
-        studentList.add(new Student(line[0], line[1], line[2], line[3]));
+        studentList.add(new Student(line_arr[0], line_arr[1], line_arr[2], line_arr[3]));
       }   
 
       bufferedReader.close();         

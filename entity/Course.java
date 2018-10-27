@@ -32,14 +32,26 @@ public class Course {
    * @param courseType type of course (lec; lec and tut; lec, tut and lab)
    */
   public Course(String courseName, CourseType courseType) {
-    this.courseId = getNewCourseId();    
+    courseId = getNewCourseId();    
     this.courseName = courseName;
     this.courseType = courseType;
-    this.lectureVacancy = 0;
+    lectureVacancy = 0;
 
-    if (courseType != courseType.LEC) {
-      this.tutLabGroups = new HashMap<String, Integer>();
+    if (courseType != CourseType.LEC) {
+      tutLabGroups = new HashMap<String, Integer>();
     }
+  }
+
+  /**
+   * Overloaded constructor for Course class.
+   * 
+   * @param courseName name of course
+   * @param courseType type of course (lec; lec and tut; lec, tut and lab)
+   * @param vacancies vacancies of type HashMap
+   */
+  public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies) {
+    this(courseName, courseType);
+    addGroups(vacancies);
   }
 
   
@@ -86,14 +98,6 @@ public class Course {
     }
 
     lectureVacancy = vacancies.get("_LEC");
-
-    // for (int i = 0; i < arrLength; i++) {
-    // tutorial.put(names[i], vacancies[i]);
-    // if (haslab) {
-    // lab.put(names[i], vacancies[i]);
-    // }
-    // totalVacancy += vacancies[i];
-    // }
   }
 
 
@@ -122,6 +126,7 @@ public class Course {
     }
     
     tutLabGroups.put(groupName, vacancy - 1);
+    lectureVacancy--;
 
     System.out.println(
       "Congratulations! You have successfully registered to group " + groupName +
@@ -145,6 +150,7 @@ public class Course {
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
+
     lectureVacancy--;
     System.out.println(
       "Congratulations! You have successfully registered to course " + courseName + "!"
@@ -157,9 +163,9 @@ public class Course {
    * @return lecture vacancy
    */
   public int checkLectureVacancy() throws IllegalCourseTypeException {
-    if (courseType != CourseType.LEC) {
-      throw new IllegalCourseTypeException("You should check your group's vacancy instead.");
-    }
+    // if (courseType != CourseType.LEC) {
+    //   throw new IllegalCourseTypeException("You should check your group's vacancy instead.");
+    // }
 
     return lectureVacancy;
   }
@@ -179,6 +185,7 @@ public class Course {
         "Course " + courseName + " does not have any tutorial/lab group."
       );
     }
+
     return tutLabGroups.get(groupName);
   }
 
@@ -186,8 +193,10 @@ public class Course {
    * Print all groups on the course. 
    */
   public void printAllGroups() {
-    for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-      System.out.println(entry.getKey() + ": " + entry.getValue());      
+    if (courseType != CourseType.LEC) {
+      for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
+        System.out.println(entry.getKey() + ": " + entry.getValue());      
+      }
     }
   }
 
@@ -198,12 +207,19 @@ public class Course {
    */
   public void setWeightage(HashMap<String, String[]> weightage) throws IllegalArgumentException {
     if (!validateWeightage(weightage)) {
-     throw new IllegalArgumentException("Illegal weightage argument."); 
+      throw new IllegalArgumentException("Illegal weightage argument."); 
     }
 
-    this.weightage = weightage;                
+    this.weightage = weightage;            
   }
 
+  /**
+   * Validate weightage.
+   * 
+   * @param weightage weightage in HashMap
+   * @return true if weightage is validated, else false
+   * 
+   */
   private boolean validateWeightage(HashMap<String, String[]> weightage) {
     return validateWeightage(weightage, "");
   }
@@ -214,7 +230,7 @@ public class Course {
    * validateWeightage(
    *  {
    *    "exam": ["60%", "false", ""],
-   *    "coursework": ["40%, "true", ""],
+   *    "coursework": ["40%"", "true", ""],
    *    "assigments": ["70%", "false", "coursework"],
    *    "attendance": ["30%", "false", "coursework"]
    *  }
@@ -226,6 +242,7 @@ public class Course {
     // Check if component's weights sum up to 100%.
     int total = 0;
     boolean flag = true;
+
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) { 
       if (entry.getValue()[PARENT].equals(check)) {
         if (entry.getValue()[HAS_CHILD].equals("true")) {
@@ -236,7 +253,7 @@ public class Course {
       }
     }
 
-    return (total == 100 || !flag);
+    return (total == 100 && flag);
   }
 
   /**
@@ -283,29 +300,5 @@ public class Course {
    */
   public Map<String, String[]> getWeightage() {
     return weightage;
-  }
-
-  public static void main(String[] args) {
-    Course[] courses = new Course[]{
-      new Course("CZ2001", CourseType.LEC),
-      new Course("CZ2002", CourseType.TUT),
-      new Course("CZ2003", CourseType.LAB)
-    };
-
-    HashMap<String, Integer> map = new HashMap<String, Integer>();
-
-    map.put("_LEC", 50);
-
-    courses[0].addGroups(map);
-
-    map.put("SSP1", 20);
-    map.put("BCG2", 30);
-
-    courses[1].addGroups(map);    
-    courses[2].addGroups(map);
-
-    // for (Course c : courses) {
-    //   System.out.println(c.getCourseId());
-    // }
   }
 }

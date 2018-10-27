@@ -8,7 +8,14 @@ public class CourseManager {
     private HashSet<Course> courseList;
 
     private static String fileName = "data/courses.txt"; // The name of the file to open.
-
+    
+    /**
+     * Search the course by courseId, and return the appropriate Course Object.
+     * 
+     * @param courseId the id of the course we want
+     * @return Course Object
+     */
+    
     public Course getCourse(int courseId) {
         Iterator value = courseList.iterator();
         Course courseFound = null;
@@ -20,40 +27,53 @@ public class CourseManager {
         }       
         return courseFound;                                                        
     }
-
+    /**
+     * Function to read the textfile and insert it into courseList
+     * 
+     */
     public void loadFromTextFile() {
       String line = null;
-  
+      String line_arr[] = new String[3];
       try {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-  
+        //"CZ2002, LEC, 50"
+        //"CZ2002, TUT, 50, GROUP, SEP1, 25, SEP2, WEIGHTAGE"//
+        //HASHMAP <> INSERT SEP1 , 25
+
         while ((line = bufferedReader.readLine()) != null) {
-          line.split(",");
-          courseList.add(new Course(line[0], courseTypeToEnum(line[1])));
+            line_arr = line.split(",");
+            String name = line_arr[0];
+            String courseType = line_arr[1];
+            int courseVacancy = (int)line_arr[2];
+            if (courseType == "LEC") {
+
+                courseList.add(new Course(name, courseTypeToEnum(courseType), courseVacancy));                 
+            } else if (courseType == "TUT") {
+                
+            }                       
+            
+            System.out.println("Unable to open file '" + fileName + "'");
+        } 
+    }catch (IOException ex) {
+            System.out.println("Error reading file '" + fileName + "'");
         }
-  
-        bufferedReader.close();
-      } catch (FileNotFoundException ex) {
-        System.out.println("Unable to open file '" + fileName + "'");
-      } catch (IOException ex) {
-        System.out.println("Error reading file '" + fileName + "'");
-      }
     }
-  
+    /**
+     * Add course into the courseList and insert it into textfile
+     */
     public void addCourse() {
       Scanner sc = new Scanner(System.in);
-
       System.out.print("Enter new course name: ");
-      String courseName = sc.next();
-      System.out.print("Enter course type: ");
-      String tempCourseType = sc.next();
-  
-      CourseType courseType = courseTypeToEnum(tempCourseType);
-      Course course = new Course(courseName, courseType);
+      String name = sc.nextLine();
+      System.out.print("Enter course type:");
+      String type = sc.nextLine();
+
+      Course course = new Course(name,type);
       courseList.add(course);
-  
-      String myText = "\n" + courseName + "," + courseType;
-  
+
+      myText = name + "," + type;
+        
+      System.out.print("");
       try {
         Files.write(Paths.get(filename), myText.getBytes(), StandardOpenOption.APPEND);
         System.out.println("Course added successfully.");
@@ -65,7 +85,14 @@ public class CourseManager {
     private CourseType courseTypeToEnum(String tempCourseType) {
       CourseType courseType;      
       
-      switch (tempCourseType.toUpperCase()) {
+    
+    /**
+     * Function to assign enumerate coursetype to the course
+     * 
+     * 
+     * @param tempCourseType string contained the type of the lecture
+     * @return generated courseType
+     */  switch (tempCourseType.toUpperCase()) {
         case "LEC":
           courseType = CourseType.LEC;
           break;
@@ -87,8 +114,14 @@ public class CourseManager {
 
     public boolean isCourseInList(int courseId) {
         Iterator value = courseList.iterator();
-        Course courseFound = null;
-        while (value.hashNext()) {
+     
+   Course courseFound = null;
+    /**
+     * A function to check whether a course is in the list
+     * 
+     * @param courseId id of the course
+     * @return true if the course is in the list, false otherwise
+     */        while (value.hashNext()) {
             Course tmp = value.next();
             if (tmp.getCourseId() == courseId) {
                 courseFound = tmp;
@@ -102,14 +135,10 @@ public class CourseManager {
         Scanner sc = new Scanner(System.in);
         Iterator value = courseList.iterator();
 
-        System.out.print("Enter course ID: ");
-        int courseID = sc.nextInt();
-
-        if (!courseList.contains(courseID)) {
-            System.out.println("Course ID invalid!");
-            return;
-        }
-
+    /**
+     * Function to take courseId and display all the vacancies of the following courses
+     * 
+     */
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++");
         System.out.println("++++++ Course Vacancies ++++++");
