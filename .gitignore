@@ -1,5 +1,4 @@
-/META-INF
 /.vscode
 .DS_Store
-*.class
 junit-4.10.jar
+META-INF/
