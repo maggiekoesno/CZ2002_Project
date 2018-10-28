@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class AdminForm {
   private static int choice;
   private Scanner sc = new Scanner(System.in);
-  
+
   // public static void main(String[] args){ //tester
   //   StudentForm sf = new StudentForm();
   //   int choice = 0;
@@ -18,22 +18,18 @@ public class AdminForm {
   }
 
   public int display() {
-    System.out.println("1. Register student for a course (this includes registering for Tutorial/Lab classes).\n"
-        + "2. Check available slots in a class (Class Vacancy)."
-        + "3. Print student transcript."
-        + "4. Add a student\n" + "5. Add a course\n"
-        + "6. Print student list by lecture, tutorial or laboratory session for a course.\n"
-        + "7. Enter course assessment components weightage\n"
-        + "8. Enter coursework mark – inclusive of its components.\n" + "9. Enter exam mark\n"
-        + "10. Print course statistics.\n"
-        );
+    System.out.println(
+      "1. Register student for a course (this includes registering for Tutorial/Lab classes).\n" + "2. Check available slots in a class (Class Vacancy)." + "3. Print student transcript." + "4. Add a student\n" + "5. Add a course\n" + "6. Print student list by lecture, tutorial or laboratory session for a course.\n" + "7. Enter course assessment components weightage\n" + "8. Enter coursework mark – inclusive of its components.\n" + "9. Enter exam mark\n" + "10. Print course statistics.\n"
+    );
 
     System.out.print("Enter your choice: ");
     choice = sc.nextInt();
-    while (choice < 1 || choice > 10){
-        System.out.println("Invalid Choice. Try again");
-        choice = sc.nextInt();
+    while (choice < 1 || choice > 10) {
+      System.out.println("Invalid Choice. Try again");
+      choice = sc.nextInt();
     }
     return choice;
   }
+
 }
+

@@ -21,13 +21,16 @@ public class Student {
     this.major = major.toUpperCase();
 
     if (!enroll.matches("[aA][yY]\\d{4} [sS][1-2]")) {
-      throw new IllegalArgumentException("Oops, your enrollment details are invalid.");
+      throw new IllegalArgumentException(
+        "Oops, your enrollment details are invalid."
+      );
     } else {
       this.enroll = enroll.toUpperCase();
     }
-
     if (!matric.matches("[gGnNuU][1][0-8]\\d{5}\\D")) {
-      throw new IllegalArgumentException("Oops, you have entered an invalid matric number.");
+      throw new IllegalArgumentException(
+        "Oops, you have entered an invalid matric number."
+      );
     } else {
       this.matric = matric.toUpperCase();
     }
@@ -39,10 +42,7 @@ public class Student {
    * @return string containing all of student attributes
    */
   public String toString() {
-    return (
-      "Name: " + name + "\n" + "Major: " + major + "\n" +
-      "Enrolled in: " + enroll + "\n" + "Matric No.: " + matric + "\n"
-    );
+    return ("Name: " + name + "\n" + "Major: " + major + "\n" + "Enrolled in: " + enroll + "\n" + "Matric No.: " + matric + "\n");
   }
 
   /**
@@ -77,4 +77,6 @@ public class Student {
   public String getMatric() {
     return this.matric;
   }
+
 }
+

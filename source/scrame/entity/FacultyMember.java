@@ -14,13 +14,18 @@ public class FacultyMember {
    * @param faculty faculty of the faculty member
    * @param isCourseCoordinator true if faculty member is course coordinator, false otherwise
    */
-  public FacultyMember(String name, String id, String faculty, boolean isCourseCoordinator) {
+  public FacultyMember(
+    String name,
+    String id,
+    String faculty,
+    boolean isCourseCoordinator
+  ) {
     this.name = name;
     this.id = id;
     this.faculty = faculty;
     this.isCourseCoordinator = isCourseCoordinator;
   }
-  
+
   /**
    * Constructor for FacultyMember object
    * 
@@ -91,4 +96,6 @@ public class FacultyMember {
   public void setName(String name) {
     this.name = name;
   }
+
 }
+

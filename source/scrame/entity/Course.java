@@ -1,12 +1,12 @@
 package scrame.entity;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import scrame.entity.CourseType;
-import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.GroupFullException;
+import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
 
 public class Course {
@@ -39,7 +39,7 @@ public class Course {
    * @param courseType type of course (lec; lec and tut; lec, tut and lab)
    */
   public Course(String courseName, CourseType courseType) {
-    courseId = getNewCourseId();    
+    courseId = getNewCourseId();
     this.courseName = courseName;
     this.courseType = courseType;
     lectureVacancy = 0;
@@ -56,13 +56,17 @@ public class Course {
    * @param courseType type of course (lec; lec and tut; lec, tut and lab)
    * @param vacancies vacancies of type HashMap
    */
-  public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies, HashMap<String, String[]> weightage) {
+  public Course(
+    String courseName,
+    CourseType courseType,
+    HashMap<String, Integer> vacancies,
+    HashMap<String, String[]> weightage
+  ) {
     this(courseName, courseType);
     addGroups(vacancies);
     setWeightage(weightage);
   }
 
-  
   /**
    * Initialize course by registering groups.
    * 
@@ -78,36 +82,36 @@ public class Course {
    * 
    * @param vacancies key-value pair of group name and number of vacancy
    */
-  public void addGroups(HashMap<String, Integer> vacancies) throws IllegalArgumentException {
+  public void addGroups(HashMap<String, Integer> vacancies)
+    throws
+      IllegalArgumentException {
     if (courseType == CourseType.TUT || courseType == CourseType.LAB) {
       int tempLectureVacancy = -1;
       int totalVacancy = 0;
 
-      for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
-        // Get vacancy for lecture.
+      for (Map.Entry<String, Integer> entry : vacancies.entrySet(
+
+      )) {// Get vacancy for lecture.
+
         if (entry.getKey() == "_LEC") {
           tempLectureVacancy = entry.getValue();
           continue;
         }
-
         // Get total vacancy for tutorial/lab groups.
         totalVacancy += entry.getValue();
       }
-
       // Test if lecture vacancy is the total vacancy of all tutorial/lab groups.
+
       if (totalVacancy != tempLectureVacancy) {
         throw new IllegalArgumentException("Invalid vacancy argument.");
-      }
+      }// If so, record the group names with their respective vacancy.
 
-      // If so, record the group names with their respective vacancy.
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
         tutLabGroups.put(entry.getKey(), entry.getValue());
       }
     }
-
     lectureVacancy = vacancies.get("_LEC");
   }
-
 
   /**
    * Register based on group names. This function is only for courses of type CourseType.TUT and
@@ -119,27 +123,26 @@ public class Course {
    * 
    * @param groupName group name to be registered at
    */
-  public void register(String groupName) throws IllegalCourseTypeException, GroupFullException {
+  public void register(String groupName)
+    throws
+      IllegalCourseTypeException,
+      GroupFullException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
-        "You should call register() instead, since course " + courseName +
-        " does not have any tutorial/lab groups."
+        "You should call register() instead, since course " + courseName + " does not have any tutorial/lab groups."
       );
     }
-    
     int vacancy = tutLabGroups.get(groupName);
-    
+
     if (vacancy == 0) {
       throw new GroupFullException(courseName, groupName);
     }
-    
     tutLabGroups.put(groupName, vacancy - 1);
     lectureVacancy--;
 
     System.out.println(
-      "Congratulations! You have successfully registered to group " + groupName +
-      " on course " + courseName + "!"
-    );            
+      "Congratulations! You have successfully registered to group " + groupName + " on course " + courseName + "!"
+    );
   }
 
   /**
@@ -148,17 +151,18 @@ public class Course {
    * 
    * // register();
    */
-  public void register() throws IllegalCourseTypeException, LectureFullException {
+  public void register()
+    throws
+      IllegalCourseTypeException,
+      LectureFullException {
     if (courseType != CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "To register on " + courseName + ", you must register based on your tutorial/lab group."
       );
     }
-
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
-
     lectureVacancy--;
     System.out.println(
       "Congratulations! You have successfully registered to course " + courseName + "!"
@@ -170,10 +174,7 @@ public class Course {
    * 
    * @return lecture vacancy
    */
-  public int checkLectureVacancy() throws IllegalCourseTypeException {
-    // if (courseType != CourseType.LEC) {
-    //   throw new IllegalCourseTypeException("You should check your group's vacancy instead.");
-    // }
+  public int checkLectureVacancy() throws IllegalCourseTypeException {// }
 
     return lectureVacancy;
   }
@@ -187,13 +188,14 @@ public class Course {
    * @param groupName group name to be checked at
    * @return group vacancy
    */
-  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException {
+  public int checkGroupVacancy(String groupName)
+    throws
+      IllegalCourseTypeException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "Course " + courseName + " does not have any tutorial/lab group."
       );
     }
-
     return tutLabGroups.get(groupName);
   }
 
@@ -203,7 +205,7 @@ public class Course {
   public void printAllGroups() {
     if (courseType != CourseType.LEC) {
       for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        System.out.println(entry.getKey() + ": " + entry.getValue());      
+        System.out.println(entry.getKey() + ": " + entry.getValue());
       }
     }
   }
@@ -213,12 +215,13 @@ public class Course {
    * 
    * @param weightage weightage to be inserted
    */
-  public void setWeightage(HashMap<String, String[]> weightage) throws IllegalArgumentException {
+  public void setWeightage(HashMap<String, String[]> weightage)
+    throws
+      IllegalArgumentException {
     if (!validateWeightage(weightage)) {
-      throw new IllegalArgumentException("Illegal weightage argument."); 
+      throw new IllegalArgumentException("Illegal weightage argument.");
     }
-
-    this.weightage = weightage;            
+    this.weightage = weightage;
   }
 
   /**
@@ -246,12 +249,15 @@ public class Course {
    * 
    * @return true if weightage is validated, else false
    */
-  private boolean validateWeightage(HashMap<String, String[]> weightage, String check) {
+  private boolean validateWeightage(
+    HashMap<String, String[]> weightage,
+    String check
+  ) {
     // Check if component's weights sum up to 100%.
     int total = 0;
     boolean flag = true;
 
-    for (Map.Entry<String, String[]> entry : weightage.entrySet()) { 
+    for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
       if (entry.getValue()[PARENT].equals(check)) {
         if (entry.getValue()[HAS_CHILD].equals("true")) {
           flag = flag && validateWeightage(weightage, entry.getKey());
@@ -260,7 +266,6 @@ public class Course {
         total += Integer.parseInt(w.substring(0, w.length() - 1));
       }
     }
-
     return (total == 100 && flag);
   }
 
@@ -297,9 +302,10 @@ public class Course {
    * 
    * @return lecture vacancy
    */
-  public int getLectureVacancy(){
+  public int getLectureVacancy() {
     return lectureVacancy;
   }
+
   /**
    * Getter method for tutorial/lab groups.
    * 
@@ -317,4 +323,6 @@ public class Course {
   public Map<String, String[]> getWeightage() {
     return weightage;
   }
+
 }
+
