@@ -19,10 +19,9 @@ import scrame.entity.Course;
 import scrame.helper.CourseType;
 import scrame.exception.IllegalCourseTypeException;
 
-public class CourseManager {
-  private HashSet<Course> courseList;
-
-  private static String fileName = "data/courses.ser"; // The name of the file to open.
+public final class CourseManager {
+  private static HashSet<Course> courseList;
+  private static String fileName = "data/courses.ser";
 
   /**
    * Search the course by courseId, and return the appropriate Course Object.
@@ -30,7 +29,7 @@ public class CourseManager {
    * @param courseId the id of the course we want
    * @return Course Object
    */
-  public Course getCourse(int courseId) {
+  public static Course getCourse(int courseId) {
     Course courseFound = null;
     for (Course c : courseList) {
       if (c.getCourseId() == courseId) {
@@ -41,23 +40,22 @@ public class CourseManager {
     return courseFound;
   }
   
-  public void inputToTextFile(HashSet<Course> courseList) {
+  public static void inputToFile(HashSet<Course> courseList) {
     try {
-      FileOutputStream fileOut = new FileOutputStream(fileName);
-      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
       out.writeObject(courseList);
       out.close();
-      fileOut.close();
       System.out.printf("Serialized data is saved in "+fileName);
-    } catch (IOException i) {
-      i.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
+
   /**
    * Function to read the textfile and insert it into courseList
    * 
    */
-  public void loadFromTextFile() {
+  public static void loadFromFile() {
     try {
       ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
       courseList = (HashSet<Course>) in.readObject();
@@ -173,8 +171,7 @@ public class CourseManager {
   /**
    * Add course into the courseList and insert it into textfile
    */
-  public void addCourse() {
-
+  public static void addCourse() {
     Scanner sc = new Scanner(System.in);
     System.out.print("Enter new course name: ");
     String name = sc.nextLine();
@@ -190,9 +187,7 @@ public class CourseManager {
       totalVacancy = sc.nextInt();
     }
     HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>(
-
-    );
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
     if (type != "LEC") {
       System.out.println("Enter the Group name e.g \"SEP1\", -1 to exit");
       while (true) {
@@ -210,6 +205,8 @@ public class CourseManager {
         }
         tempVacancies.put(groupName, groupVacancy);
       }
+
+
       System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
       System.out.println(
         "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
@@ -232,13 +229,23 @@ public class CourseManager {
       System.out.println("      60% Exam     40% Coursework           ");
       System.out.println("                    /           \\          ");
       System.out.println("            70% Assignment       30% Attendance   ");
+      
+      while (true) {
+        System.out.println("Enter the weightage, -1 to exit:");
+        String tmp = sc.next();
+        if (tmp == "-1") {
+          break;
+        }
+        String parts[] = tmp.split(",");
+        tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+      }
     }
-    // Course course = new Course(name, type); //TODO: 
-    // courseList.add(course);
-    // System.out.println("Course added succesfully!");
+    Course course = new Course(name, type); 
+    courseList.add(course);
+    System.out.println("Course added succesfully!");
   }
 
-  private CourseType courseTypeToEnum(String tempCourseType) {
+  private static CourseType courseTypeToEnum(String tempCourseType) {
     CourseType courseType = null;
     switch (tempCourseType) {
       case "LEC":
@@ -262,7 +269,7 @@ public class CourseManager {
    * @param courseId id of the course
    * @return true if the course is in the list, false otherwise
    */
-  public boolean isCourseInList(int courseId) {
+  public static boolean isCourseInList(int courseId) {
     Course courseFound = null;
     for (Course c : courseList) {
       if (c.getCourseId() == courseId) {
@@ -277,7 +284,7 @@ public class CourseManager {
   /**
    * Function to take courseId and display all the vacancies of the following courses.
    */
-  public void checkVacancy() {
+  public static void checkVacancy() {
     Scanner sc = new Scanner(System.in);
     System.out.println("Please input the course id");
     int courseId = sc.nextInt();
@@ -330,5 +337,71 @@ public class CourseManager {
     }
   }
 
+  public static void setCourseWeightage() {
+    System.out.println("Modify course weightage for specific course id");
+    System.out.print("Please input the courseId: ");
+    int courseId = -1;
+
+    Scanner sc = new Scanner(System.in);
+    courseId = sc.nextInt();
+    while(!isCourseInList(courseId)){
+      System.out.print("The course is not registered. Please try again");
+      courseId = sc.nextInt();
+    }
+    Course course = getCourse(courseId);
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+    if (type != "LEC") {
+      System.out.println("Enter the Group name e.g \"SEP1\", -1 to exit");
+      while (true) {
+        String groupName = sc.next();
+        if (groupName == "-1")
+        break;
+        System.out.print(
+          "Enter the group vacancy (in the end all the group vacancies must be equal to the total vacancy)" + totalVacancy
+        );
+        int groupVacancy = sc.nextInt();
+        while (groupVacancy <= 0) {
+          System.out.println(
+            " Vacancy cannot be less than or equal to zero. try again"
+          );
+        }
+        tempVacancies.put(groupName, groupVacancy);
+      }
+
+      System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
+      System.out.println(
+        "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
+      );
+      System.out.println("Example: ");
+      System.out.println(
+        "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
+      );
+      System.out.println(
+        "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
+      );
+      System.out.println(
+        "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
+      );
+      System.out.println("Attendance,30%,false,Coursework <-------, same");
+
+      System.out.println("Course Weightage Structure: ");
+      System.out.println("             100%                    ");
+      System.out.println("           /    \\                  ");
+      System.out.println("      60% Exam     40% Coursework           ");
+      System.out.println("                    /           \\          ");
+      System.out.println("            70% Assignment       30% Attendance   ");
+      
+      while (true) {
+          System.out.println("Enter the weightage, -1 to exit:");
+          String tmp = sc.next();
+          if(tmp == "-1"){
+            break;
+          }
+          String parts[] = tmp.split(",");
+          tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+      }
+      course.setWeightage(tempWeightageList);
+      System.out.println("Weightage set successfully !");
+  }
 }
 

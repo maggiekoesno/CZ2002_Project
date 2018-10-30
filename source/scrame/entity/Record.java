@@ -1,5 +1,6 @@
 package scrame.entity;
 
+import java.util.Arrays;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.HashMap;
@@ -7,19 +8,22 @@ import java.util.HashSet;
 
 import scrame.entity.Student;
 import scrame.entity.Course;
+import scrame.helper.CourseType;
 
 public class Record implements Serializable {
   private Student student;
   private Course course;
+  private String groupName;
   private HashMap<String, Float> mark;
-  public static final int WEIGHT = 0;
-  public static final int HAS_CHILD = 1;
-  public static final int PARENT = 2;
+  private static final int WEIGHT = 0;
+  private static final int HAS_CHILD = 1;
+  private static final int PARENT = 2;
 
-  public Record(Student student, Course course, HashMap<String, Float> mark)
+  public Record(Student student, Course course, String groupName, HashMap<String, Float> mark)
     throws IllegalArgumentException {
     this.student = student;
     this.course = course;
+    this.groupName = groupName;
 
     // The list of keys must be exactly the same with the keys of weightage in course,
     // whose values[1] == "false" (don't have child)
@@ -28,12 +32,16 @@ public class Record implements Serializable {
     HashSet<String> fromCourse = new HashSet<String>();
     
     for (Map.Entry<String, Float> entry : mark.entrySet()) {
-      fromMark.add(entry.getKey());
+      String component = entry.getKey();
+      fromMark.add(component);
     }
     
     for (Map.Entry<String, String[]> entry : course.getWeightage().entrySet()) {
-      if (entry.getValue()[1].equals("false")) {
-        fromCourse.add(entry.getKey());
+      String component = entry.getKey();
+      String[] info = entry.getValue();
+
+      if (info[HAS_CHILD].equals("false")) {
+        fromCourse.add(component);
       }
     }
 
@@ -43,74 +51,88 @@ public class Record implements Serializable {
     
     this.mark = mark;
   }
-  // TODO: public float calculateAverage();
-  public float calculateAverage(){
+
+  public float calculateAverage() {
     return calculateAverage("");
   }
   
-  private float calculateAverage(String check){
-    float sum=0;
-    for (Map.Entry<String, String[]> entry : course.getWeightage().entrySet()){
-      if(entry.getValue()[PARENT].equals(check)){
-        if(entry.getValue()[HAS_CHILD].equals("true")){
-          sum += calculateAverage(entry.getKey());
-        }
-        else{
-          String w = entry.getValue()[WEIGHT];
-          float val = (float)0.01*Integer.parseInt(w.substring(0, w.length() - 1));
-          sum += mark.get(entry.getValue())*val;
-          System.out.println(mark.get(entry.getValue())*val);
+  private float calculateAverage(String check) {
+    Map<String, String[]> weightage = course.getWeightage();
+    float sum = 0.0f;
+    
+    for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+      String component = entry.getKey();
+      String[] info = entry.getValue();
+
+      if (info[PARENT].equals(check)) {
+        if (info[HAS_CHILD].equals("true")) {
+          String w = info[WEIGHT];
+          float val = 0.01f * Integer.parseInt(w.substring(0, w.length() - 1));
+          sum += calculateAverage(component) * val;
+        } else {
+          String w = info[WEIGHT];
+          float val = 0.01f * Integer.parseInt(w.substring(0, w.length() - 1));
+          sum += (mark.get(component) * val);
         }
       }
     }
+
     return sum;
   }
   
-  public Student getStudent(){
+  public Student getStudent() {
     return student;
   }
 
-  public Course getCourse(){
+  public Course getCourse() {
     return course;
   }
   
-  public Map<String, Float> getMark(){
+  public Map<String, Float> getMark() {
     return mark;
   }
 
-  public static void main(String[] args){
+  public String getGroupName() {
+    return groupName;
+  }
+
+  public void setMark(Map<String,Float> mark) {
+    this.mark = mark;
+  }
+
+  public static void main(String[] args) {
     try {
-            HashMap<String, Integer> map = new HashMap<String, Integer>();
+      HashMap<String, Integer> map = new HashMap<String, Integer>();
 
-            Course c1 = new Course("CZ2001", CourseType.LEC);
-            map.put("_LEC", 50);
-            c1.addGroups(map);
-            HashMap<String, String[]> weightage = new HashMap<String, String[]>();
-            weightage.put("exam", new String[] { "60%", "false", "" });
-            weightage.put("coursework", new String[] { "40%", "true", "" });
-            weightage.put(
-                "assigments",
-                new String[] { "70%", "false", "coursework" }
-            );
-            weightage.put(
-                "attendance",
-                new String[] { "30%", "false", "coursework" }
-            );
-            c1.setWeightage(weightage);
-            
-            Student tester = new Student("Alice", "ACC", "AY1718 S1", "U1723456A");
+      Course c1 = new Course("CZ2001", CourseType.LEC);
+      map.put("_LEC", 50);
+      c1.addGroups(map);
+      HashMap<String, String[]> weightage = new HashMap<String, String[]>();
+      weightage.put("exam", new String[] { "60%", "false", "" });
+      weightage.put("coursework", new String[] { "40%", "true", "" });
+      weightage.put(
+        "assigments",
+        new String[] { "70%", "false", "coursework" }
+      );
+      weightage.put(
+        "attendance",
+        new String[] { "30%", "false", "coursework" }
+      );
+      c1.setWeightage(weightage);
 
-            HashMap<String, Float> markIn = new HashMap<String, Float>();
-            markIn.put("exam", (float)80);
-            markIn.put("assigments", (float)70);
-            markIn.put("attendance", (float)90);
-            Record rec = new Record(tester, c1, markIn);
-            System.out.println("Here it comes");
-            float res = rec.calculateAverage();
-            System.out.println(res);
+      HashMap<String, Float> markIn = new HashMap<String, Float>();
+      markIn.put("exam", 80.0f);
+      markIn.put("assigments", 70.0f);
+      markIn.put("attendance", 90.0f);
 
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+      Record rec = new Record(
+        new Student("Alice", "ACC", "AY1718 S1", "U1723456A"),
+        c1, markIn, "SSP1"
+      );
+      System.out.println(rec.calculateAverage());
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 }

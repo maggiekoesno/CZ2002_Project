@@ -14,14 +14,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import scrame.entity.Student;
+import scrame.entity.Record;
+import scrame.manager.CourseManager;
+import scrame.manager.RecordManager;
+import scrame.helper.CourseType;
 
-public class StudentManager {
-  private HashSet<Student> studentList;
-
+public final class StudentManager {
+  private static HashSet<Student> studentList = new HashSet<Record>();
   private static String fileName = "data/students.ser";
-  // The name of the file to open.
 
-  public void inputToTextFile(HashSet<Student> studentList) {
+  public static void inputToFile(HashSet<Student> studentList) {
     try {
       ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
       out.writeObject(studentList);
@@ -32,7 +34,7 @@ public class StudentManager {
     }
   }
   
-  public void loadFromTextFile() {
+  public static void loadFromFile() {
     try {
       ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
       studentList = (HashSet<Student>) in.readObject();
@@ -66,7 +68,7 @@ public class StudentManager {
     // }
   }
 
-  public void addStudent() {
+  public static void addStudent() {
     String name;
     String major;
     String enroll;
@@ -101,13 +103,117 @@ public class StudentManager {
    * 
    * @return true if student in the list, false otherwise
    */
-  public boolean isStudentInList(String matric) {
-    for(Student s: studentList){
-      if(s.getMatric() == matric){
+  public static boolean isStudentInList(String matric) {
+    for (Student s : studentList) {
+      if (s.getMatric() == matric) {
         return true;
       }
     }
+
     return false;
+  }
+
+  public static void printTranscript() {
+    Scanner sc = new Scanner(System.in);
+    
+    System.out.print("Enter your matriculation number: ");
+    String matric = sc.nextLine;
+
+    boolean studentFound = false;
+    HashSet<Record> recordList = RecordManager.getRecordList();
+
+    HashSet<Record> recordFound = new HashSet<Record>();
+    for (Record r : recordList) {
+      if (r.getStudent().getMatric().equals(matric)) {
+        recordFound.add(r);
+        studentFound = true;
+      }
+    }
+
+    if (!studentFound) {
+      System.out.println("Holy guacamole, invalid matric number!");
+      return;
+    }
+        
+    for (Record r : recordFound) {
+      System.out.println("Course name: " + r.getCourse().getCourseName());
+      System.out.println("Course average: " + Float.toString(r.calculateAverage());
+
+      System.out.println("Individual assessment: ");
+      for (Map.Entry<String, Float> entry : r.getMark().entrySet()) {
+        String component = entry.getKey();
+        float mark = entry.getValue();
+        System.out.println(component + ": " + Float.toString(mark));
+      }
+
+      printIndividualAssessment(r.getCourse().getWeightage());
+    }
+  }
+
+  /**
+   * Print student list for a given course id.
+   * 
+   * If the course is of type LEC, then go straight to print the list of all the students.
+   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
+   * proceed to print the list of the students in that group.
+   */
+  public static void printStudentList() {
+    System.out.print("Enter course id: ");
+    int courseId = sc.nextInt();
+    Course c = CourseManager.getCourse(courseId);
+    if(c.getCourseType() == CourseType.LEC){
+      String gname = "_LEC";
+      HashSet<Record> recordList = RecordManager.getRecordList();
+      for (Record r : recordList) {
+        if (r.getGroupName.equals(gname) && c.getCourseId()==r.getCourse().getCourseId()) {
+          System.out.println(r.getStudent().getName());
+        }
+      }
+    }
+    else{
+      System.out.print("Enter group name: ");
+      // TODO PRINT ALL AVAILABLE GROUP NAMES
+      String gname = sc.nextLine();
+      HashSet<Record> recordList = RecordManager.getRecordList();
+      for (Record r : recordList) {
+        if (r.getGroupName.equals(gname) && c.getCourseId()==r.getCourse().getCourseId()) {
+          System.out.println(r.getStudent().getName());
+        }
+      }
+    }
+  }
+
+  /**
+   * Private method to print weightage as pairs of component and mark.
+   * 
+   * @param r individual record of student and course 
+   */
+  private static void printIndividualAssessment(Record r) {
+    printIndividualAssessment(r, "");
+  }
+
+  /**
+   * Overloaded method to print weightage as pairs of component and mark.
+   * 
+   * @param r individual record of student and course
+   * @param check focus on the string check
+   */
+  private static void printIndividualAssessment(Record r, String check) {
+    Map<String, String[]> weightage = r.getCourse().getWeightage();
+    for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+      String component = entry.getKey();
+      String[] info = entry.getValue();
+      if (info[PARENT].equals(check)) {
+        if (info[HAS_CHILD].equals("true")) {
+          String w = info[WEIGHT];
+          System.out.println(component + ", weightage: "+info[WEIGHT]);
+          printIndividualAssessment(r, component);   
+        } else {
+          String w = info[WEIGHT];
+          System.out.println(component + ", weightage: "+info[WEIGHT]);          
+        }
+      }
+    }
   }
 }
 

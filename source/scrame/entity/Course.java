@@ -259,11 +259,14 @@ public class Course implements Serializable {
     boolean flag = true;
 
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-      if (entry.getValue()[PARENT].equals(check)) {
-        if (entry.getValue()[HAS_CHILD].equals("true")) {
-          flag = flag && validateWeightage(weightage, entry.getKey());
+      String component = entry.getKey();
+      String[] info = entry.getValue();
+
+      if (info[PARENT].equals(check)) {
+        if (info[HAS_CHILD].equals("true")) {
+          flag = flag && validateWeightage(weightage, component);
         }
-        String w = entry.getValue()[WEIGHT];
+        String w = info[WEIGHT];
         total += Integer.parseInt(w.substring(0, w.length() - 1));
       }
     }
