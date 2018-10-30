@@ -7,7 +7,6 @@ import java.util.HashSet;
 
 import scrame.entity.Student;
 import scrame.entity.Course;
-import scrame.helper.Mark;
 
 public class Record implements Serializable {
   private Student student;

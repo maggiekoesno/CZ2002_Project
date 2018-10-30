@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import scrame.entity.CourseType;
+import scrame.helper.CourseType;
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;

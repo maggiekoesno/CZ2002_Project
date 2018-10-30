@@ -1,10 +1,20 @@
 package scrame.manager;
 
+import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 
 import scrame.entity.Course;
+import scrame.entity.Record;
+import scrame.exception.GroupFullException;
+import scrame.exception.IllegalCourseTypeException;
 import scrame.manager.CourseManager;
 import scrame.manager.StudentManager;
 
@@ -43,18 +53,23 @@ public class RegistrationManager {
     System.out.println("Which group do you want to register in ?");
     String group = sc.next();
     //register
-    courseFound.register(group);
-
+    try {
+      courseFound.register(group);
+      System.out.println("Succesfully registered!!");
+    } catch (IllegalCourseTypeException e) {
+      e.printStackTrace();
+    } catch (GroupFullException e) {
+      e.printStackTrace();
+    }
+    
     //need to create record of studentId  -> ( courseObject ! i think, mark)
   }
 
   public void inputToTextFile(HashSet<Record> recordList) {
     try {
-      FileOutputStream fileOut = new FileOutputStream(fileName);
-      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream(fileName));
       out.writeObject(recordList);
       out.close();
-      fileOut.close();
       System.out.printf("Serialized data is saved in" + fileName);
     } catch (IOException i) {
       i.printStackTrace();
@@ -62,20 +77,16 @@ public class RegistrationManager {
   }
   public void loadFromTextFile() {
     try {
-      FileInputStream fileIn = new FileInputStream(filename);
-      ObjectInputStream in = new ObjectInputStream(fileIn);
+      ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
       recordList = (HashSet<Record>) in.readObject();
       in.close();
-      fileIn.close();
-    } catch (IOException i) {
-      i.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
       return;
-    } catch (ClassNotFoundException c) {
+    } catch (ClassNotFoundException e) {
       System.out.println("Hashset<Record> class not found");
-      c.printStackTrace();
+      e.printStackTrace();
       return;
     }
+  }
 }
-
-}
-

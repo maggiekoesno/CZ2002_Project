@@ -9,7 +9,7 @@ public class AdminForm {
   // public static void main(String[] args){ //tester
   //   StudentForm sf = new StudentForm();
   //   int choice = 0;
-  //   while(choice!= -1 ){
+  //   while(choice!= -1) {
   //     choice = sf.display();
   //   }
   // }

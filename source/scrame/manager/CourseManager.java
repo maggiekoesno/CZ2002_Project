@@ -4,13 +4,20 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
 import scrame.entity.Course;
-import scrame.entity.CourseType;
+import scrame.helper.CourseType;
+import scrame.exception.IllegalCourseTypeException;
 
 public class CourseManager {
   private HashSet<Course> courseList;
@@ -24,11 +31,10 @@ public class CourseManager {
    * @return Course Object
    */
   public Course getCourse(int courseId) {
-    Iterator value = courseList.iterator();
     Course courseFound = null;
-    while (value.hashNext()) {
-      if (value.next().getCourseId() == courseId) {
-        courseFound = tmp;
+    for (Course c : courseList) {
+      if (c.getCourseId() == courseId) {
+        courseFound = c;
         break;
       }
     }
@@ -53,18 +59,14 @@ public class CourseManager {
    */
   public void loadFromTextFile() {
     try {
-      FileInputStream fileIn = new FileInputStream(filename);
-      ObjectInputStream in = new ObjectInputStream(fileIn);
+      ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
       courseList = (HashSet<Course>) in.readObject();
       in.close();
-      fileIn.close();
-    } catch (IOException i) {
-      i.printStackTrace();
-      return;
-    } catch (ClassNotFoundException c) {
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
       System.out.println("Hashset<Course> class not found");
-      c.printStackTrace();
-      return;
+      e.printStackTrace();
     }
 
     // String line = null;
@@ -172,13 +174,14 @@ public class CourseManager {
    * Add course into the courseList and insert it into textfile
    */
   public void addCourse() {
+
     Scanner sc = new Scanner(System.in);
     System.out.print("Enter new course name: ");
     String name = sc.nextLine();
     System.out.print("Enter course type:");
     String type = sc.nextLine();
     System.out.print("Enter the course total vacancy: ");
-    String totalVacancy = sc.nextInt();
+    int totalVacancy = sc.nextInt();
 
     while (totalVacancy <= 0) {
       System.out.println(
@@ -210,7 +213,7 @@ public class CourseManager {
       System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
       System.out.println(
         "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
-      ); //TODO BEAUTIFY
+      );
       System.out.println("Example: ");
       System.out.println(
         "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
@@ -230,50 +233,19 @@ public class CourseManager {
       System.out.println("                    /           \\          ");
       System.out.println("            70% Assignment       30% Attendance   ");
     }
-    Course course = new Course(name, type);
-    courseList.add(course);
-
-    myText = name + "," + type;
-
-    System.out.print("");
-    try {
-      Files.write(
-        Paths.get(filename),
-        myText.getBytes(),
-        StandardOpenOption.APPEND
-      );
-      System.out.println("Course added successfully.");
-    } catch(IOException e) {
-      System.out.println("Unable to write new student into file.");
-    }
-  }
-
-  public void writeToTextFile() {
-    String name;
-    String type;
-    String vacancy;
-    String gName;
-    String gVacancy;
-    Map<String, String[]> weightage;
-    String wName;
-    String wContent;
-    String noParent;
-    String parent;
-
-    boolean fw_value = false;
-    FileWriter fw = new FileWriter(filename, false);
-    BufferedWriter bw = new BufferedWriter(fw);
-
-    for (Course c : courseList) {}
+    // Course course = new Course(name, type); //TODO: 
+    // courseList.add(course);
+    // System.out.println("Course added succesfully!");
   }
 
   private CourseType courseTypeToEnum(String tempCourseType) {
+    CourseType courseType = null;
     switch (tempCourseType) {
       case "LEC":
-        courseType = courseType.LEC;
+        courseType = CourseType.LEC;
         break;
       case "TUT":
-        courseType = courseType.TUT;
+        courseType = CourseType.TUT;
         break;
       case "LAB":
         courseType = CourseType.LAB;
@@ -281,6 +253,7 @@ public class CourseManager {
       default:
         break;
     }
+    return courseType;
   }
 
   /**
@@ -290,16 +263,14 @@ public class CourseManager {
    * @return true if the course is in the list, false otherwise
    */
   public boolean isCourseInList(int courseId) {
-    Iterator value = courseList.iterator();
-
     Course courseFound = null;
-    while (value.hashNext()) {
-      Course tmp = value.next();
-      if (tmp.getCourseId() == courseId) {
-        courseFound = tmp;
+    for (Course c : courseList) {
+      if (c.getCourseId() == courseId) {
+        courseFound = c;
         break;
       }
     }
+
     return courseFound.getCourseId() == courseId;
   }
 
@@ -308,32 +279,42 @@ public class CourseManager {
    */
   public void checkVacancy() {
     Scanner sc = new Scanner(System.in);
-    Iterator value = courseList.iterator();
-
+    System.out.println("Please input the course id");
+    int courseId = sc.nextInt();
+    while(courseId<0){
+      System.out.print("Invalid input, please try again : ");
+      courseId = sc.nextInt();
+    }
+    
     System.out.println();
     System.out.println("++++++++++++++++++++++++++++++");
     System.out.println("++++++ Course Vacancies ++++++");
     System.out.println("++++++++++++++++++++++++++++++");
-
-    while (value.hashNext()) {
-      Course tmp = value.next();
+    for (Course c : courseList) {
       int vacancy;
 
-      if (tmp.getCourseId() == courseId) {
-        CourseType type = tmp.getCourseType();
+      if (c.getCourseId() == courseId) {
+        CourseType type = c.getCourseType();
 
         switch (type) {
-          case "LEC":
-            System.out.println("++ Course Name ++++ Vacancy ++");
-            System.out.println("++++++++++++++++++++++++++++++");
-            System.out.print("++   " + tmp.getCourseName() + "    ++++   ");
-            System.out.printf("%3d", tmp.checkLectureVacancy());
-            System.out.println("   ++");
-            System.out.println("++++++++++++++++++++++++++++++");
+          case LEC:
+            try {
+              String courseName = c.getCourseName();
+              int lectureVacancy = c.checkLectureVacancy();
+              System.out.println("++ Course Name ++++ Vacancy ++");
+              System.out.println("++++++++++++++++++++++++++++++");
+              System.out.print("++   " + courseName + "    ++++   ");
+              System.out.printf("%3d" + lectureVacancy);
+              System.out.println("   ++");
+              System.out.println("++++++++++++++++++++++++++++++");
+            } catch (IllegalCourseTypeException e) {
+              System.out.println(e.getMessage());
+            }
+            
             break;
-          case "TUT":
-          case "LAB":
-            HashMap<String, Integer> groups = tmp.getTutLabGroups();
+          case TUT:
+          case LAB:
+            HashMap<String, Integer> groups = c.getTutLabGroups();
             System.out.println("++ Group Name +++++ Vacancy ++");
             System.out.println("++++++++++++++++++++++++++++++");
             for (Map.Entry<String, Integer> entry : groups.entrySet()) {

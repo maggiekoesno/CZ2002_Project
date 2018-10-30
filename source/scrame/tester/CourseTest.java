@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import scrame.entity.Course;
-import scrame.entity.CourseType;
+import scrame.helper.CourseType;
 
 public class CourseTest {
 
