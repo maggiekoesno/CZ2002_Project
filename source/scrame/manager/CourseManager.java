@@ -1,23 +1,23 @@
 package scrame.manager;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 
 import scrame.entity.Course;
-import scrame.helper.CourseType;
 import scrame.exception.IllegalCourseTypeException;
+import scrame.helper.CourseType;
 
 public final class CourseManager {
   private static HashSet<Course> courseList;
@@ -39,14 +39,16 @@ public final class CourseManager {
     }
     return courseFound;
   }
-  
+
   public static void inputToFile(HashSet<Course> courseList) {
     try {
-      ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+      ObjectOutputStream out = new ObjectOutputStream(
+        new FileOutputStream(fileName)
+      );
       out.writeObject(courseList);
       out.close();
-      System.out.printf("Serialized data is saved in "+fileName);
-    } catch (IOException e) {
+      System.out.printf("Serialized data is saved in " + fileName);
+    } catch(IOException e) {
       e.printStackTrace();
     }
   }
@@ -55,117 +57,114 @@ public final class CourseManager {
    * Function to read the textfile and insert it into courseList
    * 
    */
-  public static void loadFromFile() {
+  public static void loadFromFile() // String line = null;
+  // String line_arr[] = new String[3];
+  // try {
+  //   BufferedReader bufferedReader = new BufferedReader(
+  //     new FileReader(fileName)
+  //   );
+  //   //HASHMAP INSERT SEP1 , 25
+  //   while (line = bufferedReader.readLine() != null) {
+  //     line_arr = line.split(",");
+  //     length = line_arr.length;
+  //     String name = line_arr[0];
+  //     String courseType = line_arr[1];
+  //     int courseVacancy = (int) line_arr[2];
+  //     int i = 3;
+  //     HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+  //     tempVacancies.put("_LEC", courseVacancy);
+  //     HashMap<String, String[]> tempWeightageList = new HashMap<
+  //       String,
+  //       String[]
+  //     >();
+  //     boolean readGroup = false;
+  //     boolean readWeightage = false;
+  //     if (courseType == "LEC") {
+  //       while (i < length - 3) {
+  //         if (line_arr[i] == "WEIGHTAGE") {
+  //           readWeightage = true;
+  //           i++;
+  //         }
+  //         if (readWeightage == true) {
+  //           String weightageName = line_arr[i];
+  //           String weightageContent = {
+  //             line_arr[i + 1],
+  //             line_arr[i + 2],
+  //             line_arr[i + 3]
+  //           };
+  //           tempWeightageList.put(weightageName, weightageContent);
+  //           i += 4;
+  //           continue;
+  //         }
+  //         i++;
+  //       }
+  //       courseList.add(
+  //         new Course(
+  //           name,
+  //           courseTypeToEnum(courseType),
+  //           tempVacancies,
+  //           tempWeightageList
+  //         )
+  //       );
+  //     } else if (courseType == "TUT" || courseType == "LAB") {
+  //       while (i < (length - 3)) {
+  //         if (line_arr[i] == "GROUP") {
+  //           readGroup = true;
+  //           readWeightage = false;
+  //           i++;
+  //         } else if (line_arr[i] == "WEIGHTAGE") {
+  //           readGroup = false;
+  //           readWeightage = true;
+  //           i++;
+  //         }
+  //         if (readGroup == true && readWeightage == false) {
+  //           String groupName = line_arr[i];
+  //           String groupVacancy = line_arr[i + 1];
+  //           tempVacancies.put(groupName, groupVacancy);
+  //           i += 2;
+  //           continue;
+  //         } else if (readWeightage == true && readGroup == false) {
+  //           String weightageName = line_arr[i];
+  //           String weightageContent = {
+  //             line_arr[i + 1],
+  //             line_arr[i + 2],
+  //             line_arr[i + 3]
+  //           };
+  //           tempWeightageList.put(weightageName, weightageContent);
+  //           i += 4;
+  //           continue;
+  //         }
+  //         i++;
+  //       }
+  //       courseList.add(
+  //         new Course(
+  //           name,
+  //           courseTypeToEnum(courseType),
+  //           tempVacancies,
+  //           tempWeightageList
+  //         )
+  //       );
+  //     }
+  //     System.out.println("Unable to open file '" + fileName + "'");
+  //   }
+  // } catch(FileNotFoundException ex) {
+  //   System.out.println("Unable to open file '" + fileName + "'");
+  // } catch(IOException ex) {
+  //   System.out.println("Error reading file '" + fileName + "'");
+  // }
+  {
     try {
-      ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
+      ObjectInputStream in = new ObjectInputStream(
+        new FileInputStream(fileName)
+      );
       courseList = (HashSet<Course>) in.readObject();
       in.close();
-    } catch (IOException e) {
+    } catch(IOException e) {
       e.printStackTrace();
-    } catch (ClassNotFoundException e) {
+    } catch(ClassNotFoundException e) {
       System.out.println("Hashset<Course> class not found");
       e.printStackTrace();
     }
-
-    // String line = null;
-    // String line_arr[] = new String[3];
-    // try {
-    //   BufferedReader bufferedReader = new BufferedReader(
-    //     new FileReader(fileName)
-    //   );
-    //   //HASHMAP INSERT SEP1 , 25
-
-    //   while (line = bufferedReader.readLine() != null) {
-    //     line_arr = line.split(",");
-    //     length = line_arr.length;
-    //     String name = line_arr[0];
-    //     String courseType = line_arr[1];
-    //     int courseVacancy = (int) line_arr[2];
-    //     int i = 3;
-
-    //     HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-    //     tempVacancies.put("_LEC", courseVacancy);
-
-    //     HashMap<String, String[]> tempWeightageList = new HashMap<
-    //       String,
-    //       String[]
-    //     >();
-    //     boolean readGroup = false;
-    //     boolean readWeightage = false;
-
-    //     if (courseType == "LEC") {
-    //       while (i < length - 3) {
-    //         if (line_arr[i] == "WEIGHTAGE") {
-    //           readWeightage = true;
-    //           i++;
-    //         }
-    //         if (readWeightage == true) {
-    //           String weightageName = line_arr[i];
-    //           String weightageContent = {
-    //             line_arr[i + 1],
-    //             line_arr[i + 2],
-    //             line_arr[i + 3]
-    //           };
-    //           tempWeightageList.put(weightageName, weightageContent);
-    //           i += 4;
-    //           continue;
-    //         }
-    //         i++;
-    //       }
-    //       courseList.add(
-    //         new Course(
-    //           name,
-    //           courseTypeToEnum(courseType),
-    //           tempVacancies,
-    //           tempWeightageList
-    //         )
-    //       );
-    //     } else if (courseType == "TUT" || courseType == "LAB") {
-    //       while (i < (length - 3)) {
-    //         if (line_arr[i] == "GROUP") {
-    //           readGroup = true;
-    //           readWeightage = false;
-    //           i++;
-    //         } else if (line_arr[i] == "WEIGHTAGE") {
-    //           readGroup = false;
-    //           readWeightage = true;
-    //           i++;
-    //         }
-    //         if (readGroup == true && readWeightage == false) {
-    //           String groupName = line_arr[i];
-    //           String groupVacancy = line_arr[i + 1];
-    //           tempVacancies.put(groupName, groupVacancy);
-    //           i += 2;
-    //           continue;
-    //         } else if (readWeightage == true && readGroup == false) {
-    //           String weightageName = line_arr[i];
-    //           String weightageContent = {
-    //             line_arr[i + 1],
-    //             line_arr[i + 2],
-    //             line_arr[i + 3]
-    //           };
-    //           tempWeightageList.put(weightageName, weightageContent);
-    //           i += 4;
-    //           continue;
-    //         }
-    //         i++;
-    //       }
-    //       courseList.add(
-    //         new Course(
-    //           name,
-    //           courseTypeToEnum(courseType),
-    //           tempVacancies,
-    //           tempWeightageList
-    //         )
-    //       );
-    //     }
-    //     System.out.println("Unable to open file '" + fileName + "'");
-    //   }
-    // } catch(FileNotFoundException ex) {
-    //   System.out.println("Unable to open file '" + fileName + "'");
-    // } catch(IOException ex) {
-    //   System.out.println("Error reading file '" + fileName + "'");
-    // }
   }
 
   /**
@@ -187,7 +186,9 @@ public final class CourseManager {
       totalVacancy = sc.nextInt();
     }
     HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>(
+
+    );
     if (type != "LEC") {
       System.out.println("Enter the Group name e.g \"SEP1\", -1 to exit");
       while (true) {
@@ -205,8 +206,6 @@ public final class CourseManager {
         }
         tempVacancies.put(groupName, groupVacancy);
       }
-
-
       System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
       System.out.println(
         "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
@@ -229,7 +228,7 @@ public final class CourseManager {
       System.out.println("      60% Exam     40% Coursework           ");
       System.out.println("                    /           \\          ");
       System.out.println("            70% Assignment       30% Attendance   ");
-      
+
       while (true) {
         System.out.println("Enter the weightage, -1 to exit:");
         String tmp = sc.next();
@@ -237,10 +236,10 @@ public final class CourseManager {
           break;
         }
         String parts[] = tmp.split(",");
-        tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+        // tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
       }
     }
-    Course course = new Course(name, type); 
+    Course course = new Course(name, type);
     courseList.add(course);
     System.out.println("Course added succesfully!");
   }
@@ -277,7 +276,6 @@ public final class CourseManager {
         break;
       }
     }
-
     return courseFound.getCourseId() == courseId;
   }
 
@@ -288,11 +286,10 @@ public final class CourseManager {
     Scanner sc = new Scanner(System.in);
     System.out.println("Please input the course id");
     int courseId = sc.nextInt();
-    while(courseId<0){
+    while (courseId < 0) {
       System.out.print("Invalid input, please try again : ");
       courseId = sc.nextInt();
     }
-    
     System.out.println();
     System.out.println("++++++++++++++++++++++++++++++");
     System.out.println("++++++ Course Vacancies ++++++");
@@ -314,14 +311,12 @@ public final class CourseManager {
               System.out.printf("%3d" + lectureVacancy);
               System.out.println("   ++");
               System.out.println("++++++++++++++++++++++++++++++");
-            } catch (IllegalCourseTypeException e) {
+            } catch(IllegalCourseTypeException e) {
               System.out.println(e.getMessage());
             }
-            
             break;
           case TUT:
-          case LAB:
-            HashMap<String, Integer> groups = c.getTutLabGroups();
+          case LAB:HashMap<String, Integer> groups = c.getTutLabGroups();
             System.out.println("++ Group Name +++++ Vacancy ++");
             System.out.println("++++++++++++++++++++++++++++++");
             for (Map.Entry<String, Integer> entry : groups.entrySet()) {
@@ -344,12 +339,14 @@ public final class CourseManager {
 
     Scanner sc = new Scanner(System.in);
     courseId = sc.nextInt();
-    while(!isCourseInList(courseId)){
+    while (!isCourseInList(courseId)) {
       System.out.print("The course is not registered. Please try again");
       courseId = sc.nextInt();
     }
     Course course = getCourse(courseId);
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>(
+
+    );
     if (type != "LEC") {
       System.out.println("Enter the Group name e.g \"SEP1\", -1 to exit");
       while (true) {
@@ -367,7 +364,6 @@ public final class CourseManager {
         }
         tempVacancies.put(groupName, groupVacancy);
       }
-
       System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
       System.out.println(
         "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
@@ -390,18 +386,20 @@ public final class CourseManager {
       System.out.println("      60% Exam     40% Coursework           ");
       System.out.println("                    /           \\          ");
       System.out.println("            70% Assignment       30% Attendance   ");
-      
+
       while (true) {
-          System.out.println("Enter the weightage, -1 to exit:");
-          String tmp = sc.next();
-          if(tmp == "-1"){
-            break;
-          }
-          String parts[] = tmp.split(",");
-          tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+        System.out.println("Enter the weightage, -1 to exit:");
+        String tmp = sc.next();
+        if (tmp == "-1") {
+          break;
+        }
+        String parts[] = tmp.split(",");
+        // tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
       }
       course.setWeightage(tempWeightageList);
       System.out.println("Weightage set successfully !");
+    }
   }
+
 }
 

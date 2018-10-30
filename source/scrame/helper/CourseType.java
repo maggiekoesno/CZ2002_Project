@@ -1,6 +1,10 @@
 package scrame.helper;
 
 public enum CourseType {
-  LEC, TUT, LAB;
+
+  LEC,
+  TUT,
+  LAB;
+
 }
 

@@ -78,4 +78,6 @@ public class Student implements Serializable {
   public String getMatric() {
     return this.matric;
   }
+
 }
+

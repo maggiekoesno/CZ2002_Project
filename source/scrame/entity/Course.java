@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import scrame.helper.CourseType;
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
+import scrame.helper.CourseType;
 
 public class Course implements Serializable {
   public static final int WEIGHT = 0;
@@ -261,7 +261,6 @@ public class Course implements Serializable {
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
       String component = entry.getKey();
       String[] info = entry.getValue();
-
       if (info[PARENT].equals(check)) {
         if (info[HAS_CHILD].equals("true")) {
           flag = flag && validateWeightage(weightage, component);
