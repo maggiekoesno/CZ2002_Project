@@ -55,9 +55,12 @@ public class Record implements Serializable {
         if(entry.getValue()[HAS_CHILD].equals("true")){
           sum += calculateAverage(entry.getKey());
         }
-        String w = entry.getValue()[WEIGHT];
-        float val = (float)0.01*Integer.parseInt(w.substring(0, w.length() - 1));
-        sum += mark.get(entry.getKey())*val;
+        else{
+          String w = entry.getValue()[WEIGHT];
+          float val = (float)0.01*Integer.parseInt(w.substring(0, w.length() - 1));
+          sum += mark.get(entry.getValue())*val;
+          System.out.println(mark.get(entry.getValue())*val);
+        }
       }
     }
     return sum;
