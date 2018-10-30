@@ -13,6 +13,9 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private HashMap<String, Float> mark;
+  public static final int WEIGHT = 0;
+  public static final int HAS_CHILD = 1;
+  public static final int PARENT = 2;
 
   public Record(Student student, Course course, HashMap<String, Float> mark)
     throws IllegalArgumentException {
@@ -42,64 +45,35 @@ public class Record implements Serializable {
     this.mark = mark;
   }
   // TODO: public float calculateAverage();
-  // TODO: public Student getStudent();
-  // TODO: public Course getCourse();
-  // TODO: public Map<String, Float> getMark();
+  public float calculateAverage(){
+    return calculateAverage("");
+  }
+  
+  private float calculateAverage(String check){
+    float sum=0;
+    for (Map.Entry<String, String[]> entry : course.getWeightage().entrySet()){
+      if(entry.getValue()[HAS_CHILD]=="false" && entry.getValue()[PARENT].equals(check)){
+        String w = entry.getValue()[WEIGHT];
+        float val = 0.01*Integer.parseInt(w.substring(0, w.length() - 1));
+        sum += mark.get(entry.getKey())*val;
+      }
+      else if(entry.getValue()[HAS_CHILD]=="true"){
+        sum += calculateAverage(entry.getKey());
+      }
+    }
+    return sum;
+  }
+  
+  public Student getStudent(){
+    return student;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // public ArrayList<String> listLeafComponents(int courseId) {
-  //   ArrayList<String> leafComponents = new ArrayList<String>();
-  //   CourseManager cm = new CourseManager();
-  //   Course c = cm.getCourse(courseId);
-  //   Map<String, String[]> weightage = c.getWeightage();
-
-  //   for (Map.Entry<String, String[]> entry : weightage.entrySet()) { 
-  //     if (entry.getValue()[HAS_CHILD].equals("false")) {
-  //       leafComponents.add(entry.getKey());
-  //     }
-  //   }
-
-  //   return leafComponents;
-  // }
-
-  // public String getStudentName() {
-  //   return this.student.getName();
-  // }
-
-  // public String getMatric() {
-  //   return this.student.getMatric();
-  // }
-
-  // public String getGroup() {
-  //   return this.group;
-  // }
-
-  // public void setGroup(String group) {
-  //   this.group = group;
-  // }
-
-  // public String getSemester() {
-  //   return this.semester;
-  // }
-
-  // public String getCouse() {
-  //   return this.course.getName();
-  // }
+  public Course getCourse(){
+    return course;
+  }
+  
+  public Map<String, Float> getMark(){
+    return mark;
+  }
 
 }
