@@ -21,7 +21,7 @@ public class ScrameApp {
 
     //input admin or student
     System.out.println(
-      "WELCOME TO SCRAME !, please login, input \"admin\" for admin mode, or please input your student matric "
+      "WELCOME TO SCRAME!, please login, input \"admin\" for admin mode, or please input your student matric "
     ); // beautify
     String username = sc.next();
     if (username != "admin") {

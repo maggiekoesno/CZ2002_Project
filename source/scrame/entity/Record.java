@@ -1,5 +1,6 @@
 package scrame.entity;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,7 +9,7 @@ import scrame.entity.Course;
 import scrame.entity.Student;
 import scrame.helper.Mark;
 
-public class Record {
+public class Record implements Serializable {
   private Student student;
   private Course course;
   private HashMap<String, Float> mark;

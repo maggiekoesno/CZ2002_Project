@@ -2,16 +2,18 @@ package scrame.manager;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.Serializable;
 
 import scrame.entity.Course;
 import scrame.manager.CourseManager;
 import scrame.manager.StudentManager;
 
 public class RegistrationManager {
-  private Record record;
+  private HashSet<Record> recordList; 
+  private static String fileName = "data/records.ser"; // The name of the file to open.
 
   public RegistrationManager() {
-    record = new Record();
+    recordList = new HashSet<Record>();
   }
 
   public void registerStudentCourse() {
@@ -45,6 +47,35 @@ public class RegistrationManager {
 
     //need to create record of studentId  -> ( courseObject ! i think, mark)
   }
+
+  public void inputToTextFile(HashSet<Record> recordList) {
+    try {
+      FileOutputStream fileOut = new FileOutputStream(fileName);
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      out.writeObject(recordList);
+      out.close();
+      fileOut.close();
+      System.out.printf("Serialized data is saved in" + fileName);
+    } catch (IOException i) {
+      i.printStackTrace();
+    }
+  }
+  public void loadFromTextFile() {
+    try {
+      FileInputStream fileIn = new FileInputStream(filename);
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      recordList = (HashSet<Record>) in.readObject();
+      in.close();
+      fileIn.close();
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
+    } catch (ClassNotFoundException c) {
+      System.out.println("Hashset<Record> class not found");
+      c.printStackTrace();
+      return;
+    }
+}
 
 }
 

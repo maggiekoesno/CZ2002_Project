@@ -1,8 +1,9 @@
 package scrame.entity;
 
+import java.io.Serializable;
 import java.lang.IllegalArgumentException;
 
-public class Student {
+public class Student implements Serializable {
   private String name;
   private String major;
   private String enroll;

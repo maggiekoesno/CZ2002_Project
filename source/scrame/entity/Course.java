@@ -1,5 +1,6 @@
 package scrame.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
 
-public class Course {
+public class Course implements Serializable {
   public static final int WEIGHT = 0;
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;

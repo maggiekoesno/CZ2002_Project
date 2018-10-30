@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -14,7 +15,7 @@ import scrame.entity.CourseType;
 public class CourseManager {
   private HashSet<Course> courseList;
 
-  private static String fileName = "data/courses.txt"; // The name of the file to open.
+  private static String fileName = "data/courses.ser"; // The name of the file to open.
 
   /**
    * Search the course by courseId, and return the appropriate Course Object.
@@ -33,111 +34,138 @@ public class CourseManager {
     }
     return courseFound;
   }
-
+  
+  public void inputToTextFile(HashSet<Course> courseList) {
+    try {
+      FileOutputStream fileOut = new FileOutputStream(fileName);
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      out.writeObject(courseList);
+      out.close();
+      fileOut.close();
+      System.out.printf("Serialized data is saved in "+fileName);
+    } catch (IOException i) {
+      i.printStackTrace();
+    }
+  }
   /**
    * Function to read the textfile and insert it into courseList
    * 
    */
   public void loadFromTextFile() {
-    String line = null;
-    String line_arr[] = new String[3];
     try {
-      BufferedReader bufferedReader = new BufferedReader(
-        new FileReader(fileName)
-      );
-      //HASHMAP INSERT SEP1 , 25
-
-      while (line = bufferedReader.readLine() != null) {
-        line_arr = line.split(",");
-        length = line_arr.length;
-        String name = line_arr[0];
-        String courseType = line_arr[1];
-        int courseVacancy = (int) line_arr[2];
-        int i = 3;
-
-        HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-        tempVacancies.put("_LEC", courseVacancy);
-
-        HashMap<String, String[]> tempWeightageList = new HashMap<
-          String,
-          String[]
-        >();
-        boolean readGroup = false;
-        boolean readWeightage = false;
-
-        if (courseType == "LEC") {
-          while (i < length - 3) {
-            if (line_arr[i] == "WEIGHTAGE") {
-              readWeightage = true;
-              i++;
-            }
-            if (readWeightage == true) {
-              String weightageName = line_arr[i];
-              String weightageContent = {
-                line_arr[i + 1],
-                line_arr[i + 2],
-                line_arr[i + 3]
-              };
-              tempWeightageList.put(weightageName, weightageContent);
-              i += 4;
-              continue;
-            }
-            i++;
-          }
-          courseList.add(
-            new Course(
-              name,
-              courseTypeToEnum(courseType),
-              tempVacancies,
-              tempWeightageList
-            )
-          );
-        } else if (courseType == "TUT" || courseType == "LAB") {
-          while (i < (length - 3)) {
-            if (line_arr[i] == "GROUP") {
-              readGroup = true;
-              readWeightage = false;
-              i++;
-            } else if (line_arr[i] == "WEIGHTAGE") {
-              readGroup = false;
-              readWeightage = true;
-              i++;
-            }
-            if (readGroup == true && readWeightage == false) {
-              String groupName = line_arr[i];
-              String groupVacancy = line_arr[i + 1];
-              tempVacancies.put(groupName, groupVacancy);
-              i += 2;
-              continue;
-            } else if (readWeightage == true && readGroup == false) {
-              String weightageName = line_arr[i];
-              String weightageContent = {
-                line_arr[i + 1],
-                line_arr[i + 2],
-                line_arr[i + 3]
-              };
-              tempWeightageList.put(weightageName, weightageContent);
-              i += 4;
-              continue;
-            }
-            i++;
-          }
-          courseList.add(
-            new Course(
-              name,
-              courseTypeToEnum(courseType),
-              tempVacancies,
-              tempWeightageList
-            )
-          );
-        }
-        System.out.println("Unable to open file '" + fileName + "'");
-      }
-    } catch(FileNotFoundException ex) {
-      System.out.println("Unable to open file '" + fileName + "'");
-    } catch(IOException ex) {
-      System.out.println("Error reading file '" + fileName + "'");
+      FileInputStream fileIn = new FileInputStream(filename);
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      courseList = (HashSet<Course>) in.readObject();
+      in.close();
+      fileIn.close();
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
+    } catch (ClassNotFoundException c) {
+      System.out.println("Hashset<Course> class not found");
+      c.printStackTrace();
+      return;
     }
+
+    // String line = null;
+    // String line_arr[] = new String[3];
+    // try {
+    //   BufferedReader bufferedReader = new BufferedReader(
+    //     new FileReader(fileName)
+    //   );
+    //   //HASHMAP INSERT SEP1 , 25
+
+    //   while (line = bufferedReader.readLine() != null) {
+    //     line_arr = line.split(",");
+    //     length = line_arr.length;
+    //     String name = line_arr[0];
+    //     String courseType = line_arr[1];
+    //     int courseVacancy = (int) line_arr[2];
+    //     int i = 3;
+
+    //     HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+    //     tempVacancies.put("_LEC", courseVacancy);
+
+    //     HashMap<String, String[]> tempWeightageList = new HashMap<
+    //       String,
+    //       String[]
+    //     >();
+    //     boolean readGroup = false;
+    //     boolean readWeightage = false;
+
+    //     if (courseType == "LEC") {
+    //       while (i < length - 3) {
+    //         if (line_arr[i] == "WEIGHTAGE") {
+    //           readWeightage = true;
+    //           i++;
+    //         }
+    //         if (readWeightage == true) {
+    //           String weightageName = line_arr[i];
+    //           String weightageContent = {
+    //             line_arr[i + 1],
+    //             line_arr[i + 2],
+    //             line_arr[i + 3]
+    //           };
+    //           tempWeightageList.put(weightageName, weightageContent);
+    //           i += 4;
+    //           continue;
+    //         }
+    //         i++;
+    //       }
+    //       courseList.add(
+    //         new Course(
+    //           name,
+    //           courseTypeToEnum(courseType),
+    //           tempVacancies,
+    //           tempWeightageList
+    //         )
+    //       );
+    //     } else if (courseType == "TUT" || courseType == "LAB") {
+    //       while (i < (length - 3)) {
+    //         if (line_arr[i] == "GROUP") {
+    //           readGroup = true;
+    //           readWeightage = false;
+    //           i++;
+    //         } else if (line_arr[i] == "WEIGHTAGE") {
+    //           readGroup = false;
+    //           readWeightage = true;
+    //           i++;
+    //         }
+    //         if (readGroup == true && readWeightage == false) {
+    //           String groupName = line_arr[i];
+    //           String groupVacancy = line_arr[i + 1];
+    //           tempVacancies.put(groupName, groupVacancy);
+    //           i += 2;
+    //           continue;
+    //         } else if (readWeightage == true && readGroup == false) {
+    //           String weightageName = line_arr[i];
+    //           String weightageContent = {
+    //             line_arr[i + 1],
+    //             line_arr[i + 2],
+    //             line_arr[i + 3]
+    //           };
+    //           tempWeightageList.put(weightageName, weightageContent);
+    //           i += 4;
+    //           continue;
+    //         }
+    //         i++;
+    //       }
+    //       courseList.add(
+    //         new Course(
+    //           name,
+    //           courseTypeToEnum(courseType),
+    //           tempVacancies,
+    //           tempWeightageList
+    //         )
+    //       );
+    //     }
+    //     System.out.println("Unable to open file '" + fileName + "'");
+    //   }
+    // } catch(FileNotFoundException ex) {
+    //   System.out.println("Unable to open file '" + fileName + "'");
+    // } catch(IOException ex) {
+    //   System.out.println("Error reading file '" + fileName + "'");
+    // }
   }
 
   /**
