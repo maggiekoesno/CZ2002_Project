@@ -3,10 +3,15 @@ package scrame.exception;
 public class IllegalCourseTypeException
   extends Exception {
 
+  String message;
+  
   public IllegalCourseTypeException(String message) {
     super();
-    System.out.println(message);
+    this.message = message;
   }
 
+  public String getMessage() {
+    return message;
+  }
 }
 

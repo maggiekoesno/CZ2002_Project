@@ -4,26 +4,38 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import java.io.IOException;
+import java.io.EOFException;
+
 import java.io.Serializable;
 import java.nio.file.Files;
+
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.Scanner;
 
+import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
+
 import scrame.helper.CourseType;
+
 import scrame.manager.CourseManager;
 import scrame.manager.RecordManager;
 
 public final class StudentManager {
-  private static HashSet<Student> studentList = new HashSet<Record>();
-  private static String fileName = "data/students.ser";
-
-  public static void inputToFile(HashSet<Student> studentList) {
+  private static HashSet<Student> studentList = new HashSet<Student>();
+  private static String fileName = "../data/students.ser";
+  private static final int WEIGHT = 0;
+  private static final int HAS_CHILD = 1;
+  private static final int PARENT = 2;
+  
+  public static void inputToFile() {
     try {
       ObjectOutputStream out = new ObjectOutputStream(
         new FileOutputStream(fileName)
@@ -31,41 +43,25 @@ public final class StudentManager {
       out.writeObject(studentList);
       out.close();
       System.out.printf("Serialized data is saved in " + fileName);
-    } catch(IOException e) {
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public static void loadFromFile() // public void loadFromTextFile() {
-  //   String line = null;
-  //   String line_arr[] = new String[4];
-  //   try {
-  //     BufferedReader bufferedReader = new BufferedReader(
-  //       new FileReader(fileName)
-  //     );
-  //     while (line = bufferedReader.readLine() != null) {
-  //       line.split(",");
-  //       studentList.add(
-  //         new Student(line_arr[0], line_arr[1], line_arr[2], line_arr[3])
-  //       );
-  //     }
-  //     bufferedReader.close();
-  //   } catch(FileNotFoundException ex) {
-  //     System.out.println("Unable to open file '" + fileName + "'");
-  //   } catch(IOException ex) {
-  //     System.out.println("Error reading file '" + fileName + "'");
-  //   }
-  // }
-  {
+  public static void loadFromFile() {
     try {
       ObjectInputStream in = new ObjectInputStream(
         new FileInputStream(fileName)
       );
       studentList = (HashSet<Student>) in.readObject();
       in.close();
-    } catch(IOException e) {
+    } catch (EOFException e) {
+      studentList = new HashSet<Student>();
+    } catch (IOException e) {
       e.printStackTrace();
-    } catch(ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       System.out.println("Hashset<Student> class not found.");
       e.printStackTrace();
     }
@@ -81,9 +77,9 @@ public final class StudentManager {
 
     System.out.print("Enter new student's name: ");
     name = sc.nextLine();
-    System.out.print("Enter " + name + "'s major: ");
+    System.out.print("Enter " + name + "'s major (e.g. CSC): ");
     major = sc.nextLine();
-    System.out.print("Enter " + name + "'s enrollment period: ");
+    System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
     enroll = sc.nextLine();
     System.out.print("Enter " + name + "'s matriculation number: ");
     matric = sc.nextLine();
@@ -91,6 +87,11 @@ public final class StudentManager {
     try {
       Student student = new Student(name, major, enroll, matric);
       studentList.add(student);
+      
+      for (Student s : studentList) {
+        System.out.println(s.toString());
+      }
+
       System.out.println("Student added successfully.");
     } catch(IllegalArgumentException e) {
       System.out.println(e.getMessage());
@@ -108,7 +109,7 @@ public final class StudentManager {
    */
   public static boolean isStudentInList(String matric) {
     for (Student s : studentList) {
-      if (s.getMatric() == matric) {
+      if (s.getMatric().equals(matric)) {
         return true;
       }
     }
@@ -119,7 +120,7 @@ public final class StudentManager {
     Scanner sc = new Scanner(System.in);
 
     System.out.print("Enter your matriculation number: ");
-    String matric = sc.nextLine;
+    String matric = sc.nextLine();
 
     boolean studentFound = false;
     HashSet<Record> recordList = RecordManager.getRecordList();
@@ -146,7 +147,7 @@ public final class StudentManager {
         float mark = entry.getValue();
         System.out.println(component + ": " + Float.toString(mark));
       }
-      printIndividualAssessment(r.getCourse().getWeightage());
+      printIndividualAssessment(r);
     }
   }
 
@@ -159,25 +160,33 @@ public final class StudentManager {
    */
   public static void printStudentList() {
     System.out.print("Enter course id: ");
+
+    Scanner sc = new Scanner(System.in);
+
     int courseId = sc.nextInt();
     Course c = CourseManager.getCourse(courseId);
     if (c.getCourseType() == CourseType.LEC) {
       String gname = "_LEC";
       HashSet<Record> recordList = RecordManager.getRecordList();
       for (Record r : recordList) {
-        if (r.getGroupName.equals(gname) && c.getCourseId() == r.getCourse(
+        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse(
 
         ).getCourseId()) {
           System.out.println(r.getStudent().getName());
         }
       }
     } else {
+      System.out.println("The list of groups: ");
+      HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
+      for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
+        System.out.println(entry.getKey());
+      }
       System.out.print("Enter group name: ");
-      // TODO PRINT ALL AVAILABLE GROUP NAMES
+
       String gname = sc.nextLine();
       HashSet<Record> recordList = RecordManager.getRecordList();
       for (Record r : recordList) {
-        if (r.getGroupName.equals(gname) && c.getCourseId() == r.getCourse(
+        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse(
 
         ).getCourseId()) {
           System.out.println(r.getStudent().getName());
@@ -206,6 +215,7 @@ public final class StudentManager {
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
       String component = entry.getKey();
       String[] info = entry.getValue();
+
       if (info[PARENT].equals(check)) {
         if (info[HAS_CHILD].equals("true")) {
           String w = info[WEIGHT];

@@ -14,7 +14,7 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private String groupName;
-  private HashMap<String, Float> mark;
+  private Map<String, Float> mark;
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
@@ -122,12 +122,7 @@ public class Record implements Serializable {
       markIn.put("assigments", 70.0f);
       markIn.put("attendance", 90.0f);
 
-      Record rec = new Record(
-        new Student("Alice", "ACC", "AY1718 S1", "U1723456A"),
-        c1,
-        markIn,
-        "SSP1"
-      );
+      Record rec = new Record(new Student("Alice", "ACC", "AY1718 S1", "U1723456A"),c1,"SSP1",markIn);
       System.out.println(rec.calculateAverage());
     } catch(Exception e) {
       System.out.println(e.getMessage());
