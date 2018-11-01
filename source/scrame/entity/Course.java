@@ -145,10 +145,6 @@ public class Course implements Serializable {
     tutLabGroups.put(groupName, vacancy - 1);
     tutLabGroups.put("_LEC", lectureVacancy -1);
     lectureVacancy--;
-
-    System.out.println(
-      "Congratulations! You have successfully registered to group " + groupName + " on course " + courseName + "!"
-    );
   }
 
   /**
@@ -157,22 +153,19 @@ public class Course implements Serializable {
    * 
    * // register();
    */
-  public void register()
-    throws
-      IllegalCourseTypeException,
+  public void register() throws IllegalCourseTypeException,
       LectureFullException {
     if (courseType != CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "To register on " + courseName + ", you must register based on your tutorial/lab group."
       );
     }
+
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
+
     lectureVacancy--;
-    System.out.println(
-      "Congratulations! You have successfully registered to course " + courseName + "!"
-    );
   }
 
   /**
@@ -194,9 +187,7 @@ public class Course implements Serializable {
    * @param groupName group name to be checked at
    * @return group vacancy
    */
-  public int checkGroupVacancy(String groupName)
-    throws
-      IllegalCourseTypeException {
+  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "Course " + courseName + " does not have any tutorial/lab group."
@@ -208,14 +199,18 @@ public class Course implements Serializable {
   /**
    * Print all groups on the course. 
    */
-  public void printAllGroups() {
-    if (courseType != CourseType.LEC) {
-      System.out.println("here");
-      for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        if(!entry.getKey().equals(CourseType.LEC)){
-          System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-      }
+  public void printAllGroups() throws IllegalCourseTypeException {
+    if (courseType == CourseType.LEC) {
+      throw new IllegalCourseTypeException("Oops, it appears that " + courseName + " doesn't have any groups.");
+    }
+
+    String group;
+    int vacancy;
+
+    for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
+      group = entry.getKey();
+      vacancy = entry.getValue();
+      System.out.println(group + ": " + vacancy);
     }
   }
 
