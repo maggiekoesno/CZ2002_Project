@@ -100,6 +100,8 @@ public final class StudentManager {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    sc.close();
   }
 
   public static void addStudent(String name, String major, String enroll, String matric)
@@ -145,6 +147,7 @@ public final class StudentManager {
     }
     if (!studentFound) {
       System.out.println("Holy guacamole, invalid matric number!");
+      sc.close();
       return;
     }
     for (Record r : recordFound) {
@@ -161,6 +164,8 @@ public final class StudentManager {
       }
       printIndividualAssessment(r);
     }
+
+    sc.close();
   }
 
   /**
@@ -230,11 +235,9 @@ public final class StudentManager {
 
       if (info[PARENT].equals(check)) {
         if (info[HAS_CHILD].equals("true")) {
-          String w = info[WEIGHT];
           System.out.println(component + ", weightage: " + info[WEIGHT]);
           printIndividualAssessment(r, component);
         } else {
-          String w = info[WEIGHT];
           System.out.println(component + ", weightage: " + info[WEIGHT]);
         }
       }

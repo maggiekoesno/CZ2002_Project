@@ -11,6 +11,7 @@ import scrame.entity.Student;
 import scrame.helper.CourseType;
 
 public class Record implements Serializable {
+  private static final long serialVersionUID = 3L;
   private Student student;
   private Course course;
   private String groupName;

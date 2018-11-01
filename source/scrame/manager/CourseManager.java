@@ -368,7 +368,7 @@ public final class CourseManager {
         break;
       }
       String parts[] = tmp.split(",");
-      // tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+      tempWeightageList.add(parts[0], new String[]{parts[1],parts[2],parts[3]});
     }
     course.setWeightage(tempWeightageList);
     System.out.println("Weightage set successfully !");

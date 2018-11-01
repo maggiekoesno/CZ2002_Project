@@ -122,6 +122,8 @@ public final class RecordManager {
     if (check == false) {
       System.out.println("Student is not taking that course!");
     }
+
+    sc.close();
   }
 
   public static void setExamMark() {
@@ -163,6 +165,8 @@ public final class RecordManager {
     if (check == false) {
       System.out.println("Student is not taking that course!");
     }
+
+    sc.close();
   }
 
   public static void inputToFile() {
