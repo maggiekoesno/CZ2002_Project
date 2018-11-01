@@ -55,7 +55,7 @@ public class ScrameApp {
 
       switch (choice) {
         case 0:
-          System.out.println("Exiting Scrame... \n Goodbye!");
+          System.out.println("Exiting SCRAME application... Goodbye!");
           flagWhile = false;
           break;
         case 1:
@@ -70,7 +70,7 @@ public class ScrameApp {
         case 4:
           // StudentManager.addStudent();
           StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          StudentManager.addStudent("Jason", "CSC", "ay1617 s2", "U1720121H");
+          StudentManager.addStudent("Jason", "CSC", "AY1617 S2", "U1720042J");
           break;
         case 5:
           // CourseManager.addCourse();
