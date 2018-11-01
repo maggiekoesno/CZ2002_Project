@@ -216,22 +216,16 @@ public final class RecordManager {
     while (!CourseManager.isCourseInList(courseId)) {
       System.out.print("The course is not registered. Please try again");
       courseId = sc.nextInt();
+      sc.nextLine();
     }
 
     int markCount = 0;
-    Course courseTemp = new Course();
-    for(Record record : recordList) {
-      if(record.getCourse().getCourseId() == courseId) {
-        courseTemp = record.getCourse();
-        break;                            
-      }
-    }
 
-    markCount = courseTemp.getWeightage().size();
+    markCount = CourseManager.getCourse(courseId).getWeightage().size();
     
     for (Record record: recordList) {
       if(record.getCourse().getCourseId() == courseId) {
-        marks = record.getMark();
+        Map<String,Float> mark = record.getMark();
         if(mark.size() < markCount){
           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
           System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
@@ -240,15 +234,15 @@ public final class RecordManager {
         
     }
 
-    for (Record record : recordList) {
-      if (record.getCourse().getCourseId() == courseId) {
-        sum += record.calculateAverage();
+    for (Record r : recordList) {
+      if (r.getCourse().getCourseId() == courseId) {
+        sum += r.calculateAverage();
         n++;
       }
     }
-    for (Record record : recordList) {
-      if (record.getCourse().getCourseId() == courseId) {
-        sumSquareDiff += Math.pow((record.calculateAverage() - mean), 2);
+    for (Record r : recordList) {
+      if (r.getCourse().getCourseId() == courseId) {
+        sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
       }
     }
     mean = sum / n;
@@ -274,7 +268,7 @@ public final class RecordManager {
     System.out.println("2nd Quartile : " + borderValue[1]);
     System.out.println("3rd Quartile : " + borderValue[2]);
 
+    }
   }
-
 }
 
