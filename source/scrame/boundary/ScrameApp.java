@@ -55,7 +55,7 @@ public class ScrameApp {
 
       switch (choice) {
         case 0:
-          System.out.println("Exiting Scrame... \n Goodbye!");
+          System.out.println("Exiting SCRAME application... Goodbye!");
           flagWhile = false;
           break;
         case 1:
