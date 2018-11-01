@@ -14,6 +14,7 @@ import scrame.exception.LectureFullException;
 import scrame.helper.CourseType;
 
 public class Course implements Serializable {
+  private static final long serialVersionUID = 2L;
   public static final int WEIGHT = 0;
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;
@@ -211,7 +212,7 @@ public class Course implements Serializable {
     if (courseType != CourseType.LEC) {
       System.out.println("here");
       for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        if(!entry.getKey().equals(CourseType.LEC)){
+        if(!entry.getKey().equals("_LEC")){
           System.out.println(entry.getKey() + ": " + entry.getValue());
         }
       }

@@ -23,6 +23,8 @@ import scrame.entity.Record;
 import scrame.entity.Student;
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
+import scrame.exception.LectureFullException;
+import scrame.helper.CourseType;
 import scrame.manager.CourseManager;
 import scrame.manager.StudentManager;
 
@@ -45,29 +47,33 @@ public final class RecordManager {
     System.out.print("Please input Course Name: ");
     String cn = sc.nextLine();
     Course courseFound = CourseManager.getCourse(cn);
-    // for (Record r : recordList) {
-    //   if(r.getStudent().getMatric.equals(s.toUpperCase())
-    //     && r.getCourse().getCourseName().equals(cn)
-    //   ){
-    //     Syste
-    //     return;
-    //   }
-    // }
+
     if(courseFound == null){
       System.out.println("Course is not registered, Add the course first.");
       return;
     }
-    courseFound.printAllGroups();
-    System.out.println("Which group do you want to register into? ");
-    String group = sc.next();
-
-    try {
-      courseFound.register(group);
-      System.out.println("Succesfully registered!!");
-    } catch(IllegalCourseTypeException e) {
-      e.printStackTrace();
-    } catch(GroupFullException e) {
-      e.printStackTrace();
+    
+    if(courseFound.getCourseType() == CourseType.LEC){
+      try{
+        courseFound.register();
+      } catch (IllegalCourseTypeException e){
+        e.printStackTrace();
+      } catch (LectureFullException e){
+        e.printStackTrace();
+      }
+    }
+    else{
+      courseFound.printAllGroups();
+      System.out.println("Which group do you want to register into? ");
+      String group = sc.next();
+      try {
+        courseFound.register(group);
+        System.out.println("Succesfully registered!!");
+      } catch(IllegalCourseTypeException e) {
+        e.printStackTrace();
+      } catch(GroupFullException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -122,6 +128,8 @@ public final class RecordManager {
     if (check == false) {
       System.out.println("Student is not taking that course!");
     }
+
+    sc.close();
   }
 
   public static void setExamMark() {
@@ -163,6 +171,8 @@ public final class RecordManager {
     if (check == false) {
       System.out.println("Student is not taking that course!");
     }
+
+    sc.close();
   }
 
   public static void inputToFile() {
@@ -172,7 +182,7 @@ public final class RecordManager {
       );
       out.writeObject(recordList);
       out.close();
-      System.out.printf("Serialized data is saved in" + fileName);
+      System.out.println("Serialized data is saved in" + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
