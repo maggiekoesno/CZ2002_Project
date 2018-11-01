@@ -210,7 +210,6 @@ public class Course implements Serializable {
    */
   public void printAllGroups() {
     if (courseType != CourseType.LEC) {
-      System.out.println("here");
       for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
         if(!entry.getKey().equals("_LEC")){
           System.out.println(entry.getKey() + ": " + entry.getValue());

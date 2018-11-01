@@ -37,7 +37,7 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     System.out.print("Please input matric number: ");
     String s = sc.nextLine();
-    //check apakah student sudah keregister di Hashmap , ini cukup aneh but let it be
+    
     if (!StudentManager.isStudentInList(s)) {
       System.out.println(
         "Oops, student is not registered yet! Please register first."
