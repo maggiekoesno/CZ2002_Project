@@ -246,27 +246,29 @@ public final class RecordManager {
       }
     }
     mean = sum / n;
-    std = Math.sqrt(sumSquareDiff / n);
+    
 
     System.out.println(
       "There are " + n + " students registered in this course."
     );
     System.out.println("Average : " + mean);
-    System.out.println("Standard Deviation :" + std);
+    
+    // std = Math.sqrt(sumSquareDiff / n);
+    // System.out.println("Standard Deviation :" + std);
 
-    NormalDistribution distribution = new NormalDistribution(mean, std);
+    // NormalDistribution distribution = new NormalDistribution(mean, std);
 
-    float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
-    float value;
-    float[] borderValue = new float[3];
-    int i = 0;
-    for(i = 0;i<3;i++) {
-      value = distribution.inverseCumulativeProbability(percentile[i]);
-      borderValue[i] = value*std + mean;
-    }
-    System.out.println("1st Quartile : " + borderValue[0]);
-    System.out.println("2nd Quartile : " + borderValue[1]);
-    System.out.println("3rd Quartile : " + borderValue[2]);
+    // float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
+    // float value;
+    // float[] borderValue = new float[3];
+    // int i = 0;
+    // for(i = 0;i<3;i++) {
+    //   value = distribution.inverseCumulativeProbability(percentile[i]);
+    //   borderValue[i] = value*std + mean;
+    // }
+    // System.out.println("1st Quartile : " + borderValue[0]);
+    // System.out.println("2nd Quartile : " + borderValue[1]);
+    // System.out.println("3rd Quartile : " + borderValue[2]);
 
     }
   }
