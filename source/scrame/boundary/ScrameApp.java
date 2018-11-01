@@ -69,11 +69,16 @@ public class ScrameApp {
           break;
         case 4:
           // StudentManager.addStudent();
+          StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
           StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          StudentManager.addStudent("Jason", "CSC", "ay1617 s2", "U1720121H");
+          StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+          StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
           break;
         case 5:
-          // CourseManager.addCourse();
+          //CourseManager.addCourse();
+
+          HashMap<String, Integer> tempLecVacancy = new HashMap<String, Integer>();
+          tempLecVacancy.put("_LEC", 200);
 
           HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
           tempVacancies.put("SSP1", 60);
@@ -86,7 +91,7 @@ public class ScrameApp {
           tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
           tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
-          CourseManager.addCourse("CZ2001", CourseType.LEC);
+          CourseManager.addCourse("CZ2001", CourseType.LEC, tempLecVacancy, tempWeightageList);
           CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
           CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
           break;
