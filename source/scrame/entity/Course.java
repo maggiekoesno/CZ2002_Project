@@ -14,6 +14,7 @@ import scrame.exception.LectureFullException;
 import scrame.helper.CourseType;
 
 public class Course implements Serializable {
+  private static final long serialVersionUID = 2L;
   public static final int WEIGHT = 0;
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;

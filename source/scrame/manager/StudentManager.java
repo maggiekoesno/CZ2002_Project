@@ -44,7 +44,7 @@ public final class StudentManager {
       );
       out.writeObject(studentList);
       out.close();
-      System.out.printf("Serialized data is saved in " + fileName);
+      System.out.println("Serialized data is saved in " + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
@@ -94,12 +94,14 @@ public final class StudentManager {
         System.out.println(s.toString());
       }
 
-      System.out.println("Student added successfully.");
+      System.out.println("Student named " + name + " added successfully.");
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    sc.close();
   }
 
   public static void addStudent(String name, String major, String enroll, String matric)
@@ -109,7 +111,7 @@ public final class StudentManager {
     }
 
     studentList.add(new Student(name, major, enroll, matric));
-    System.out.println("Student added successfully.");
+    System.out.println("Student named " + name + " added successfully.");
   }
 
   /**
@@ -145,6 +147,7 @@ public final class StudentManager {
     }
     if (!studentFound) {
       System.out.println("Holy guacamole, invalid matric number!");
+      sc.close();
       return;
     }
     for (Record r : recordFound) {
@@ -161,6 +164,8 @@ public final class StudentManager {
       }
       printIndividualAssessment(r);
     }
+
+    sc.close();
   }
 
   /**
@@ -171,19 +176,19 @@ public final class StudentManager {
    * proceed to print the list of the students in that group.
    */
   public static void printStudentList() {
-    System.out.print("Enter course id: ");
+    System.out.print("Enter course name: ");
 
     Scanner sc = new Scanner(System.in);
 
-    int courseId = sc.nextInt();
-    Course c = CourseManager.getCourse(courseId);
+    String courseName = sc.nextLine();
+    Course c = CourseManager.getCourse(courseName);
+
     if (c.getCourseType() == CourseType.LEC) {
       String gname = "_LEC";
       HashSet<Record> recordList = RecordManager.getRecordList();
       for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse(
-
-        ).getCourseId()) {
+        if (r.getGroupName().equals(gname) &&
+            c.getCourseId() == r.getCourse().getCourseId()) {
           System.out.println(r.getStudent().getName());
         }
       }
@@ -230,11 +235,9 @@ public final class StudentManager {
 
       if (info[PARENT].equals(check)) {
         if (info[HAS_CHILD].equals("true")) {
-          String w = info[WEIGHT];
           System.out.println(component + ", weightage: " + info[WEIGHT]);
           printIndividualAssessment(r, component);
         } else {
-          String w = info[WEIGHT];
           System.out.println(component + ", weightage: " + info[WEIGHT]);
         }
       }
