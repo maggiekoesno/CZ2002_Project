@@ -186,12 +186,15 @@ public final class StudentManager {
     if (c.getCourseType() == CourseType.LEC) {
       String gname = "_LEC";
       HashSet<Record> recordList = RecordManager.getRecordList();
+      int counterStudentList=0;
       for (Record r : recordList) {
         if (r.getGroupName().equals(gname) &&
             c.getCourseId() == r.getCourse().getCourseId()) {
           System.out.println(r.getStudent().getName());
+          counterStudentList++;
         }
       }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
       HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
@@ -202,13 +205,14 @@ public final class StudentManager {
 
       String gname = sc.nextLine();
       HashSet<Record> recordList = RecordManager.getRecordList();
+      int counterStudentList=0;
       for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse(
-
-        ).getCourseId()) {
+        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse().getCourseId()) {
           System.out.println(r.getStudent().getName());
+          counterStudentList++;
         }
       }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
     }
   }
 
