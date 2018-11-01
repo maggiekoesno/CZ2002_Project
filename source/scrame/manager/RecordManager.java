@@ -201,78 +201,80 @@ public final class RecordManager {
     return recordList;
   }
 
-//   public static void printCourseStatistics() {
-//     Scanner sc = new Scanner(System.in);
-//     int n = 0;
-//     float sum = 0;
-//     float mean = 0;
-//     float std = 0;
-//     float sumSquareDiff = 0;
-//     int courseId;
+  public static void printCourseStatistics() {
+    Scanner sc = new Scanner(System.in);
+    int n = 0;
+    float sum = 0;
+    float mean = 0;
+    float std = 0;
+    float sumSquareDiff = 0;
+    int courseId;
 
-//     System.out.println("Input the course id for statistics: ");
-//     courseId = sc.nextInt();
+    System.out.println("Input the course id for statistics: ");
+    courseId = sc.nextInt();
 
-//     while (!CourseManager.isCourseInList(courseId)) {
-//       System.out.print("The course is not registered. Please try again");
-//       courseId = sc.nextInt();
-//     }
+    while (!CourseManager.isCourseInList(courseId)) {
+      System.out.print("The course is not registered. Please try again");
+      courseId = sc.nextInt();
+    }
 
-//     int markCount = 0;
-//     Course courseTemp = new Course();
-//     for(Record record : recordList) {
-//       if(record.getCourse().getCourseId() == courseId) {
-//         courseTemp = record.getCourse();
-//         break;                            
-//       }
-//     }
+    int markCount = 0;
+    Course courseTemp = new Course();
+    for(Record record : recordList) {
+      if(record.getCourse().getCourseId() == courseId) {
+        courseTemp = record.getCourse();
+        break;                            
+      }
+    }
 
-//     markCount = courseTemp.getWeightage().size();
+    markCount = courseTemp.getWeightage().size();
     
-//     for (Record record: recordList) {
-//       if(record.getCourse().getCourseId() == courseId) {
-//         marks = record.getMark();
-//         if(mark.size() < markCount){
-//           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-//           System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
-//           return;
-//         }
+    for (Record record: recordList) {
+      if(record.getCourse().getCourseId() == courseId) {
+        marks = record.getMark();
+        if(mark.size() < markCount){
+          System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
+          System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
+          return;
+        }
         
-//     }
+    }
 
-//     for (Record record : recordList) {
-//       if (record.getCourse().getCourseId() == courseId) {
-//         sum += record.calculateAverage();
-//         n++;
-//       }
-//     }
-//     for (Record record : recordList) {
-//       if (record.getCourse().getCourseId() == courseId) {
-//         sumSquareDiff += Math.pow((record.calculateAverage() - mean), 2);
-//       }
-//     }
-//     mean = sum / n;
-//     std = Math.sqrt(sumSquareDiff / n);
+    for (Record record : recordList) {
+      if (record.getCourse().getCourseId() == courseId) {
+        sum += record.calculateAverage();
+        n++;
+      }
+    }
+    for (Record record : recordList) {
+      if (record.getCourse().getCourseId() == courseId) {
+        sumSquareDiff += Math.pow((record.calculateAverage() - mean), 2);
+      }
+    }
+    mean = sum / n;
+    std = Math.sqrt(sumSquareDiff / n);
 
-//     System.out.println(
-//       "There are " + n + " students registered in this course."
-//     );
-//     System.out.println("Average : " + mean);
-//     System.out.println("Standard Deviation :" + std);
+    System.out.println(
+      "There are " + n + " students registered in this course."
+    );
+    System.out.println("Average : " + mean);
+    System.out.println("Standard Deviation :" + std);
 
-//     NormalDistribution distribution = new NormalDistribution(mean, std);
+    NormalDistribution distribution = new NormalDistribution(mean, std);
 
-//     float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
-//     float value;
-//     float[] borderValue = new float[3];
-//     int i = 0;
-//     for(i = 0;i<3;i++) {
-//       value = distribution.inverseCumulativeProbability(percentile[i]);
-//       borderValue[i] = value*std + mean;
+    float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
+    float value;
+    float[] borderValue = new float[3];
+    int i = 0;
+    for(i = 0;i<3;i++) {
+      value = distribution.inverseCumulativeProbability(percentile[i]);
+      borderValue[i] = value*std + mean;
+    }
+    System.out.println("1st Quartile : " + borderValue[0]);
+    System.out.println("2nd Quartile : " + borderValue[1]);
+    System.out.println("3rd Quartile : " + borderValue[2]);
 
-//     }
-
-//   }
+  }
 
 }
 
