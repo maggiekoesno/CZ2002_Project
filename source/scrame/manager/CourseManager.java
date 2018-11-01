@@ -61,7 +61,7 @@ public final class CourseManager {
       );
       out.writeObject(courseList);
       out.close();
-      System.out.printf("Serialized data is saved in " + fileName);
+      System.out.println("Serialized data is saved in " + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
@@ -187,19 +187,19 @@ public final class CourseManager {
     }
     Course added = new Course(name, type, tempVacancies, tempWeightageList);
     courseList.add(added);
-    System.out.println("Course added succesfully!");
+    System.out.println("Course " + name + " added succesfully!");
   }
 
   public static void addCourse(String name, CourseType courseType) {
     courseList.add(new Course(name, courseType));
-    System.out.println("Course added succesfully!");
+    System.out.println("Course " + name + " added succesfully!");
   }
 
   public static void addCourse(String name, CourseType courseType,
       HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
       
     courseList.add(new Course(name, courseType, tempVacancies, tempWeightageList));
-    System.out.println("Course added succesfully!");
+    System.out.println("Course " + name + " added succesfully!");
   }
 
   /**
@@ -249,10 +249,12 @@ public final class CourseManager {
     Scanner sc = new Scanner(System.in);
     System.out.println("Please input the course id");
     int courseId = sc.nextInt();
+    
     while (courseId < 0) {
       System.out.print("Invalid input, please try again : ");
       courseId = sc.nextInt();
     }
+
     System.out.println();
     System.out.println("++++++++++++++++++++++++++++++");
     System.out.println("++++++ Course Vacancies ++++++");
@@ -368,10 +370,12 @@ public final class CourseManager {
         break;
       }
       String parts[] = tmp.split(",");
-      tempWeightageList.add(parts[0], new String[]{parts[1],parts[2],parts[3]});
+      tempWeightageList.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
     }
     course.setWeightage(tempWeightageList);
     System.out.println("Weightage set successfully !");
+
+    sc.close();
   }
 }
 

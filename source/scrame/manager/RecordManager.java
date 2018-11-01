@@ -176,7 +176,7 @@ public final class RecordManager {
       );
       out.writeObject(recordList);
       out.close();
-      System.out.printf("Serialized data is saved in" + fileName);
+      System.out.println("Serialized data is saved in" + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
