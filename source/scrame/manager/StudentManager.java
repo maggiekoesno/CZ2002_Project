@@ -114,7 +114,7 @@ public final class StudentManager {
     System.out.println("Student named " + name + " added successfully.");
   }
 
-  /**
+  /** 
    * Check if a student is registered.
    * 
    * @param matric matric ID of the student
