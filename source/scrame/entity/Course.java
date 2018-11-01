@@ -1,9 +1,12 @@
 package scrame.entity;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+
+import java.lang.IllegalArgumentException;
 
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
@@ -139,6 +142,7 @@ public class Course implements Serializable {
       throw new GroupFullException(courseName, groupName);
     }
     tutLabGroups.put(groupName, vacancy - 1);
+    tutLabGroups.put("_LEC", lectureVacancy -1);
     lectureVacancy--;
 
     System.out.println(
@@ -205,8 +209,11 @@ public class Course implements Serializable {
    */
   public void printAllGroups() {
     if (courseType != CourseType.LEC) {
+      System.out.println("here");
       for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        System.out.println(entry.getKey() + ": " + entry.getValue());
+        if(!entry.getKey().equals(CourseType.LEC)){
+          System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
       }
     }
   }

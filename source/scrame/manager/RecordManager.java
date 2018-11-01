@@ -45,6 +45,14 @@ public final class RecordManager {
     System.out.print("Please input Course Name: ");
     String cn = sc.nextLine();
     Course courseFound = CourseManager.getCourse(cn);
+    // for (Record r : recordList) {
+    //   if(r.getStudent().getMatric.equals(s.toUpperCase())
+    //     && r.getCourse().getCourseName().equals(cn)
+    //   ){
+    //     Syste
+    //     return;
+    //   }
+    // }
     if(courseFound == null){
       System.out.println("Course is not registered, Add the course first.");
       return;
@@ -74,7 +82,7 @@ public final class RecordManager {
 
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
-    while (StudentManager.isStudentInList(matric) == false) {
+    while (!StudentManager.isStudentInList(matric)) {
       System.out.print("Matriculation ID doesn't exist! Try again: ");
       matric = sc.nextLine();
     }
@@ -90,13 +98,14 @@ public final class RecordManager {
       if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
         check = true;
         mark = r.getMark();
-        if(mark == null)
+        if (mark == null) {
           mark = new HashMap<String, Float>();
+        }
         weightage = r.getCourse().getWeightage();
         for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
           System.out.println(entry.getKey() + " = " + entry.getValue());
           
-          if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))){
+          if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
             System.out.print("Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) ");
             ans = sc.nextInt();
             if (ans == 1) {
@@ -110,8 +119,9 @@ public final class RecordManager {
         break;
       }
     }
-    if (check == false)
-    System.out.println("Student is not taking that course!");
+    if (check == false) {
+      System.out.println("Student is not taking that course!");
+    }
   }
 
   public static void setExamMark() {
@@ -140,8 +150,9 @@ public final class RecordManager {
       if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
         check = true;
         mark = r.getMark();
-        if(mark == null)
+        if (mark == null) {
           mark = new HashMap<String, Float>();
+        }
         System.out.print("Enter mark for exam: ");
         ans = sc.nextFloat();
         mark.put("Exam", ans);
@@ -149,8 +160,9 @@ public final class RecordManager {
         break;
       }
     }
-    if (check == false)
-    System.out.println("Student is not taking that course!");
+    if (check == false) {
+      System.out.println("Student is not taking that course!");
+    }
   }
 
   public static void inputToFile() {
@@ -189,50 +201,78 @@ public final class RecordManager {
     return recordList;
   }
 
-  // TODO public static void printCourseStatistics() {
-    // Scanner sc = new Scanner(System.in);
-    // int n = 0;
-    // float sum = 0;
-    // float mean = 0;
-    // float std = 0;
-    // float sumSquareDiff = 0;
-    // int courseId;
+//   public static void printCourseStatistics() {
+//     Scanner sc = new Scanner(System.in);
+//     int n = 0;
+//     float sum = 0;
+//     float mean = 0;
+//     float std = 0;
+//     float sumSquareDiff = 0;
+//     int courseId;
 
-    // System.out.println("Input the course id for statistics: ");
-    // courseId = sc.nextInt();
+//     System.out.println("Input the course id for statistics: ");
+//     courseId = sc.nextInt();
 
-    // while (!CourseManager.isCourseInList(courseId)) {
-    //   System.out.print("The course is not registered. Please try again");
-    //   courseId = sc.nextInt();
-    // }
-    // for (Record record : recordList) {
-    //   if (record.getCourse().getCourseId() == courseId) {
-    //     sum += record.calculateAverage();
-    //     n++;
-    //   }
-    // }
-    // for (Record record : recordList) {
-    //   if (record.getCourse().getCourseId() == courseId) {
-    //     sumSquareDiff += Math.pow((record.calculateAverage() - mean), 2);
-    //   }
-    // }
-    // mean = sum / n;
-    // std = Math.sqrt(sumSquareDiff / n);
+//     while (!CourseManager.isCourseInList(courseId)) {
+//       System.out.print("The course is not registered. Please try again");
+//       courseId = sc.nextInt();
+//     }
 
-    // System.out.println(
-    //   "There are " + n + " students registered in this course."
-    // );
-    // System.out.println("Average : " + mean);
-    // System.out.println("Standard Deviation :" + std);
+//     int markCount = 0;
+//     Course courseTemp = new Course();
+//     for(Record record : recordList) {
+//       if(record.getCourse().getCourseId() == courseId) {
+//         courseTemp = record.getCourse();
+//         break;                            
+//       }
+//     }
 
-    // NormalDistribution distribution = new NormalDistribution(mean, std);
+//     markCount = courseTemp.getWeightage().size();
+    
+//     for (Record record: recordList) {
+//       if(record.getCourse().getCourseId() == courseId) {
+//         marks = record.getMark();
+//         if(mark.size() < markCount){
+//           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
+//           System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
+//           return;
+//         }
+        
+//     }
 
-    // float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
-    // float value = distribution.inverseCumulativeProbability(
-    //   riskProbabilityLevel
-    // );
-    //TODO std * value + mean
-  // }
+//     for (Record record : recordList) {
+//       if (record.getCourse().getCourseId() == courseId) {
+//         sum += record.calculateAverage();
+//         n++;
+//       }
+//     }
+//     for (Record record : recordList) {
+//       if (record.getCourse().getCourseId() == courseId) {
+//         sumSquareDiff += Math.pow((record.calculateAverage() - mean), 2);
+//       }
+//     }
+//     mean = sum / n;
+//     std = Math.sqrt(sumSquareDiff / n);
+
+//     System.out.println(
+//       "There are " + n + " students registered in this course."
+//     );
+//     System.out.println("Average : " + mean);
+//     System.out.println("Standard Deviation :" + std);
+
+//     NormalDistribution distribution = new NormalDistribution(mean, std);
+
+//     float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
+//     float value;
+//     float[] borderValue = new float[3];
+//     int i = 0;
+//     for(i = 0;i<3;i++) {
+//       value = distribution.inverseCumulativeProbability(percentile[i]);
+//       borderValue[i] = value*std + mean;
+
+//     }
+
+//   }
 
 }
 

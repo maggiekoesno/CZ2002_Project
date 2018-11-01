@@ -38,7 +38,7 @@ public final class CourseManager {
     return courseFound;
   }
 
-  public static Course getCourse(String courseName){
+  public static Course getCourse(String courseName) {
     Course courseFound = null;
     for (Course c : CourseManager.courseList) {
       if(c.getCourseName().equals(courseName)) {
@@ -97,6 +97,9 @@ public final class CourseManager {
   public static void addCourse() {
     Scanner sc = new Scanner(System.in);
 
+    HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+
     System.out.print("Enter new course name: ");
     String name = sc.nextLine();
 
@@ -119,9 +122,7 @@ public final class CourseManager {
       );
       totalVacancy = sc.nextInt();
     }
-
-    HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+    tempVacancies.put("_LEC",totalVacancy);
 
     if (type != CourseType.LEC) {
       int groupVacancy;
@@ -139,12 +140,12 @@ public final class CourseManager {
         if (groupVacancy <= 0) {
           System.out.println("Vacancy cannot be less than or equal to zero.");
           continue;
-          // TODO
-        
         }
         tempVacancies.put(groupName, groupVacancy);
       }
+      
     }
+
     System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
     System.out.println(
       "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
@@ -168,23 +169,41 @@ public final class CourseManager {
     System.out.println("                    /           \\          ");
     System.out.println("            70% Assignment       30% Attendance   ");
 
+    String tmp;
     while (true) {
       System.out.println("Enter the weightage, -1 to exit:");
-      String tmp = sc.next();
+      tmp = sc.next();
       if (tmp.equals("-1")) {
         break;
       }
       String parts[] = tmp.split(",");
-      // tempWeightageList.add(parts[0],{parts[1],parts[2],parts[3]});
+      if(parts[3].equals("\"\"")){
+        parts[3] = "";
+      }
+      
+      // System.out.println(parts[0]);      
+      // System.out.println(parts[1] + " " + parts[2] + " " + parts[3]);
+      tempWeightageList.put(parts[0], new String[]{parts[1], parts[2], parts[3]});
     }
-    Course added = new Course(name, type);
+    Course added = new Course(name, type, tempVacancies, tempWeightageList);
     courseList.add(added);
+    System.out.println("Course added succesfully!");
+  }
+
+  public static void addCourse(String name, CourseType courseType) {
+    courseList.add(new Course(name, courseType));
+    System.out.println("Course added succesfully!");
+  }
+
+  public static void addCourse(String name, CourseType courseType,
+      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
+      
+    courseList.add(new Course(name, courseType, tempVacancies, tempWeightageList));
     System.out.println("Course added succesfully!");
   }
 
   /**
    * Helper function to convert course type to enum.
-   * 
    */
   private static CourseType courseTypeToEnum(String tempCourseType)
       throws IllegalCourseTypeException {
@@ -264,6 +283,8 @@ public final class CourseManager {
             System.out.println("++ Group Name +++++ Vacancy ++");
             System.out.println("++++++++++++++++++++++++++++++");
             for (Map.Entry<String, Integer> entry : groups.entrySet()) {
+              if(entry.getKey().equals("_LEC"))
+                continue;
               System.out.print("++    " + entry.getKey() + "     +++++    ");
               System.out.printf("%2d", entry.getValue());
               System.out.println("   ++");
@@ -316,6 +337,7 @@ public final class CourseManager {
     //     }
     //     tempVacancies.put(groupName, groupVacancy);
     //   }
+
     System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
     System.out.println(
       "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"

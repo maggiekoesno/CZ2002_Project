@@ -13,6 +13,8 @@ import java.io.EOFException;
 import java.io.Serializable;
 import java.nio.file.Files;
 
+import java.lang.IllegalArgumentException;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,11 +95,21 @@ public final class StudentManager {
       }
 
       System.out.println("Student added successfully.");
-    } catch(IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  public static void addStudent(String name, String major, String enroll, String matric)
+      throws IllegalArgumentException {
+    if (isStudentInList(matric)) {
+      throw new IllegalArgumentException("Cannot add student with existing matric number.");
+    }
+
+    studentList.add(new Student(name, major, enroll, matric));
+    System.out.println("Student added successfully.");
   }
 
   /**
