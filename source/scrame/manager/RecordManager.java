@@ -15,8 +15,7 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-// import org.apache.commons.math3;
+import java.util.Arrays;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
@@ -215,11 +214,10 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     int n = 0;
     float sum = 0;
-    float mean = 0;
-    float std = 0;
-    float sumSquareDiff = 0;
+    double mean = 0;
+    double std = 0;
+    double sumSquareDiff = 0;
     int courseId;
-
     System.out.println("Input the course id for statistics: ");
     courseId = sc.nextInt();
 
@@ -241,7 +239,6 @@ public final class RecordManager {
           System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
           return;
         }
-        
     }
 
     for (Record r : recordList) {
@@ -257,30 +254,36 @@ public final class RecordManager {
     }
     mean = sum / n;
     
+    float[] studentScore = new float[n];
 
     System.out.println(
       "There are " + n + " students registered in this course."
     );
     System.out.println("Average : " + mean);
     
-    // std = Math.sqrt(sumSquareDiff / n);
-    // System.out.println("Standard Deviation :" + std);
+    std = Math.sqrt(sumSquareDiff / n);
+    System.out.println("Standard Deviation :" + std);
 
-    // NormalDistribution distribution = new NormalDistribution(mean, std);
-
-    // float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
-    // float value;
-    // float[] borderValue = new float[3];
-    // int i = 0;
-    // for(i = 0;i<3;i++) {
-    //   value = distribution.inverseCumulativeProbability(percentile[i]);
-    //   borderValue[i] = value*std + mean;
-    // }
-    // System.out.println("1st Quartile : " + borderValue[0]);
-    // System.out.println("2nd Quartile : " + borderValue[1]);
-    // System.out.println("3rd Quartile : " + borderValue[2]);
-
+    int i = 0;
+    for (Record record2: recordList) {
+      if(record2.getCourse().getCourseId() == courseId) {
+        studentScore[i] = record2.calculateAverage();
+        i++;
     }
+    
+    Arrays.sort(studentScore);
+    int[] borderValueIndex = new int[3];
+    borderValueIndex[0] = (int)1/4*(n+1);
+    borderValueIndex[1] = (int)2/4*(n+1);
+    borderValueIndex[2] = (int)3/4*(n+1);
+    System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
+    System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
+    System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
+  
   }
 }
+
+}
+}
+
 
