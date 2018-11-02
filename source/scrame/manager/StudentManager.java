@@ -130,6 +130,16 @@ public final class StudentManager {
     return false;
   }
 
+  public static Student findStudent(String matric){
+    Student studentFound = null;
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        studentFound = s;
+      }
+    }
+    return studentFound;
+  }
+
   public static void printTranscript() {
     Scanner sc = new Scanner(System.in);
 
@@ -169,7 +179,7 @@ public final class StudentManager {
   }
 
   /**
-   * Print student list for a given course id.
+   * Print student list for a given course name.
    * 
    * If the course is of type LEC, then go straight to print the list of all the students.
    * Else if the course is of type TUT or LAB, then ask the user for the group name, then
@@ -177,19 +187,17 @@ public final class StudentManager {
    */
   public static void printStudentList() {
     System.out.print("Enter course name: ");
-
     Scanner sc = new Scanner(System.in);
-
     String courseName = sc.nextLine();
     Course c = CourseManager.getCourse(courseName);
 
     if (c.getCourseType() == CourseType.LEC) {
-      String gname = "_LEC";
       HashSet<Record> recordList = RecordManager.getRecordList();
       int counterStudentList=0;
       for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) &&
-            c.getCourseId() == r.getCourse().getCourseId()) {
+        //if (r.getGroupName().equals(gname) &&
+            //c.getCourseId() == r.getCourse().getCourseId()) {
+        if (c.getCourseId() == r.getCourse().getCourseId()){
           System.out.println(r.getStudent().getName());
           counterStudentList++;
         }
@@ -197,11 +205,9 @@ public final class StudentManager {
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
-      HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
-      for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        System.out.println(entry.getKey());
-      }
-      System.out.print("Enter group name: ");
+      c.printAllGroups();
+      //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
+      System.out.print("\nEnter group name: ");
 
       String gname = sc.nextLine();
       HashSet<Record> recordList = RecordManager.getRecordList();
@@ -246,19 +252,5 @@ public final class StudentManager {
         }
       }
     }
-  }
-
-  public static Student getStudent(String matric) {
-    if (!isStudentInList(matric)) {
-      throw new IllegalArgumentException("Invalid student matric!");
-    }
-
-    for (Student s : studentList) {
-      if (s.getMatric().equals(matric)) {
-        return s;
-      }
-    }
-
-    return null;
   }
 }

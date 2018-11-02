@@ -36,12 +36,14 @@ public final class RecordManager {
 
   public static void registerStudentCourse() {
     Scanner sc = new Scanner(System.in);
+    String groupName;
     
     System.out.print("Please input matric number: ");
     String matric = sc.nextLine();
-
-    if (!StudentManager.isStudentInList(matric)) {
-      System.out.println("Oops, student is not registered to the system yet!");
+    Student studentFound = StudentManager.findStudent(matric);
+    
+    if (studentFound == null) {
+      System.out.println("Oops, student is not registered yet! Please register first.");
       return;
     }
 
@@ -64,37 +66,32 @@ public final class RecordManager {
     //   }
     // }
     
-    if (courseFound.getCourseType() != CourseType.LEC) {
+    if (courseFound.getCourseType() == CourseType.LEC) {
+      groupName = "_LEC";
       try {
-        courseFound.printAllGroups();  
-      } catch (IllegalCourseTypeException e) {
-        System.out.println(e.getMessage());
-      }
-
-      System.out.print("Which group do you want to register into? ");
-      String groupName = sc.nextLine();
-  
-      try {
-        courseFound.register(groupName);
-        String studentName = StudentManager.getStudent(matric).getName();
-        System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
+        courseFound.register();
       } catch (IllegalCourseTypeException e) {
         e.printStackTrace();
       } catch (GroupFullException e) {
         e.printStackTrace();
       }
-
-    } else {
+    }
+    else{
+      courseFound.printAllGroups();
+      System.out.println("Which group do you want to register into? ");
+      groupName = sc.nextLine();
       try {
-        courseFound.register();
-        String studentName = StudentManager.getStudent(matric).getName();
-        System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
-      } catch (IllegalCourseTypeException e) {
+        courseFound.register(groupName);
+        System.out.println("Succesfully registered!!");
+      } catch(IllegalCourseTypeException e) {
         e.printStackTrace();
       } catch (LectureFullException e) {
         e.printStackTrace();
       }
     }
+    HashMap<String, Float> mark = null;
+    Record r = new Record(studentFound, courseFound, groupName, mark);
+    recordList.add(r);
   }
 
   public static void registerStudentCourse(String matric, String courseName) {
