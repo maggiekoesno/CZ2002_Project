@@ -248,5 +248,17 @@ public final class StudentManager {
     }
   }
 
-}
+  public static Student getStudent(String matric) {
+    if (!isStudentInList(matric)) {
+      throw new IllegalArgumentException("Invalid student matric!");
+    }
 
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        return s;
+      }
+    }
+
+    return null;
+  }
+}

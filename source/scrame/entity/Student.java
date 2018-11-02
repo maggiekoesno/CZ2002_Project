@@ -65,7 +65,8 @@ public class Student implements Serializable {
   }
 
   /**
-   * Getter method for enrolled time
+   * Getter method for enrolled time.
+   * 
    * @return student enrollment time
    */
   public String getEnroll() {
@@ -73,12 +74,11 @@ public class Student implements Serializable {
   }
 
   /**
-   * Getter method for student matric
+   * Getter method for student matric.
+   * 
    * @return student matric
    */
   public String getMatric() {
     return this.matric;
   }
-
 }
-

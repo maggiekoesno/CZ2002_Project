@@ -21,12 +21,13 @@ import java.util.Map;
 import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
-import scrame.exception.GroupFullException;
-import scrame.exception.IllegalCourseTypeException;
-import scrame.exception.LectureFullException;
-import scrame.helper.CourseType;
+
+import scrame.exception.*;
+
 import scrame.manager.CourseManager;
 import scrame.manager.StudentManager;
+
+import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
@@ -35,45 +36,115 @@ public final class RecordManager {
 
   public static void registerStudentCourse() {
     Scanner sc = new Scanner(System.in);
-    System.out.print("Please input matric number: ");
-    String s = sc.nextLine();
-    //check apakah student sudah keregister di Hashmap , ini cukup aneh but let it be
-    if (!StudentManager.isStudentInList(s)) {
-      System.out.println(
-        "Oops, student is not registered yet! Please register first."
-      );
-      return;
-    }
-    System.out.print("Please input Course Name: ");
-    String cn = sc.nextLine();
-    Course courseFound = CourseManager.getCourse(cn);
-
-    if(courseFound == null){
-      System.out.println("Course is not registered, Add the course first.");
-      return;
-    }
     
-    if(courseFound.getCourseType() == CourseType.LEC){
-      try{
-        courseFound.register();
-      } catch (IllegalCourseTypeException e){
+    System.out.print("Please input matric number: ");
+    String matric = sc.nextLine();
+
+    if (!StudentManager.isStudentInList(matric)) {
+      System.out.println("Oops, student is not registered yet!");
+      return;
+    }
+
+    System.out.print("Please input course name: ");
+    String courseName = sc.nextLine();
+    
+    if (!CourseManager.isCourseInList(courseName)) {
+      System.out.println("Oops, course is not registered yet.");
+      return;
+    }
+
+    Course courseFound = CourseManager.getCourse(courseName);
+
+    // for (Record r : recordList) {
+    //   if(r.getStudent().getMatric.equals(s.toUpperCase())
+    //     && r.getCourse().getCourseName().equals(cn)
+    //   ){
+    //     Syste
+    //     return;
+    //   }
+    // }
+    
+    if (courseFound.getCourseType() != CourseType.LEC) {
+      try {
+        courseFound.printAllGroups();  
+      } catch (IllegalCourseTypeException e) {
+        System.out.println(e.getMessage());
+      }
+
+      System.out.print("Which group do you want to register into? ");
+      String groupName = sc.nextLine();
+  
+      try {
+        courseFound.register(groupName);
+        String studentName = StudentManager.getStudent(matric).getName();
+        System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
+      } catch (IllegalCourseTypeException e) {
         e.printStackTrace();
-      } catch (LectureFullException e){
+      } catch (GroupFullException e) {
+        e.printStackTrace();
+      }
+
+    } else {
+      try {
+        System.out.println(courseFound.checkLectureVacancy());
+        courseFound.register();
+        String studentName = StudentManager.getStudent(matric).getName();
+        System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
+      } catch (IllegalCourseTypeException e) {
+        e.printStackTrace();
+      } catch (LectureFullException e) {
         e.printStackTrace();
       }
     }
-    else{
+  }
+
+  public static void registerStudentCourse(String matric, String courseName) {
+    if (!StudentManager.isStudentInList(matric)) {
+      System.out.println("Oops, student is not registered yet!");
+      return;
+    }
+
+    if (!CourseManager.isCourseInList(courseName)) {
+      System.out.println("Oops, course is not registered yet.");
+      return;
+    }
+
+    Course courseFound = CourseManager.getCourse(courseName);
+    
+    try {
+      System.out.println(courseFound.checkLectureVacancy());
+      courseFound.register();
+      String studentName = StudentManager.getStudent(matric).getName();
+      System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
+    } catch (IllegalCourseTypeException e) {
+      e.printStackTrace();
+    } catch (LectureFullException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void registerStudentCourse(String matric, String courseName, String groupName) {
+    if (!StudentManager.isStudentInList(matric)) {
+      System.out.println("Oops, student is not registered yet!");
+      return;
+    }
+
+    if (!CourseManager.isCourseInList(courseName)) {
+      System.out.println("Oops, course is not registered yet.");
+      return;
+    }
+
+    Course courseFound = CourseManager.getCourse(courseName);
+
+    try {
       courseFound.printAllGroups();
-      System.out.println("Which group do you want to register into? ");
-      String group = sc.next();
-      try {
-        courseFound.register(group);
-        System.out.println("Succesfully registered!!");
-      } catch(IllegalCourseTypeException e) {
-        e.printStackTrace();
-      } catch(GroupFullException e) {
-        e.printStackTrace();
-      }
+      courseFound.register(groupName);
+      String studentName = StudentManager.getStudent(matric).getName();
+      System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
+    } catch (IllegalCourseTypeException e) {
+      System.out.println(e.getMessage());
+    } catch (GroupFullException e) {
+      e.printStackTrace();
     }
   }
 
@@ -81,7 +152,6 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
     String matric;
-    int id;
     Map<String, Float> mark;
     Map<String, String[]> weightage;
     float ans;
@@ -93,15 +163,15 @@ public final class RecordManager {
       matric = sc.nextLine();
     }
 
-    System.out.print("Enter course ID: ");
-    id = sc.nextInt();
-    while (CourseManager.getCourse(id) == null) {
+    System.out.print("Enter course name: ");
+    String courseName = sc.nextLine();
+    while (CourseManager.isCourseInList(courseName)) {
       System.out.print("Course doesn't exist! Try again: ");
-      id = sc.nextInt();
+      courseName = sc.nextLine();
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
+      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName() == courseName) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -136,26 +206,26 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
     String matric;
-    int id;
     Map<String, Float> mark;
     float ans;
 
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
-    while (StudentManager.isStudentInList(matric) == false) {
+    while (!StudentManager.isStudentInList(matric)) {
       System.out.print("Matriculation ID doesn't exist! Try again: ");
       matric = sc.nextLine();
     }
 
-    System.out.print("Enter course ID: ");
-    id = sc.nextInt();
-    while (CourseManager.getCourse(id) == null) {
+    System.out.print("Enter course name: ");
+    String courseName = sc.nextLine();
+    while (CourseManager.isCourseInList(courseName)) {
       System.out.print("Course doesn't exist! Try again: ");
-      id = sc.nextInt();
+      courseName = sc.nextLine();
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
+      if (r.getStudent().getMatric().equals(matric) &&
+          r.getCourse().getCourseName() == courseName) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
