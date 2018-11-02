@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.IllegalArgumentException;
 
 public class Student implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 6954261678710602810L;
   private String name;
   private String major;
   private String enroll;

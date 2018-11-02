@@ -14,7 +14,7 @@ import scrame.exception.LectureFullException;
 import scrame.helper.CourseType;
 
 public class Course implements Serializable {
-  private static final long serialVersionUID = 2L;
+  private static final long serialVersionUID = 6720965137323151182L;
   public static final int WEIGHT = 0;
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;
@@ -206,11 +206,15 @@ public class Course implements Serializable {
 
     String group;
     int vacancy;
-
+    String groupName;
+    
     for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-      group = entry.getKey();
+      groupName = entry.getKey();
+      if (groupName.equals("_LEC")) {
+        continue;
+      }
       vacancy = entry.getValue();
-      System.out.println(group + ": " + vacancy);
+      System.out.println(groupName + ": " + vacancy);
     }
   }
 

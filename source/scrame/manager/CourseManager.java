@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 
 import java.io.IOException;
 import java.io.EOFException;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Formatter;
 
 import scrame.entity.Course;
 import scrame.exception.IllegalCourseTypeException;
@@ -253,51 +255,39 @@ public final class CourseManager {
       courseName = sc.nextLine();
     }
 
+    Course courseFound = getCourse(courseName);
+    CourseType courseType = courseFound.getCourseType();
+
     System.out.println();
     System.out.println("++++++++++++++++++++++++++++++");
     System.out.println("++++++ Course Vacancies ++++++");
     System.out.println("++++++++++++++++++++++++++++++");
 
-    for (Course c : courseList) {
-      int vacancy;
-
-      if (c.getCourseName().equals(courseName)) {
-        CourseType type = c.getCourseType();
-
-        switch (type) {
-          case LEC:
-            try {
-              int lectureVacancy = c.checkLectureVacancy();
-              System.out.println("++ Course Name ++++ Vacancy ++");
-              System.out.println("++++++++++++++++++++++++++++++");
-              System.out.print("++   " + courseName + "    ++++   ");
-              System.out.printf("%3d" + lectureVacancy);
-              System.out.println("   ++");
-              System.out.println("++++++++++++++++++++++++++++++");
-            } catch(IllegalCourseTypeException e) {
-              System.out.println(e.getMessage());
-            }
-            break;
-          case TUT:
-          case LAB:
-            HashMap<String, Integer> groups = c.getTutLabGroups();
-            System.out.println("++ Group Name +++++ Vacancy ++");
-            System.out.println("++++++++++++++++++++++++++++++");
-            
-            for (Map.Entry<String, Integer> entry : groups.entrySet()) {
-              if (entry.getKey().equals("_LEC")) {
-                continue;
-              }
-
-              System.out.print("++    " + entry.getKey() + "     +++++    ");
-              System.out.printf("%2d", entry.getValue());
-              System.out.println("   ++");
-            }
-            System.out.println("++++++++++++++++++++++++++++++");
-            break;
-        }
+    switch (courseType) {
+      case LEC:
+        int lectureVacancy = courseFound.checkLectureVacancy();
+        System.out.println("++ Course Name ++++ Vacancy ++");
+        System.out.println("++++++++++++++++++++++++++++++");
+        System.out.print("++   " + courseName + "    ++++   ");
+        System.out.printf("%3d", lectureVacancy);
+        System.out.println("   ++");
+        System.out.println("++++++++++++++++++++++++++++++");
         break;
-      }
+      case TUT:
+      case LAB:
+        HashMap<String, Integer> groups = courseFound.getTutLabGroups();
+        System.out.println("++ Group Name +++++ Vacancy ++");
+        System.out.println("++++++++++++++++++++++++++++++");
+        for (Map.Entry<String, Integer> entry : groups.entrySet()) {
+          if (entry.getKey().equals("_LEC")) {
+            continue;
+          }
+          System.out.print("++   " + entry.getKey() + "     +++++    ");
+          System.out.printf("%2d", entry.getValue());
+          System.out.println("   ++");
+        }
+        System.out.println("++++++++++++++++++++++++++++++");
+        break;
     }
   }
 

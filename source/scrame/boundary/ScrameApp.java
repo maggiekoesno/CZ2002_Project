@@ -22,11 +22,12 @@ public class ScrameApp {
     RecordManager.loadFromFile();
 
     Scanner sc = new Scanner(System.in);
-    int choice;
-    String username;
+    int userChoice;
+    int functionChoice;
+    String matric;
     boolean flagWhile = true;
 
-    choice = 1; // admin
+    userChoice = 1; // admin
 
     // do {
     //   System.out.println("Welcome to the SCRAME application!");
@@ -36,24 +37,21 @@ public class ScrameApp {
     //   choice = sc.nextInt();
     // } while (choice != 1 && choice != 2);
 
-    while (flagWhile) {
-      if (choice == 2) {
-        System.out.print("Enter username: ");
-        username = sc.nextLine().toLowerCase();
-
-        if (!StudentManager.isStudentInList(username)) {
-          System.out.println(
-            "Oops, student is not in the list, please try again."                                     
-          );
-          flagWhile = false;
-        } else {
-          choice = StudentForm.display();
-        }
-      } else {
-        choice = AdminForm.display();
+    if (userChoice == 2){
+      System.out.print("Enter matriculation number: ");
+      matric = sc.nextLine();
+      if (!StudentManager.isStudentInList(matric)){
+        System.out.println("Oh no! This matriculation number is not registered yet :(");
       }
+    }
 
-      switch (choice) {
+    while (flagWhile) {
+      if (userChoice == 2)
+        functionChoice = StudentForm.display();
+      else 
+        functionChoice = AdminForm.display();
+
+      switch (functionChoice) {
         case 0:
           System.out.println("Exiting SCRAME application... Goodbye!");
           flagWhile = false;
@@ -75,12 +73,14 @@ public class ScrameApp {
 
         case 4:
           // StudentManager.addStudent();
+          StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
           StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          StudentManager.addStudent("Jason", "CSC", "AY1617 S2", "U1720042J");
+          StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+          StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
           break;
 
         case 5:
-          // CourseManager.addCourse();
+          //CourseManager.addCourse();
 
           HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
           HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
