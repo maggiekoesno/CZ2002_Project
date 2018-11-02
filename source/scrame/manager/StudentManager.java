@@ -130,6 +130,16 @@ public final class StudentManager {
     return false;
   }
 
+  public static Student findStudent(String matric){
+    Student studentFound = null;
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        studentFound = s;
+      }
+    }
+    return studentFound;
+  }
+
   public static void printTranscript() {
     Scanner sc = new Scanner(System.in);
 
