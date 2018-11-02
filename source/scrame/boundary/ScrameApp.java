@@ -59,8 +59,9 @@ public class ScrameApp {
 
         case 1:
           // RecordManager.registerStudentCourse();
-          RecordManager.registerStudentCourse("U1720042J", "CZ2001");
+          RecordManager.registerStudentCourse("U1720122H", "CZ2001");
           RecordManager.registerStudentCourse("U1720121H", "CZ2002", "BCG2");
+          RecordManager.registerStudentCourse("U1720123H", "CZ2003", "SSP1");
           break;
 
         case 2:

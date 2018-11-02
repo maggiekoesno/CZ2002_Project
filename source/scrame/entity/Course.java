@@ -173,8 +173,7 @@ public class Course implements Serializable {
    * 
    * @return lecture vacancy
    */
-  public int checkLectureVacancy() throws IllegalCourseTypeException {// }
-
+  public int checkLectureVacancy() {
     return lectureVacancy;
   }
 

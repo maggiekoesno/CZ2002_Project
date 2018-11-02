@@ -41,7 +41,7 @@ public final class RecordManager {
     String matric = sc.nextLine();
 
     if (!StudentManager.isStudentInList(matric)) {
-      System.out.println("Oops, student is not registered yet!");
+      System.out.println("Oops, student is not registered to the system yet!");
       return;
     }
 
@@ -49,7 +49,7 @@ public final class RecordManager {
     String courseName = sc.nextLine();
     
     if (!CourseManager.isCourseInList(courseName)) {
-      System.out.println("Oops, course is not registered yet.");
+      System.out.println("Oops, course is not registered to the system yet.");
       return;
     }
 
@@ -86,7 +86,6 @@ public final class RecordManager {
 
     } else {
       try {
-        System.out.println(courseFound.checkLectureVacancy());
         courseFound.register();
         String studentName = StudentManager.getStudent(matric).getName();
         System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
@@ -112,7 +111,6 @@ public final class RecordManager {
     Course courseFound = CourseManager.getCourse(courseName);
     
     try {
-      System.out.println(courseFound.checkLectureVacancy());
       courseFound.register();
       String studentName = StudentManager.getStudent(matric).getName();
       System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
@@ -137,7 +135,6 @@ public final class RecordManager {
     Course courseFound = CourseManager.getCourse(courseName);
 
     try {
-      courseFound.printAllGroups();
       courseFound.register(groupName);
       String studentName = StudentManager.getStudent(matric).getName();
       System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
@@ -288,40 +285,39 @@ public final class RecordManager {
     float mean = 0;
     float std = 0;
     float sumSquareDiff = 0;
-    int courseId;
 
-    System.out.println("Input the course id for statistics: ");
-    courseId = sc.nextInt();
+    System.out.println("Input the course name for statistics: ");
+    String courseName = sc.nextLine();
 
-    while (!CourseManager.isCourseInList(courseId)) {
+    while (!CourseManager.isCourseInList(courseName)) {
       System.out.print("The course is not registered. Please try again");
-      courseId = sc.nextInt();
-      sc.nextLine();
+      courseName = sc.nextLine();
     }
 
     int markCount = 0;
 
-    markCount = CourseManager.getCourse(courseId).getWeightage().size();
+    Course courseFound = CourseManager.getCourse(courseName);
+    markCount = courseFound.getWeightage().size();
     
-    for (Record record: recordList) {
-      if(record.getCourse().getCourseId() == courseId) {
-        Map<String,Float> mark = record.getMark();
-        if(mark.size() < markCount){
+    for (Record r: recordList) {
+      if (r.getCourse().getCourseName() == courseName) {
+        Map<String,Float> mark = r.getMark();
+        if (mark.size() < markCount) {
           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-          System.out.println("Student name: "+ record.getStudent().getName() + "With id :" + record.getStudent().getMatric());
+          System.out.println("Student name: "+ r.getStudent().getName() + " with matric :" + r.getStudent().getMatric());
           return;
         }
-        
+      }
     }
 
     for (Record r : recordList) {
-      if (r.getCourse().getCourseId() == courseId) {
+      if (r.getCourse().getCourseName() == courseName) {
         sum += r.calculateAverage();
         n++;
       }
     }
     for (Record r : recordList) {
-      if (r.getCourse().getCourseId() == courseId) {
+      if (r.getCourse().getCourseName() == courseName) {
         sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
       }
     }
@@ -350,7 +346,5 @@ public final class RecordManager {
     // System.out.println("2nd Quartile : " + borderValue[1]);
     // System.out.println("3rd Quartile : " + borderValue[2]);
 
-    }
   }
 }
-

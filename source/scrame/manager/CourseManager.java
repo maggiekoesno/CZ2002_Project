@@ -369,4 +369,3 @@ public final class CourseManager {
     sc.close();
   }
 }
-
