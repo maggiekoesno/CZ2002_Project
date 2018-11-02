@@ -103,7 +103,7 @@ public class ScrameApp {
           break;
 
         case 6:
-          StudentManager.printStudentList();
+          RecordManager.printStudentList();
           break;
 
         case 7:

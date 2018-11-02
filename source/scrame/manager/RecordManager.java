@@ -249,6 +249,53 @@ public final class RecordManager {
     sc.close();
   }
 
+  /**
+   * Print student list for a given course name.
+   * 
+   * If the course is of type LEC, then go straight to print the list of all the students.
+   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
+   * proceed to print the list of the students in that group.
+   */
+  public static void printStudentList() {
+    System.out.print("Enter course name: ");
+    Scanner sc = new Scanner(System.in);
+    String courseName = sc.nextLine();
+    Course c = CourseManager.findCourse(courseName);
+
+    if (c.getCourseType() == CourseType.LEC) {
+      int counterStudentList=0;
+      for (Record r : recordList) {
+        //if (r.getGroupName().equals(gname) &&
+            //c.getCourseId() == r.getCourse().getCourseId()) {
+        if (c.getCourseId() == r.getCourse().getCourseId()){
+          System.out.println(r.getStudent().getName());
+          counterStudentList++;
+        }
+      }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
+    } else {
+      System.out.println("The list of groups: ");
+      try {
+        c.printAllGroups();
+      } catch (IllegalCourseTypeException e) {
+        e.printStackTrace();
+      }
+      //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
+      System.out.print("\nEnter group name: ");
+
+      String gname = sc.nextLine();
+      HashSet<Record> recordList = RecordManager.getRecordList();
+      int counterStudentList=0;
+      for (Record r : recordList) {
+        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse().getCourseId()) {
+          System.out.println(r.getStudent().getName());
+          counterStudentList++;
+        }
+      }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
+    }
+  }
+
   public static void inputToFile() {
     try {
       ObjectOutputStream out = new ObjectOutputStream(
