@@ -24,7 +24,7 @@ import java.util.Scanner;
 import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
-
+import scrame.exception.IllegalCourseTypeException;
 import scrame.helper.CourseType;
 
 import scrame.manager.CourseManager;
@@ -189,7 +189,7 @@ public final class StudentManager {
     System.out.print("Enter course name: ");
     Scanner sc = new Scanner(System.in);
     String courseName = sc.nextLine();
-    Course c = CourseManager.getCourse(courseName);
+    Course c = CourseManager.findCourse(courseName);
 
     if (c.getCourseType() == CourseType.LEC) {
       HashSet<Record> recordList = RecordManager.getRecordList();
@@ -205,7 +205,11 @@ public final class StudentManager {
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
-      c.printAllGroups();
+      try {
+        c.printAllGroups();
+      } catch (IllegalCourseTypeException e) {
+        e.printStackTrace();
+      }
       //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
       System.out.print("\nEnter group name: ");
 

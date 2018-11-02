@@ -29,7 +29,7 @@ public final class CourseManager {
   //  * @param courseId the id of the course we want
   //  * @return Course Object
   //  */
-  // public static Course getCourse(int courseId) {
+  // public static Course findCourse(int courseId) {
   //   Course courseFound = null;
   //   for (Course c : courseList) {
   //     if (c.getCourseId() == courseId) {
@@ -40,7 +40,7 @@ public final class CourseManager {
   //   return courseFound;
   // }
 
-  public static Course getCourse(String courseName) {
+  public static Course findCourse(String courseName) {
     if (!isCourseInList(courseName)) {
       throw new IllegalArgumentException("Invalid course name!");
     }
@@ -255,7 +255,7 @@ public final class CourseManager {
       courseName = sc.nextLine();
     }
 
-    Course courseFound = getCourse(courseName);
+    Course courseFound = findCourse(courseName);
     CourseType courseType = courseFound.getCourseType();
 
     System.out.println();
@@ -307,7 +307,7 @@ public final class CourseManager {
       courseName = sc.nextLine();
     }
 
-    Course course = getCourse(courseName);
+    Course course = findCourse(courseName);
     HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
     // TODO NO IMPLEMENTATION YET

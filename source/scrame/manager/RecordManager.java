@@ -36,7 +36,6 @@ public final class RecordManager {
 
   public static void registerStudentCourse() {
     Scanner sc = new Scanner(System.in);
-    String groupName;
     
     System.out.print("Please input matric number: ");
     String matric = sc.nextLine();
@@ -55,7 +54,7 @@ public final class RecordManager {
       return;
     }
 
-    Course courseFound = CourseManager.getCourse(courseName);
+    Course courseFound = CourseManager.findCourse(courseName);
 
     // for (Record r : recordList) {
     //   if(r.getStudent().getMatric.equals(s.toUpperCase())
@@ -66,26 +65,27 @@ public final class RecordManager {
     //   }
     // }
     
+    String groupName = null;
+
     if (courseFound.getCourseType() == CourseType.LEC) {
       groupName = "_LEC";
       try {
         courseFound.register();
       } catch (IllegalCourseTypeException e) {
         e.printStackTrace();
-      } catch (GroupFullException e) {
+      } catch (LectureFullException e) {
         e.printStackTrace();
       }
-    }
-    else{
-      courseFound.printAllGroups();
-      System.out.println("Which group do you want to register into? ");
-      groupName = sc.nextLine();
+    } else {
       try {
+        courseFound.printAllGroups();
+        System.out.println("Which group do you want to register into? ");
+        groupName = sc.nextLine();
         courseFound.register(groupName);
         System.out.println("Succesfully registered!!");
-      } catch(IllegalCourseTypeException e) {
+      } catch (IllegalCourseTypeException e) {
         e.printStackTrace();
-      } catch (LectureFullException e) {
+      } catch (GroupFullException e) {
         e.printStackTrace();
       }
     }
@@ -105,17 +105,22 @@ public final class RecordManager {
       return;
     }
 
-    Course courseFound = CourseManager.getCourse(courseName);
+    Student studentFound = StudentManager.findStudent(matric);
+    Course courseFound = CourseManager.findCourse(courseName);
     
     try {
       courseFound.register();
-      String studentName = StudentManager.getStudent(matric).getName();
+      String studentName = StudentManager.findStudent(matric).getName();
       System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
     } catch (IllegalCourseTypeException e) {
       e.printStackTrace();
     } catch (LectureFullException e) {
       e.printStackTrace();
     }
+
+    HashMap<String, Float> mark = null;
+    Record r = new Record(studentFound, courseFound, "_LEC", mark);
+    recordList.add(r);
   }
 
   public static void registerStudentCourse(String matric, String courseName, String groupName) {
@@ -129,17 +134,22 @@ public final class RecordManager {
       return;
     }
 
-    Course courseFound = CourseManager.getCourse(courseName);
+    Student studentFound = StudentManager.findStudent(matric);
+    Course courseFound = CourseManager.findCourse(courseName);
 
     try {
       courseFound.register(groupName);
-      String studentName = StudentManager.getStudent(matric).getName();
+      String studentName = studentFound.getName();
       System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
     } catch (IllegalCourseTypeException e) {
       System.out.println(e.getMessage());
     } catch (GroupFullException e) {
       e.printStackTrace();
     }
+
+    HashMap<String, Float> mark = null;
+    Record r = new Record(studentFound, courseFound, groupName, mark);
+    recordList.add(r);
   }
 
   public static void setCourseworkMark() {
@@ -293,7 +303,7 @@ public final class RecordManager {
 
     int markCount = 0;
 
-    Course courseFound = CourseManager.getCourse(courseName);
+    Course courseFound = CourseManager.findCourse(courseName);
     markCount = courseFound.getWeightage().size();
     
     for (Record r: recordList) {
