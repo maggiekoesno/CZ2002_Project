@@ -60,8 +60,12 @@ public class ScrameApp {
         case 1:
           // RecordManager.registerStudentCourse();
           try {
+            RecordManager.registerStudentCourse("U1720121H", "CZ2001");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
             RecordManager.registerStudentCourse("U1720122H", "CZ2001");
-            RecordManager.registerStudentCourse("U1720121H", "CZ2002", "BCG2");
+            RecordManager.registerStudentCourse("U1720122H", "CZ2002", "BCG2");
+            RecordManager.registerStudentCourse("U1720123H", "CZ2001");
             RecordManager.registerStudentCourse("U1720123H", "CZ2003", "SSP1");
           } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -121,11 +125,19 @@ public class ScrameApp {
           break;
 
         case 6:
+          // For testing, make sure to call the appropriate function.
+          //     printStudentList(String courseName) for course of type LEC.
+          //     printStudentList(String courseName, String groupName) for course of type TUT and LAB.
+          // Because those function won't handle cases where wrong functions are called.
+
           try {
             // StudentManager.printStudentList();
             // StudentManager.printStudentList("CZ2000", "SSP1")
-            StudentManager.printStudentList("CZ2001", "SSP1");
-            StudentManager.printStudentList("CZ2002", "BCG1");
+            StudentManager.printStudentList("CZ2001");
+            StudentManager.printStudentList("CZ2002", "SSP1");
+            StudentManager.printStudentList("CZ2002", "BCG2");
+            StudentManager.printStudentList("CZ2003", "SSP1");
+            StudentManager.printStudentList("CZ2003", "BCG2");
           } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.exit(1);

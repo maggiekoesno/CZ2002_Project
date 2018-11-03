@@ -99,6 +99,12 @@ public class Record implements Serializable {
     this.mark = mark;
   }
 
+  public String toString() {
+    return (
+      student.getName() + ", " + course.getCourseName() + ", " + groupName
+    );
+  }
+
   public static void main(String[] args) {
     try {
       HashMap<String, Integer> map = new HashMap<String, Integer>();
