@@ -59,9 +59,14 @@ public class ScrameApp {
 
         case 1:
           // RecordManager.registerStudentCourse();
-          RecordManager.registerStudentCourse("U1720122H", "CZ2001");
-          RecordManager.registerStudentCourse("U1720121H", "CZ2002", "BCG2");
-          RecordManager.registerStudentCourse("U1720123H", "CZ2003", "SSP1");
+          try {
+            RecordManager.registerStudentCourse("U1720122H", "CZ2001");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2002", "BCG2");
+            RecordManager.registerStudentCourse("U1720123H", "CZ2003", "SSP1");
+          } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+          }
           break;
 
         case 2:
@@ -74,10 +79,17 @@ public class ScrameApp {
 
         case 4:
           // StudentManager.addStudent();
-          StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
-          StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
-          StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
+
+          try {
+            StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
+            StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
+            StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+            StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
+          } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+          }
+          
           break;
 
         case 5:
@@ -97,13 +109,27 @@ public class ScrameApp {
           tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
           tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
-          CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
-          CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
-          CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+          try {
+            CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
+            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+          } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+          }
+          
           break;
 
         case 6:
-          StudentManager.printStudentList();
+          try {
+            // StudentManager.printStudentList();
+            // StudentManager.printStudentList("CZ2000", "SSP1")
+            StudentManager.printStudentList("CZ2001", "SSP1");
+            StudentManager.printStudentList("CZ2002", "BCG1");
+          } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+          }
           break;
 
         case 7:

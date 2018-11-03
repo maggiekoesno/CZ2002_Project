@@ -40,9 +40,12 @@ public final class CourseManager {
   //   return courseFound;
   // }
 
-  public static Course findCourse(String courseName) {
+  public static Course findCourse(String courseName)
+      throws IllegalArgumentException {
     if (!isCourseInList(courseName)) {
-      throw new IllegalArgumentException("Invalid course name!");
+      throw new IllegalArgumentException(
+        "Oops, it seems that the course " + courseName + " has not been registered to the system yet!"
+      );
     }
 
     for (Course c : courseList) {
@@ -196,11 +199,24 @@ public final class CourseManager {
     System.out.println("Course " + name + " added succesfully!");
   }
 
-  public static void addCourse(String name, CourseType courseType,
-      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
-      
-    courseList.add(new Course(name, courseType, tempVacancies, tempWeightageList));
-    System.out.println("Course " + name + " added succesfully!");
+  /**
+   * Overloaded function for testing.
+   * 
+   * @param courseName corurse name
+   * @param courseType type of course
+   * @param tempVacancies vacancies
+   * @param tempWeightageList weightagelist
+   */
+  public static void addCourse(String courseName, CourseType courseType,
+      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList)
+      throws IllegalArgumentException {
+
+    if (isCourseInList(courseName)) {
+      throw new IllegalArgumentException(courseName + " has been registered.");
+    }
+
+    courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));   
+    System.out.println("Course " + courseName + " added succesfully!");
   }
 
   /**

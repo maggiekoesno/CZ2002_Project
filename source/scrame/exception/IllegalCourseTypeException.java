@@ -3,7 +3,7 @@ package scrame.exception;
 public class IllegalCourseTypeException
   extends Exception {
 
-  String message;
+  private String message;
   
   public IllegalCourseTypeException(String message) {
     super();

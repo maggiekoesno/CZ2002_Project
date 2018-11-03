@@ -109,8 +109,20 @@ public final class RecordManager {
     Course courseFound = CourseManager.findCourse(courseName);
     
     try {
+      for (Record r : RecordManager.getRecordList()) {
+        String tempCourseName = r.getCourse().getCourseName();
+        String tempStudentName = r.getStudent().getName();
+        String studentName = studentFound.getName();
+
+        if (tempStudentName.equals(studentName) && tempCourseName.equals(courseName)) {
+          throw new IllegalArgumentException(
+            studentName + " is already registered on course " + courseName + "."
+          );
+        }
+      }
+
       courseFound.register();
-      String studentName = StudentManager.findStudent(matric).getName();
+      String studentName = studentFound.getName();
       System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
     } catch (IllegalCourseTypeException e) {
       e.printStackTrace();

@@ -279,15 +279,6 @@ public class Course implements Serializable {
   }
 
   /**
-   * Getter method for course id.
-   * 
-   * @return course id
-   */
-  public int getCourseId() {
-    return courseId;
-  }
-
-  /**
    * Getter method for course name.
    * 
    * @return course name

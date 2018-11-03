@@ -1,12 +1,15 @@
 package scrame.exception;
 
-public class LectureFullException
-  extends Exception {
+public class LectureFullException extends Exception {
 
+  private String message;
+  
   public LectureFullException(String courseName) {
     super();
-    System.out.println("Sorry, no more vacancy for " + courseName);
+    this.message = "Sorry, no more vacancy for " + courseName;
   }
 
+  public String getMessage() {
+    return message;
+  }
 }
-
