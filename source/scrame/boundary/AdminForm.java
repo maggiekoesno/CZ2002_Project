@@ -23,10 +23,12 @@ public final class AdminForm {
 
     System.out.print("Enter your choice: ");
     choice = sc.nextInt();
+
     while (choice < 0 || choice > 10) {
-      System.out.println("Invalid Choice. Try again");
+      System.out.println("Invalid choice. Try again!");
       choice = sc.nextInt();
     }
+
     return choice;
   }
 }

@@ -87,22 +87,12 @@ public final class StudentManager {
     System.out.print("Enter " + name + "'s matriculation number: ");
     matric = sc.nextLine();
 
-    try {
-      Student student = new Student(name, major, enroll, matric);
-      studentList.add(student);
-      
-      for (Student s : studentList) {
-        System.out.println(s.toString());
-      }
-
-      System.out.println("Student named " + name + " added successfully.");
-    } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (isStudentInList(matric)) {
+      throw new IllegalArgumentException("Another student with matric number of " + matric + " has been registered.");
     }
 
-    sc.close();
+    studentList.add(new Student(name, major, enroll, matric));
+    System.out.println("Student named " + name + " added successfully.");
   }
 
   public static void addStudent(String name, String major, String enroll, String matric)

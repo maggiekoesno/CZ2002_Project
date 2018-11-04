@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Formatter;
 
 import scrame.entity.Course;
@@ -109,20 +110,20 @@ public final class CourseManager {
     HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
     System.out.print("Enter new course name: ");
-    String name = sc.nextLine();
+    String courseName = sc.nextLine();
 
-    System.out.print("Enter course type: ");
+    System.out.print("Enter " + courseName + "'s course type (e.g. LEC, TUT, LAB): ");
     String typeInput = sc.nextLine();
 
-    CourseType type = CourseType.LEC;
+    CourseType courseType = CourseType.LEC;
     try {
-      type = courseTypeToEnum(typeInput);
+      courseType = courseTypeToEnum(typeInput);
     } catch (IllegalCourseTypeException e) {
       System.out.println(e.getMessage());
       System.exit(1);
     }
 
-    System.out.print("Enter the course total vacancy: ");
+    System.out.print("Enter " + courseName + "'s total vacancy: ");
     int totalVacancy = sc.nextInt();
 
     while (totalVacancy <= 0) {
@@ -133,7 +134,7 @@ public final class CourseManager {
     }
     tempVacancies.put("_LEC",totalVacancy);
 
-    if (type != CourseType.LEC) {
+    if (courseType != CourseType.LEC) {
       int groupVacancy;
       String groupName;
 
@@ -152,7 +153,6 @@ public final class CourseManager {
         }
         tempVacancies.put(groupName, groupVacancy);
       }
-      
     }
 
     System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
@@ -178,6 +178,20 @@ public final class CourseManager {
     System.out.println("                    /           \\          ");
     System.out.println("            70% Assignment       30% Attendance   ");
 
+    // ArrayList<String> components = new ArrayList<String>();
+
+    // System.out.println("Enter component (e.g. Exam): (-1 to exit)");
+    // String component = sc.nextLine();
+    // components.add(component);
+    // System.out.println("Enter percentage (e.g. 60%): ");
+    // String percentage = sc.nextLine();
+    // System.out.println("Does " + component + "have any subcomponent(s)? (y/n)");
+    // String hasSubcomponents = sc.nextLine();
+
+    // if (components.isEmpty()) {
+    //   continue;
+    // }
+
     String tmp;
     while (true) {
       System.out.println("Enter the weightage, -1 to exit:");
@@ -194,9 +208,13 @@ public final class CourseManager {
       // System.out.println(parts[1] + " " + parts[2] + " " + parts[3]);
       tempWeightageList.put(parts[0], new String[]{parts[1], parts[2], parts[3]});
     }
-    Course added = new Course(name, type, tempVacancies, tempWeightageList);
-    courseList.add(added);
-    System.out.println("Course " + name + " added succesfully!");
+
+    if (isCourseInList(courseName)) {
+      throw new IllegalArgumentException(courseName + " has been registered.");
+    }
+
+    courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));
+    System.out.println("Course " + courseName + " added succesfully!");
   }
 
   /**

@@ -82,9 +82,8 @@ public class ScrameApp {
           break;
 
         case 4:
-          // StudentManager.addStudent();
-
           try {
+            // StudentManager.addStudent();
             StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
             StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
             StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
@@ -93,12 +92,9 @@ public class ScrameApp {
             System.out.println(e.getMessage());
             System.exit(1);
           }
-          
           break;
 
         case 5:
-          //CourseManager.addCourse();
-
           HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
           HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
           
@@ -114,9 +110,10 @@ public class ScrameApp {
           tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
           try {
-            CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
-            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
-            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+            CourseManager.addCourse();
+            // CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
+            // CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+            // CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
           } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.exit(1);
