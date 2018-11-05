@@ -80,7 +80,7 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
     String matric;
-    int id;
+    String courseName;
     Map<String, Float> mark;
     Map<String, String[]> weightage;
     float ans;
@@ -92,15 +92,15 @@ public final class RecordManager {
       matric = sc.nextLine();
     }
 
-    System.out.print("Enter course ID: ");
-    id = sc.nextInt();
-    while (CourseManager.getCourse(id) == null) {
+    System.out.print("Enter course Course Name: ");
+    courseName = sc.next();
+    while (CourseManager.getCourse(courseName) == null) {
       System.out.print("Course doesn't exist! Try again: ");
-      id = sc.nextInt();
+      courseName = sc.next();
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
+      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName() == courseName) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -135,7 +135,7 @@ public final class RecordManager {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
     String matric;
-    int id;
+    String courseName;
     Map<String, Float> mark;
     float ans;
 
@@ -147,14 +147,14 @@ public final class RecordManager {
     }
 
     System.out.print("Enter course ID: ");
-    id = sc.nextInt();
-    while (CourseManager.getCourse(id) == null) {
+    courseName = sc.next();
+    while (CourseManager.getCourse(courseName) == null) {
       System.out.print("Course doesn't exist! Try again: ");
-      id = sc.nextInt();
+      courseName = sc.next();
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseId() == id) {
+      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName() == courseName) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -280,10 +280,9 @@ public final class RecordManager {
     System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
     System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
   
+      }
+    }
   }
-}
-
-}
 }
 
 

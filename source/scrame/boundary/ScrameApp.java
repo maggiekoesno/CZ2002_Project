@@ -36,7 +36,27 @@ public class ScrameApp {
     //   System.out.print("Enter choice: ");
     //   choice = sc.nextInt();
     // } while (choice != 1 && choice != 2);
+    StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
+    StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
+    StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+    StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
+    HashMap<String, Integer> tempLecVacancy = new HashMap<String, Integer>();
+    tempLecVacancy.put("_LEC", 200);
 
+    HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+    tempVacancies.put("SSP1", 60);
+    tempVacancies.put("BCG2", 40);
+    tempVacancies.put("_LEC", 100);
+
+    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+    tempWeightageList.put("Exam", new String[] { "60%", "false", "" });
+    tempWeightageList.put("Coursework", new String[] { "40%", "true", "" });
+    tempWeightageList.put("Assessment", new String[] { "70%", "false", "Coursework" });
+    tempWeightageList.put("Attendance", new String[] { "30%", "false", "Coursework" });
+
+    CourseManager.addCourse("CZ2001", CourseType.LEC, tempLecVacancy, tempWeightageList);
+    CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+    CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
     if (userChoice == 2){
       System.out.print("Enter matriculation number: ");
       matric = sc.nextLine();
@@ -67,31 +87,31 @@ public class ScrameApp {
           break;
         case 4:
           // StudentManager.addStudent();
-          StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
-          StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
-          StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
+          // StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
+          // StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
+          // StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+          // StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
           break;
         case 5:
           //CourseManager.addCourse();
 
-          HashMap<String, Integer> tempLecVacancy = new HashMap<String, Integer>();
-          tempLecVacancy.put("_LEC", 200);
+          // HashMap<String, Integer> tempLecVacancy = new HashMap<String, Integer>();
+          // tempLecVacancy.put("_LEC", 200);
 
-          HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-          tempVacancies.put("SSP1", 60);
-          tempVacancies.put("BCG2", 40);
-          tempVacancies.put("_LEC", 100);
+          // HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+          // tempVacancies.put("SSP1", 60);
+          // tempVacancies.put("BCG2", 40);
+          // tempVacancies.put("_LEC", 100);
 
-          HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
-          tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
-          tempWeightageList.put("Coursework", new String[]{"40%", "true", ""});
-          tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
-          tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
+          // HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+          // tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
+          // tempWeightageList.put("Coursework", new String[]{"40%", "true", ""});
+          // tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
+          // tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
-          CourseManager.addCourse("CZ2001", CourseType.LEC, tempLecVacancy, tempWeightageList);
-          CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
-          CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+          // CourseManager.addCourse("CZ2001", CourseType.LEC, tempLecVacancy, tempWeightageList);
+          // CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+          // CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
           break;
         case 6:
           StudentManager.printStudentList();
@@ -105,7 +125,11 @@ public class ScrameApp {
         case 9:
           RecordManager.setExamMark();
           break;
-        case 10: //TODO Elbert
+        case 10: 
+          
+
+
+          RecordManager.printCourseStatistics();
           break;
       }
     }
