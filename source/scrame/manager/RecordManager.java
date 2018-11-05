@@ -30,7 +30,7 @@ import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
-  private static String fileName = "../data/records.ser";
+  private static String fileName = "data/records.ser";
   // The name of the file to open.
 
   public static void registerStudentCourse() {
