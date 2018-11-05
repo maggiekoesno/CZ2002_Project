@@ -244,7 +244,7 @@ public final class RecordManager {
 
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric) &&
-          r.getCourse().getCourseName() == courseName) {
+          r.getCourse().getCourseName().equals(courseName)) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -261,7 +261,6 @@ public final class RecordManager {
       System.out.println("Student is not taking that course!");
     }
 
-    sc.close();
   }
 
   /**
