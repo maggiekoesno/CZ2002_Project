@@ -336,8 +336,8 @@ public final class RecordManager {
     int n = 0;
     float sum = 0;
     float mean = 0;
-    float std = 0;
-    float sumSquareDiff = 0;
+    double std = 0;
+    double sumSquareDiff = 0;
 
     System.out.println("Input the course name for statistics: ");
     String courseName = sc.nextLine();
@@ -352,19 +352,19 @@ public final class RecordManager {
     Course courseFound = CourseManager.findCourse(courseName);
     markCount = courseFound.getWeightage().size();
     
-    for (Record r: recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
-        Map<String,Float> mark = r.getMark();
+    for (Record r1: recordList) {
+      if (r1.getCourse().getCourseName() == courseName) {
+        Map<String,Float> mark = r1.getMark();
         if (mark.size() < markCount) {
           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-          System.out.println("Student name: "+ r.getStudent().getName() + " with matric :" + r.getStudent().getMatric());
+          System.out.println("Student name: "+ r1.getStudent().getName() + " with matric :" + r1.getStudent().getMatric());
           return;
         }
     }
 
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
-        sum += r.calculateAverage();
+    for (Record r2 : recordList) {
+      if (r2.getCourse().getCourseName() == courseName) {
+        sum += r2.calculateAverage();
         n++;
       }
     }
@@ -387,7 +387,7 @@ public final class RecordManager {
 
     int i = 0;
     for (Record record2: recordList) {
-      if(record2.getCourse().getCourseId() == courseId) {
+      if(record2.getCourse().getCourseName() == courseName) {
         studentScore[i] = record2.calculateAverage();
         i++;
     }

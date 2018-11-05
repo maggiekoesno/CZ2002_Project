@@ -103,23 +103,23 @@ public class ScrameApp {
         case 5:
           //CourseManager.addCourse();
 
-          HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-          HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
+          // HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
+          // HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
           
-          tempVacanciesLec.put("_LEC", 100);
-          tempVacancies.put("_LEC", 100);
-          tempVacancies.put("SSP1", 60);
-          tempVacancies.put("BCG2", 40);
+          // tempVacanciesLec.put("_LEC", 100);
+          // tempVacancies.put("_LEC", 100);
+          // tempVacancies.put("SSP1", 60);
+          // tempVacancies.put("BCG2", 40);
 
-          // HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
-          // tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
-          // tempWeightageList.put("Coursework", new String[]{"40%", "true", ""});
-          // tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
-          // tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
+          // // HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+          // // tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
+          // // tempWeightageList.put("Coursework", new String[]{"40%", "true", ""});
+          // // tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
+          // // tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
-          CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
-          CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
-          CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+          // CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
+          // CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+          // CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
           break;
 
         case 6:
