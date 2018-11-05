@@ -15,7 +15,7 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private String groupName;
-  private Map<String, Float> mark = null;
+  private Map<String, Float> mark;
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;

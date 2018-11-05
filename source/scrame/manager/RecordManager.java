@@ -372,33 +372,42 @@ public final class RecordManager {
     String courseName = sc.nextLine();
 
     while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again");
+      System.out.print("The course is not registered. Please try again: ");
       courseName = sc.nextLine();
     }
 
     int markCount = 0;
 
     Course courseFound = CourseManager.findCourse(courseName);
-    markCount = courseFound.getWeightage().size();
+    Map<String, String[]> tmpWeightage = courseFound.getWeightage();
+    for(Map.Entry<String, String[]> entry : tmpWeightage.entrySet()){
+      if(entry.getValue()[1].equals("false")){
+        markCount++;
+      }
+    }
+    // System.out.println("mark count : " + markCount);
     
     for (Record r1: recordList) {
-      if (r1.getCourse().getCourseName() == courseName) {
+      if (r1.getCourse().getCourseName().equals(courseName)) {
         Map<String,Float> mark = r1.getMark();
-        if (mark.size() < markCount) {
+        System.out.println(mark.size());
+        if ( !r1.hasMark() || mark.size() < markCount) {
           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
           System.out.println("Student name: "+ r1.getStudent().getName() + " with matric :" + r1.getStudent().getMatric());
           return;
         }
+        
+      }
     }
 
     for (Record r2 : recordList) {
-      if (r2.getCourse().getCourseName() == courseName) {
+      if (r2.getCourse().getCourseName().equals(courseName)) {
         sum += r2.calculateAverage();
         n++;
       }
     }
     for (Record r : recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
+      if (r.getCourse().getCourseName().equals(courseName)) {
         sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
       }
     }
@@ -416,11 +425,11 @@ public final class RecordManager {
 
     int i = 0;
     for (Record record2: recordList) {
-      if(record2.getCourse().getCourseName() == courseName) {
+      if(record2.getCourse().getCourseName().equals(courseName)) {
         studentScore[i] = record2.calculateAverage();
         i++;
+      }
     }
-    
     Arrays.sort(studentScore);
     int[] borderValueIndex = new int[3];
     borderValueIndex[0] = (int)1/4*(n+1);
@@ -430,8 +439,8 @@ public final class RecordManager {
     System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
     System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
   
-      }
-    }
+      
+    
   }
 }
 
