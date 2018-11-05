@@ -21,7 +21,6 @@ public class Course implements Serializable {
 
   private String courseName;
   private CourseType courseType;
-  private int lectureVacancy;
   private HashMap<String, Integer> tutLabGroups;
   private HashMap<String, String[]> weightage;
 
@@ -34,11 +33,7 @@ public class Course implements Serializable {
   public Course(String courseName, CourseType courseType) {
     this.courseName = courseName;
     this.courseType = courseType;
-    lectureVacancy = 0;
-
-    if (courseType != CourseType.LEC) {
-      tutLabGroups = new HashMap<String, Integer>();
-    }
+    this.tutLabGroups = new HashMap<String, Integer>();
   }
 
   /**
@@ -74,35 +69,35 @@ public class Course implements Serializable {
    * 
    * @param vacancies key-value pair of group name and number of vacancy
    */
-  public void addGroups(HashMap<String, Integer> vacancies)
-    throws
-      IllegalArgumentException {
+  public void addGroups(HashMap<String, Integer> vacancies) throws IllegalArgumentException {
     if (courseType == CourseType.TUT || courseType == CourseType.LAB) {
       int tempLectureVacancy = -1;
       int totalVacancy = 0;
 
-      for (Map.Entry<String, Integer> entry : vacancies.entrySet(
-
-      )) {// Get vacancy for lecture.
-
+      for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
         if (entry.getKey() == "_LEC") {
           tempLectureVacancy = entry.getValue();
           continue;
         }
-        // Get total vacancy for tutorial/lab groups.
+
         totalVacancy += entry.getValue();
       }
-      // Test if lecture vacancy is the total vacancy of all tutorial/lab groups.
 
+      // Test if lecture vacancy is the total vacancy of all tutorial/lab groups.
       if (totalVacancy != tempLectureVacancy) {
         throw new IllegalArgumentException("Invalid vacancy argument.");
-      }// If so, record the group names with their respective vacancy.
+      }
 
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
         tutLabGroups.put(entry.getKey(), entry.getValue());
       }
+    } else {
+      if (!vacancies.containsKey("_LEC")) {
+        throw new IllegalArgumentException("Please provide a vacancy number for lectures.");
+      }
+
+      tutLabGroups.put("_LEC", vacancies.get("_LEC"));
     }
-    lectureVacancy = vacancies.get("_LEC");
   }
 
   /**
@@ -115,23 +110,24 @@ public class Course implements Serializable {
    * 
    * @param groupName group name to be registered at
    */
-  public void register(String groupName)
-    throws
-      IllegalCourseTypeException,
-      GroupFullException {
+  public void register(String groupName) throws IllegalCourseTypeException, GroupFullException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
-        "You should call register() instead, since course " + courseName + " does not have any tutorial/lab groups."
+        "You should call register() instead, since course " + courseName +
+        " does not have any tutorial/lab groups."
       );
     }
-    int vacancy = tutLabGroups.get(groupName);
 
-    if (vacancy == 0) {
+    int groupVacancy = tutLabGroups.get(groupName);
+
+    if (groupVacancy == 0) {
       throw new GroupFullException(courseName, groupName);
     }
-    tutLabGroups.put(groupName, vacancy - 1);
-    tutLabGroups.put("_LEC", lectureVacancy -1);
-    lectureVacancy--;
+    
+    tutLabGroups.put(groupName, --groupVacancy);
+
+    int lectureVacancy = tutLabGroups.get("_LEC");
+    tutLabGroups.put("_LEC", --lectureVacancy);
   }
 
   /**
@@ -148,11 +144,11 @@ public class Course implements Serializable {
       );
     }
 
+    int lectureVacancy = tutLabGroups.get("_LEC");
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
-
-    lectureVacancy--;
+    tutLabGroups.put("_LEC", --lectureVacancy);
   }
 
   /**
@@ -281,7 +277,7 @@ public class Course implements Serializable {
    * @return lecture vacancy
    */
   public int getLectureVacancy() {
-    return lectureVacancy;
+    return tutLabGroups.get("_LEC");
   }
 
   /**

@@ -43,8 +43,14 @@ public class Student implements Serializable {
    * 
    * @return string containing all of student attributes
    */
+  @Override
   public String toString() {
-    return ("Name: " + name + "\n" + "Major: " + major + "\n" + "Enrolled in: " + enroll + "\n" + "Matric No.: " + matric + "\n");
+    return (
+      "Name: " + name + "\n" +
+      "Major: " + major + "\n" +
+      "Enrolled in: " + enroll + "\n" +
+      "Matric No.: " + matric + "\n"
+    );
   }
 
   /**

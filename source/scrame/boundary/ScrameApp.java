@@ -21,12 +21,12 @@ public class ScrameApp {
     CourseManager.loadFromFile();
     RecordManager.loadFromFile();
 
-    Scanner sc = new Scanner(System.in);
     int userChoice;
     int functionChoice;
     String matric;
     boolean flagWhile = true;
-
+    Scanner sc = new Scanner(System.in);
+    
     userChoice = 1; // admin
 
     // do {
@@ -110,10 +110,10 @@ public class ScrameApp {
           tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
 
           try {
-            CourseManager.addCourse();
-            // CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
-            // CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
-            // CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
+            // CourseManager.addCourse();
+            CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList);
+            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList);
+            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList);
           } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.exit(1);

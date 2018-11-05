@@ -42,7 +42,9 @@ public final class RecordManager {
     Student studentFound = StudentManager.findStudent(matric);
     
     if (studentFound == null) {
-      System.out.println("Oops, student is not registered yet! Please register first.");
+      System.out.println(
+        "Oops, student is not registered yet! Please register first."
+      );
       return;
     }
 
@@ -114,7 +116,8 @@ public final class RecordManager {
         String tempStudentName = r.getStudent().getName();
         String studentName = studentFound.getName();
 
-        if (tempStudentName.equals(studentName) && tempCourseName.equals(courseName)) {
+        if (tempStudentName.equals(studentName) &&
+            tempCourseName.equals(courseName)) {
           throw new IllegalArgumentException(
             studentName + " is already registered on course " + courseName + "."
           );
@@ -123,16 +126,18 @@ public final class RecordManager {
 
       courseFound.register();
       String studentName = studentFound.getName();
-      System.out.println(studentName + " is succesfully registered on course " + courseName + "!");
+      System.out.println(
+        studentName + " is succesfully registered on course " + courseName + "!"
+      );
     } catch (IllegalCourseTypeException e) {
       e.printStackTrace();
     } catch (LectureFullException e) {
       e.printStackTrace();
     }
 
-    HashMap<String, Float> mark = null;
-    Record r = new Record(studentFound, courseFound, "_LEC", mark);
-    recordList.add(r);
+    recordList.add(new Record(
+      studentFound, courseFound, "_LEC", new HashMap<String, Float>()
+    ));
   }
 
   public static void registerStudentCourse(String matric, String courseName, String groupName) {
@@ -152,7 +157,10 @@ public final class RecordManager {
     try {
       courseFound.register(groupName);
       String studentName = studentFound.getName();
-      System.out.println(studentName + " is succesfully registered on group " + groupName + " on course " + courseName + "!");
+      System.out.println(
+        studentName + " is succesfully registered on group " + groupName +
+        " on course " + courseName + "!"
+      );
     } catch (IllegalCourseTypeException e) {
       System.out.println(e.getMessage());
     } catch (GroupFullException e) {
@@ -187,7 +195,8 @@ public final class RecordManager {
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName() == courseName) {
+      if (r.getStudent().getMatric().equals(matric) &&
+          r.getCourse().getCourseName() == courseName) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -197,8 +206,11 @@ public final class RecordManager {
         for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
           System.out.println(entry.getKey() + " = " + entry.getValue());
           
-          if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
-            System.out.print("Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) ");
+          if (entry.getValue()[1].equals("false") &&
+              !(entry.getKey().toLowerCase().equals("exam"))) {
+            System.out.print(
+              "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
+            );
             ans = sc.nextInt();
             if (ans == 1) {
               System.out.print("Enter mark for " + entry.getKey());
@@ -298,13 +310,13 @@ public final class RecordManager {
   }
 
   public static void printCourseStatistics() {
-    Scanner sc = new Scanner(System.in);
     int n = 0;
     float sum = 0;
     float mean = 0;
     float std = 0;
     float sumSquareDiff = 0;
 
+    Scanner sc = new Scanner(System.in);
     System.out.println("Input the course name for statistics: ");
     String courseName = sc.nextLine();
 
@@ -312,6 +324,8 @@ public final class RecordManager {
       System.out.print("The course is not registered. Please try again");
       courseName = sc.nextLine();
     }
+
+    sc.close();
 
     int markCount = 0;
 
@@ -322,8 +336,12 @@ public final class RecordManager {
       if (r.getCourse().getCourseName() == courseName) {
         Map<String,Float> mark = r.getMark();
         if (mark.size() < markCount) {
-          System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-          System.out.println("Student name: "+ r.getStudent().getName() + " with matric :" + r.getStudent().getMatric());
+          System.out.print("Whoops. the course hasnt been finished yet, ");
+          System.out.println("there is a student who is not marked.");
+          System.out.println(
+            "Student name: "+ r.getStudent().getName() +
+            " with matric :" + r.getStudent().getMatric()
+          );
           return;
         }
       }
@@ -364,6 +382,5 @@ public final class RecordManager {
     // System.out.println("1st Quartile : " + borderValue[0]);
     // System.out.println("2nd Quartile : " + borderValue[1]);
     // System.out.println("3rd Quartile : " + borderValue[2]);
-
   }
 }

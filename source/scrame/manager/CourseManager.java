@@ -234,7 +234,7 @@ public final class CourseManager {
     }
 
     courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));   
-    System.out.println("Course " + courseName + " added succesfully!");
+    System.out.println("Course " + courseName + " added successfully!");
   }
 
   /**
