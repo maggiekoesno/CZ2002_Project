@@ -182,13 +182,13 @@ public final class RecordManager {
         }
         weightage = r.getCourse().getWeightage();
         for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-          System.out.println(entry.getKey() + " = " + entry.getValue());
+          System.out.println(entry.getKey() + " = " + entry.getValue()); //TODO : entry.getValue() buat apa?
           
           if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
             System.out.print("Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) ");
             ans = sc.nextInt();
             if (ans == 1) {
-              System.out.print("Enter mark for " + entry.getKey());
+              System.out.print("Enter mark for " + entry.getKey() + " ");
               ans = sc.nextFloat();
               mark.put(entry.getKey(),ans);
             }
@@ -202,7 +202,7 @@ public final class RecordManager {
       System.out.println("Student is not taking that course!");
     }
 
-    sc.close();
+    
   }
 
   public static void setExamMark() {
