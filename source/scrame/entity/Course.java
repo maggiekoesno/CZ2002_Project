@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.lang.IllegalArgumentException;
-
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
@@ -51,13 +49,16 @@ public class Course implements Serializable {
    * the course has lectures only, then only register the lecture vacancy. Else, register
    * each group along with their vacancies.
    * 
-   * // addGroups({"_LEC": 50, "SSP1": 20, "BCG2": 30});
-   * // addGroups({"_LEC": 50});
-   * 
    * @param vacancies key-value pair of group name and number of vacancy
    */
   public void addGroups(HashMap<String, Integer> vacancies) throws IllegalArgumentException {
-    if (courseType == CourseType.TUT || courseType == CourseType.LAB) {
+    if (courseType == CourseType.LEC) {
+      if (!vacancies.containsKey("_LEC")) {
+        throw new IllegalArgumentException("Please provide a vacancy number for lectures.");
+      }
+
+      tutLabGroups.put("_LEC", vacancies.get("_LEC"));
+    } else {
       int tempLectureVacancy = -1;
       int totalVacancy = 0;
 
@@ -78,12 +79,6 @@ public class Course implements Serializable {
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
         tutLabGroups.put(entry.getKey(), entry.getValue());
       }
-    } else {
-      if (!vacancies.containsKey("_LEC")) {
-        throw new IllegalArgumentException("Please provide a vacancy number for lectures.");
-      }
-
-      tutLabGroups.put("_LEC", vacancies.get("_LEC"));
     }
   }
 
@@ -92,8 +87,6 @@ public class Course implements Serializable {
    * CourseType.LAB.
    * 
    * If registration is successful, decrement the vacancy for that particular group.
-   * 
-   * // register("SSP1");
    * 
    * @param groupName group name to be registered at
    */
@@ -120,11 +113,8 @@ public class Course implements Serializable {
   /**
    * Register on courses only of type CourseType.LEC. If registration is successful, decrement
    * the lecture vacancy.
-   * 
-   * // register();
    */
-  public void register() throws IllegalCourseTypeException,
-      LectureFullException {
+  public void register() throws IllegalCourseTypeException, LectureFullException {
     if (courseType != CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "To register on " + courseName + ", you must register based on your tutorial/lab group."
@@ -135,6 +125,7 @@ public class Course implements Serializable {
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
+    
     tutLabGroups.put("_LEC", --lectureVacancy);
   }
 
@@ -142,9 +133,7 @@ public class Course implements Serializable {
    * Check group vacancy. Only applicable on courses only of type CourseType.TUT and
    * CourseType.LAB.
    * 
-   * // checkGroupVacancy("SSP1");
-   * 
-   * @param groupName group name to be checked at
+   * @param groupName group name to check
    * @return group vacancy
    */
   public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException {
@@ -153,6 +142,7 @@ public class Course implements Serializable {
         "Course " + courseName + " does not have any tutorial/lab group."
       );
     }
+
     return tutLabGroups.get(groupName);
   }
 
@@ -161,19 +151,22 @@ public class Course implements Serializable {
    */
   public void printAllGroups() throws IllegalCourseTypeException {
     if (courseType == CourseType.LEC) {
-      throw new IllegalCourseTypeException("Oops, it appears that " + courseName + " doesn't have any groups.");
+      throw new IllegalCourseTypeException(
+        "Oops, it appears that " + courseName + " doesn't have any groups."
+      );
     }
-
-    String group;
-    int vacancy;
+    
     String groupName;
+    int vacancy;
     
     for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
       groupName = entry.getKey();
+      vacancy = entry.getValue();
+
       if (groupName.equals("_LEC")) {
         continue;
       }
-      vacancy = entry.getValue();
+
       System.out.println(groupName + ": " + vacancy);
     }
   }
@@ -183,12 +176,11 @@ public class Course implements Serializable {
    * 
    * @param weightage weightage to be inserted
    */
-  public void setWeightage(HashMap<String, String[]> weightage)
-    throws
-      IllegalArgumentException {
+  public void setWeightage(HashMap<String, String[]> weightage) throws IllegalArgumentException {
     if (!validateWeightage(weightage)) {
       throw new IllegalArgumentException("Illegal weightage argument.");
     }
+
     this.weightage = weightage;
   }
 
@@ -197,7 +189,6 @@ public class Course implements Serializable {
    * 
    * @param weightage weightage in HashMap
    * @return true if weightage is validated, else false
-   * 
    */
   private boolean validateWeightage(HashMap<String, String[]> weightage) {
     return validateWeightage(weightage, "");
@@ -206,32 +197,22 @@ public class Course implements Serializable {
   /**
    * Overloaded method to validate weightage.
    * 
-   * validateWeightage(
-   *  {
-   *    "exam": ["60%", "false", ""],
-   *    "coursework": ["40%"", "true", ""],
-   *    "assigments": ["70%", "false", "coursework"],
-   *    "attendance": ["30%", "false", "coursework"]
-   *  }
-   * );
-   * 
    * @return true if weightage is validated, else false
    */
-  private boolean validateWeightage(
-    HashMap<String, String[]> weightage,
-    String check
-  ) {
-    // Check if component's weights sum up to 100%.
+  private boolean validateWeightage(HashMap<String, String[]> weightage, String check) {
     int total = 0;
     boolean flag = true;
 
+    // Check if component's weights sum up to 100%.
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
       String component = entry.getKey();
       String[] info = entry.getValue();
+
       if (info[PARENT].equals(check)) {
         if (info[HAS_CHILD].equals("true")) {
           flag = flag && validateWeightage(weightage, component);
         }
+
         String w = info[WEIGHT];
         total += Integer.parseInt(w.substring(0, w.length() - 1));
       }
@@ -243,7 +224,6 @@ public class Course implements Serializable {
    * Getter method for course name.
    * 
    * @return course name
-   * 
    */
   public String getCourseName() {
     return courseName;
@@ -277,13 +257,11 @@ public class Course implements Serializable {
   }
 
   /**
-   * Getter method for weightage
+   * Getter method for weightage.
    * 
    * @return weightage
    */
   public Map<String, String[]> getWeightage() {
     return weightage;
   }
-
 }
-

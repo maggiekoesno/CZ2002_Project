@@ -7,31 +7,11 @@ public class FacultyMember {
   private boolean isCourseCoordinator;
 
   /**
-   * Constructor for FacultyMember object
+   * Constructor for FacultyMember.
    * 
-   * @param name name of the faculty member
-   * @param id id of the faculty member
-   * @param faculty faculty of the faculty member
-   * @param isCourseCoordinator true if faculty member is course coordinator, false otherwise
-   */
-  public FacultyMember(
-    String name,
-    String id,
-    String faculty,
-    boolean isCourseCoordinator
-  ) {
-    this.name = name;
-    this.id = id;
-    this.faculty = faculty;
-    this.isCourseCoordinator = isCourseCoordinator;
-  }
-
-  /**
-   * Constructor for FacultyMember object
-   * 
-   * @param name                name of the faculty member
-   * @param id                  id of the faculty member
-   * @param faculty             faculty of the faculty member
+   * @param name     name of the faculty member
+   * @param id       id of the faculty member
+   * @param faculty  faculty of the faculty member
    * 
    */
   public FacultyMember(String name, String id, String faculty) {
@@ -39,6 +19,21 @@ public class FacultyMember {
     this.id = id;
     this.faculty = faculty;
     this.isCourseCoordinator = false;
+  }
+
+  /**
+   * Overloaded constructor for FacultyMember.
+   * 
+   * @param name                 name of the faculty member
+   * @param id                   id of the faculty member
+   * @param faculty              faculty of the faculty member
+   * @param isCourseCoordinator  true if faculty member is course coordinator, false otherwise
+   */
+  public FacultyMember(String name, String id, String faculty, boolean isCourseCoordinator) {
+    this.name = name;
+    this.id = id;
+    this.faculty = faculty;
+    this.isCourseCoordinator = isCourseCoordinator;
   }
 
   /**
@@ -96,6 +91,4 @@ public class FacultyMember {
   public void setName(String name) {
     this.name = name;
   }
-
 }
-

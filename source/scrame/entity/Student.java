@@ -1,7 +1,6 @@
 package scrame.entity;
 
 import java.io.Serializable;
-import java.lang.IllegalArgumentException;
 
 public class Student implements Serializable {
   private static final long serialVersionUID = 6954261678710602810L;
@@ -19,23 +18,22 @@ public class Student implements Serializable {
    * @param matric matric of the student
    */
   public Student(String name, String major, String enroll, String matric) {
-    this.name = name.substring(0, 1).toUpperCase() + name.substring(1);
-    this.major = major.toUpperCase();
-
     if (!enroll.matches("[aA][yY]\\d{4} [sS][1-2]")) {
       throw new IllegalArgumentException(
         "Oops, your enrollment details are invalid."
       );
-    } else {
-      this.enroll = enroll.toUpperCase();
     }
+
     if (!matric.matches("[gGnNuU][1][0-8]\\d{5}\\D")) {
       throw new IllegalArgumentException(
         "Oops, you have entered an invalid matric number."
       );
-    } else {
-      this.matric = matric.toUpperCase();
     }
+
+    this.name = name.substring(0, 1).toUpperCase() + name.substring(1);
+    this.major = major.toUpperCase();
+    this.enroll = enroll.toUpperCase();
+    this.matric = matric.toUpperCase();
   }
 
   /**
@@ -54,7 +52,7 @@ public class Student implements Serializable {
   }
 
   /**
-   * Getter method for student name
+   * Getter method for student name.
    * 
    * @return student name
    */
@@ -63,7 +61,8 @@ public class Student implements Serializable {
   }
 
   /**
-   * Getter method for student major
+   * Getter method for student major.
+   * 
    * @return student major
    */
   public String getMajor() {
