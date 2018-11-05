@@ -235,6 +235,7 @@ public final class CourseManager {
   public static boolean isCourseInList(String courseName) {
     for (Course c : courseList) {
       if (c.getCourseName().equals(courseName)) {
+        System.out.println("yes indeed course is in the list");
         return true;
       }
     }

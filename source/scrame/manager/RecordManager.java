@@ -30,7 +30,7 @@ import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
-  private static String fileName = "data/records.ser";
+  private static String fileName = "records.ser";
   // The name of the file to open.
 
   public static void registerStudentCourse() {
@@ -162,21 +162,19 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again (-1 to exit):  ");
+      System.out.print("Matriculation ID doesn't exist! Try again:  ");
       matric = sc.nextLine();
-      if(matric == "-1") return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
-    while (CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again(-1 to exit): ");
+    while (!CourseManager.isCourseInList(courseName)) {
+      System.out.print("Course doesn't exist! Try again: ");
       courseName = sc.nextLine();
-      if(courseName == "-1") return;
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName() == courseName) {
+      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -223,7 +221,7 @@ public final class RecordManager {
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
-    while (CourseManager.isCourseInList(courseName)) {
+    while (!CourseManager.isCourseInList(courseName)) {
       System.out.print("Course doesn't exist! Try again: ");
       courseName = sc.nextLine();
     }
