@@ -303,33 +303,13 @@ public final class CourseManager {
     String courseName = sc.nextLine();
 
     while (!isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again");
+      System.out.print("The course is not registered. Please try again: ");
       courseName = sc.nextLine();
     }
 
     Course course = findCourse(courseName);
     HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
-    // TODO NO IMPLEMENTATION YET
-    // if (course.getCourseType() != courseTypeToEnum("LEC")) {
-    //   System.out.println("Enter the Group name e.g \"SEP1\", -1 to exit");
-
-    //   while (true) {
-    //     String groupName = sc.next();
-    //     if (groupName == "-1") {
-    //       break;
-    //     }
-    //     System.out.print(
-    //       "Enter the group vacancy (in the end all the group vacancies must be equal to the total vacancy)" + Integer.toString(course.getLectureVacancy())
-    //     );
-    //     int groupVacancy = sc.nextInt();
-    //     while (groupVacancy <= 0) {
-    //       System.out.println(
-    //         " Vacancy cannot be less than or equal to zero. try again"
-    //       );
-    //     }
-    //     tempVacancies.put(groupName, groupVacancy);
-    //   }
 
     System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
     System.out.println(
@@ -357,15 +337,24 @@ public final class CourseManager {
     while (true) {
       System.out.println("Enter the weightage, -1 to exit:");
       String tmp = sc.next();
-      if (tmp == "-1") {
+      if (tmp.equalsIgnoreCase("-1")) {
+        
         break;
       }
       String parts[] = tmp.split(",");
+      // System.out.println(parts[0]);
+      // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
+      // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
+      if(parts[3].equals("\"\"")){
+        parts[3] = "";
+      }
       tempWeightageList.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
+    }
+    for(Map.Entry<String, String[]> entry : tempWeightageList.entrySet()){
+      System.out.println(entry.getKey()+","+entry.getValue()[0]+entry.getValue()[1]+entry.getValue()[2]);
     }
     course.setWeightage(tempWeightageList);
     System.out.println("Weightage set successfully !");
 
-    sc.close();
   }
 }
