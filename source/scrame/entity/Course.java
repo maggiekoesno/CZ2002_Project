@@ -156,15 +156,6 @@ public class Course implements Serializable {
   }
 
   /**
-   * Check lecture vacancy. Only applicable on courses only of type CourseType.LEC.
-   * 
-   * @return lecture vacancy
-   */
-  public int checkLectureVacancy() {
-    return lectureVacancy;
-  }
-
-  /**
    * Check group vacancy. Only applicable on courses only of type CourseType.TUT and
    * CourseType.LAB.
    * 

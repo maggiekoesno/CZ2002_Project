@@ -299,7 +299,7 @@ public final class CourseManager {
 
     switch (courseType) {
       case LEC:
-        int lectureVacancy = courseFound.checkLectureVacancy();
+        int lectureVacancy = courseFound.getLectureVacancy();
         System.out.println("++ Course Name ++++ Vacancy ++");
         System.out.println("++++++++++++++++++++++++++++++");
         System.out.print("++   " + courseName + "    ++++   ");
