@@ -12,20 +12,16 @@ import scrame.helper.CourseType;
 
 public class Record implements Serializable {
   private static final long serialVersionUID = 3L;
-  private Student student;
-  private Course course;
-  private String groupName;
-  private Map<String, Float> mark;
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
 
-  public Record(
-    Student student,
-    Course course,
-    String groupName,
-    HashMap<String, Float> mark
-  ) {
+  private Student student;
+  private Course course;
+  private String groupName;
+  private Map<String, Float> mark;
+
+  public Record(Student student, Course course, String groupName, HashMap<String, Float> mark) {
     this.student = student;
     this.course = course;
     this.groupName = groupName;
@@ -100,41 +96,6 @@ public class Record implements Serializable {
   }
 
   public String toString() {
-    return (
-      student.getName() + ", " + course.getCourseName() + ", " + groupName
-    );
+    return student.getName() + ", " + course.getCourseName() + ", " + groupName;
   }
-
-  public static void main(String[] args) {
-    try {
-      HashMap<String, Integer> map = new HashMap<String, Integer>();
-      Course c1 = new Course("CZ2001", CourseType.LEC);
-      map.put("_LEC", 50);
-      c1.addGroups(map);
-      HashMap<String, String[]> weightage = new HashMap<String, String[]>();
-      weightage.put("exam", new String[] { "60%", "false", "" });
-      weightage.put("coursework", new String[] { "40%", "true", "" });
-      weightage.put(
-        "assigments",
-        new String[] { "70%", "false", "coursework" }
-      );
-      weightage.put(
-        "attendance",
-        new String[] { "30%", "false", "coursework" }
-      );
-      c1.setWeightage(weightage);
-
-      HashMap<String, Float> markIn = new HashMap<String, Float>();
-      markIn.put("exam", 80.0f);
-      markIn.put("assigments", 70.0f);
-      markIn.put("attendance", 90.0f);
-
-      Record rec = new Record(new Student("Alice", "ACC", "AY1718 S1", "U1723456A"),c1,"SSP1",markIn);
-      System.out.println(rec.calculateAverage());
-    } catch(Exception e) {
-      System.out.println(e.getMessage());
-    }
-  }
-
 }
-

@@ -29,27 +29,14 @@ public class Course implements Serializable {
    * 
    * @param courseName name of course
    * @param courseType type of course (lec; lec and tut; lec, tut and lab)
+   * @param vacancies vacancies of type HashMap
+   * @param weightage weightage of course components
    */
-  public Course(String courseName, CourseType courseType) {
+  public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies,
+      HashMap<String, String[]> weightage) {
     this.courseName = courseName;
     this.courseType = courseType;
     this.tutLabGroups = new HashMap<String, Integer>();
-  }
-
-  /**
-   * Overloaded constructor for Course class.
-   * 
-   * @param courseName name of course
-   * @param courseType type of course (lec; lec and tut; lec, tut and lab)
-   * @param vacancies vacancies of type HashMap
-   */
-  public Course(
-    String courseName,
-    CourseType courseType,
-    HashMap<String, Integer> vacancies,
-    HashMap<String, String[]> weightage
-  ) {
-    this(courseName, courseType);
     addGroups(vacancies);
     setWeightage(weightage);
   }
