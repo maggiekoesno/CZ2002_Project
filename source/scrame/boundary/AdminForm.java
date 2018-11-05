@@ -3,10 +3,10 @@ package scrame.boundary;
 import java.util.Scanner;
 
 public final class AdminForm {
-  private static int choice = -1;
-  private static Scanner sc = new Scanner(System.in);
-
   public static int display() {
+    Scanner sc = new Scanner(System.in);
+    int choice = -1;
+
     System.out.println(
       "\n1. Register student for a course (this includes registering for Tutorial/Lab classes).\n" 
       + "2. Check available slots in a class (Class Vacancy).\n" 

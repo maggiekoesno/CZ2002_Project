@@ -19,23 +19,11 @@ public class Course implements Serializable {
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;
 
-  private int courseId;
   private String courseName;
   private CourseType courseType;
   private int lectureVacancy;
   private HashMap<String, Integer> tutLabGroups;
   private HashMap<String, String[]> weightage;
-
-  private static int incrementId = 1;
-
-  /**
-   * A static method to generate unique course id for every instantiated course.
-   *  
-   * @return generated course id
-   */
-  private static int getNewCourseId() {
-    return incrementId++;
-  }
 
   /**
    * Constructor for Course class.
@@ -44,7 +32,6 @@ public class Course implements Serializable {
    * @param courseType type of course (lec; lec and tut; lec, tut and lab)
    */
   public Course(String courseName, CourseType courseType) {
-    courseId = getNewCourseId();
     this.courseName = courseName;
     this.courseType = courseType;
     lectureVacancy = 0;
