@@ -15,7 +15,7 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private String groupName;
-  private Map<String, Float> mark;
+  private Map<String, Float> mark = null;
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
@@ -89,6 +89,10 @@ public class Record implements Serializable {
 
   public Map<String, Float> getMark() {
     return mark;
+  }
+
+  public boolean hasMark() { 
+    return mark != null;
   }
 
   public String getGroupName() {

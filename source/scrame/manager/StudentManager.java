@@ -161,6 +161,10 @@ public final class StudentManager {
       return;
     }
     for (Record r : recordFound) {
+      if(!r.hasMark()){
+        System.out.println("Oops. " + r.getStudent().getName() + " havent been marked on " + r.getCourse().getCourseName() + "!");
+        return;
+      }
       System.out.println("Course name: " + r.getCourse().getCourseName());
       System.out.println(
         "Course average: " + Float.toString(r.calculateAverage())
