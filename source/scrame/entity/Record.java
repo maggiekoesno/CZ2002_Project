@@ -32,24 +32,24 @@ public class Record implements Serializable {
 
     // whose values[1] == "false" (don't have child)
 
-    HashSet<String> fromMark = new HashSet<String>();
-    HashSet<String> fromCourse = new HashSet<String>();
-    for (Map.Entry<String, Float> entry : mark.entrySet()) {
-      String component = entry.getKey();
-      fromMark.add(component);
-    }
-    for (Map.Entry<String, String[]> entry : course.getWeightage().entrySet()) {
-      String component = entry.getKey();
-      String[] info = entry.getValue();
-      if (info[HAS_CHILD].equals("false")) {
-        fromCourse.add(component);
-      }
-    }
-    if (!fromMark.containsAll(fromCourse) || !fromCourse.containsAll(
-      fromMark
-    )) {
-      throw new IllegalArgumentException("Illegal mark set.");
-    }
+    // HashSet<String> fromMark = new HashSet<String>();
+    // HashSet<String> fromCourse = new HashSet<String>();
+    // for (Map.Entry<String, Float> entry : mark.entrySet()) {
+    //   String component = entry.getKey();
+    //   fromMark.add(component);
+    // }
+    // for (Map.Entry<String, String[]> entry : course.getWeightage().entrySet()) {
+    //   String component = entry.getKey();
+    //   String[] info = entry.getValue();
+    //   if (info[HAS_CHILD].equals("false")) {
+    //     fromCourse.add(component);
+    //   }
+    // }
+    // if (!fromMark.containsAll(fromCourse) || !fromCourse.containsAll(
+    //   fromMark
+    // )) {
+    //   throw new IllegalArgumentException("Illegal mark set.");
+    // }
     this.mark = mark;
   }
 

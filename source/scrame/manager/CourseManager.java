@@ -23,32 +23,35 @@ public final class CourseManager {
   private static HashSet<Course> courseList;
   private static String fileName = "../data/courses.ser";
 
-  /**
-   * Search the course by courseId, and return the appropriate Course Object.
-   * 
-   * @param courseId the id of the course we want
-   * @return Course Object
-   */
-  public static Course getCourse(int courseId) {
-    Course courseFound = null;
-    for (Course c : courseList) {
-      if (c.getCourseId() == courseId) {
-        courseFound = c;
-        break;
-      }
-    }
-    return courseFound;
-  }
+  // /**
+  //  * Search the course by courseId, and return the appropriate Course Object.
+  //  * 
+  //  * @param courseId the id of the course we want
+  //  * @return Course Object
+  //  */
+  // public static Course findCourse(int courseId) {
+  //   Course courseFound = null;
+  //   for (Course c : courseList) {
+  //     if (c.getCourseId() == courseId) {
+  //       courseFound = c;
+  //       break;
+  //     }
+  //   }
+  //   return courseFound;
+  // }
 
-  public static Course getCourse(String courseName) {
-    Course courseFound = null;
-    for (Course c : CourseManager.courseList) {
-      if(c.getCourseName().equals(courseName)) {
-        courseFound = c;
-        break;
+  public static Course findCourse(String courseName) {
+    if (!isCourseInList(courseName)) {
+      throw new IllegalArgumentException("Invalid course name!");
+    }
+
+    for (Course c : courseList) {
+      if (c.getCourseName().equals(courseName)) {
+        return c;
       }
     }
-    return courseFound;
+
+    return null;
   }
 
   /**
@@ -107,6 +110,7 @@ public final class CourseManager {
 
     System.out.print("Enter course type: ");
     String typeInput = sc.nextLine();
+
     CourseType type = CourseType.LEC;
     try {
       type = courseTypeToEnum(typeInput);
@@ -192,11 +196,6 @@ public final class CourseManager {
     System.out.println("Course " + name + " added succesfully!");
   }
 
-  public static void addCourse(String name, CourseType courseType) {
-    courseList.add(new Course(name, courseType));
-    System.out.println("Course " + name + " added succesfully!");
-  }
-
   public static void addCourse(String name, CourseType courseType,
       HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
       
@@ -230,56 +229,59 @@ public final class CourseManager {
   /**
    * A function to check whether a course is in the list
    * 
-   * @param courseId id of the course
+   * @param courseName id of the course
    * @return true if the course is in the list, false otherwise
    */
-  public static boolean isCourseInList(int courseId) {
-    Course courseFound = null;
+  public static boolean isCourseInList(String courseName) {
     for (Course c : courseList) {
-      if (c.getCourseId() == courseId) {
-        courseFound = c;
-        break;
+      if (c.getCourseName().equals(courseName)) {
+        return true;
       }
     }
-    return courseFound.getCourseId() == courseId;
+    return false;
   }
 
   /**
-   * Take course id and display all the vacancies of the following courses.
+   * Take course name and display all the vacancies of the following courses.
    */
   public static void checkVacancy() {
     Scanner sc = new Scanner(System.in);
     System.out.print("Please input the course name: ");
     String courseName = sc.nextLine();
-    Course courseFound = CourseManager.getCourse(courseName);
+
+    while (!isCourseInList(courseName)) {
+      System.out.println("The course name you requested is not found!");
+      System.out.print("Please input the course name: ");
+      courseName = sc.nextLine();
+    }
+
+    Course courseFound = findCourse(courseName);
+    CourseType courseType = courseFound.getCourseType();
 
     System.out.println();
     System.out.println("++++++++++++++++++++++++++++++");
     System.out.println("++++++ Course Vacancies ++++++");
     System.out.println("++++++++++++++++++++++++++++++");
 
-    CourseType type = courseFound.getCourseType();
-    switch (type) {
+    switch (courseType) {
       case LEC:
-        try {
-          int lectureVacancy = courseFound.checkLectureVacancy();
-          System.out.println("++ Course Name ++++ Vacancy ++");
-          System.out.println("++++++++++++++++++++++++++++++");
-          System.out.print("++   " + courseName + "    ++++   ");
-          System.out.printf("%3d", lectureVacancy);
-          System.out.println("   ++");
-          System.out.println("++++++++++++++++++++++++++++++");
-        } catch(IllegalCourseTypeException e) {
-          System.out.println(e.getMessage());
-        }
+        int lectureVacancy = courseFound.checkLectureVacancy();
+        System.out.println("++ Course Name ++++ Vacancy ++");
+        System.out.println("++++++++++++++++++++++++++++++");
+        System.out.print("++   " + courseName + "    ++++   ");
+        System.out.printf("%3d", lectureVacancy);
+        System.out.println("   ++");
+        System.out.println("++++++++++++++++++++++++++++++");
         break;
       case TUT:
-      case LAB:HashMap<String, Integer> groups = courseFound.getTutLabGroups();
+      case LAB:
+        HashMap<String, Integer> groups = courseFound.getTutLabGroups();
         System.out.println("++ Group Name +++++ Vacancy ++");
         System.out.println("++++++++++++++++++++++++++++++");
         for (Map.Entry<String, Integer> entry : groups.entrySet()) {
-          if(entry.getKey().equals("_LEC"))
+          if (entry.getKey().equals("_LEC")) {
             continue;
+          }
           System.out.print("++   " + entry.getKey() + "     +++++    ");
           System.out.printf("%2d", entry.getValue());
           System.out.println("   ++");
@@ -295,18 +297,17 @@ public final class CourseManager {
    */
   public static void setCourseWeightage() {
     System.out.println("Modify course weightage for specific course id");
-    System.out.print("Please input the courseId: ");
-    int courseId = -1;
+    System.out.print("Please input the course name: ");
 
     Scanner sc = new Scanner(System.in);
-    courseId = sc.nextInt();
+    String courseName = sc.nextLine();
 
-    while (!isCourseInList(courseId)) {
+    while (!isCourseInList(courseName)) {
       System.out.print("The course is not registered. Please try again");
-      courseId = sc.nextInt();
+      courseName = sc.nextLine();
     }
 
-    Course course = getCourse(courseId);
+    Course course = findCourse(courseName);
     HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
     // TODO NO IMPLEMENTATION YET
@@ -368,4 +369,3 @@ public final class CourseManager {
     sc.close();
   }
 }
-

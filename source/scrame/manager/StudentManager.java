@@ -24,7 +24,7 @@ import java.util.Scanner;
 import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
-
+import scrame.exception.IllegalCourseTypeException;
 import scrame.helper.CourseType;
 
 import scrame.manager.CourseManager;
@@ -130,6 +130,16 @@ public final class StudentManager {
     return false;
   }
 
+  public static Student findStudent(String matric){
+    Student studentFound = null;
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        studentFound = s;
+      }
+    }
+    return studentFound;
+  }
+
   public static void printTranscript() {
     Scanner sc = new Scanner(System.in);
 
@@ -169,54 +179,6 @@ public final class StudentManager {
   }
 
   /**
-   * Print student list for a given course id.
-   * 
-   * If the course is of type LEC, then go straight to print the list of all the students.
-   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
-   * proceed to print the list of the students in that group.
-   */
-  public static void printStudentList() {
-    System.out.print("Enter course name: ");
-
-    Scanner sc = new Scanner(System.in);
-
-    String courseName = sc.nextLine();
-    Course c = CourseManager.getCourse(courseName);
-
-    if (c.getCourseType() == CourseType.LEC) {
-      String gname = "_LEC";
-      HashSet<Record> recordList = RecordManager.getRecordList();
-      int counterStudentList=0;
-      for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) &&
-            c.getCourseId() == r.getCourse().getCourseId()) {
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;
-        }
-      }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
-    } else {
-      System.out.println("The list of groups: ");
-      HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
-      for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
-        System.out.println(entry.getKey());
-      }
-      System.out.print("Enter group name: ");
-
-      String gname = sc.nextLine();
-      HashSet<Record> recordList = RecordManager.getRecordList();
-      int counterStudentList=0;
-      for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) && c.getCourseId() == r.getCourse().getCourseId()) {
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;
-        }
-      }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
-    }
-  }
-
-  /**
    * Private method to print weightage as pairs of component and mark.
    * 
    * @param r individual record of student and course 
@@ -247,6 +209,4 @@ public final class StudentManager {
       }
     }
   }
-
 }
-
