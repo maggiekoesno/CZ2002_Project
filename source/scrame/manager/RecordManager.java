@@ -178,15 +178,17 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again:  ");
+      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
       matric = sc.nextLine();
+      if(matric.equals("-1")) return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
     while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again: ");
+      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if(courseName.equals("-1")) return;
     }
 
     for (Record r : recordList) {
@@ -204,8 +206,13 @@ public final class RecordManager {
             System.out.print("Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) ");
             ans = sc.nextInt();
             if (ans == 1) {
-              System.out.print("Enter mark for " + entry.getKey() + " ");
+              System.out.print("Enter mark for " + entry.getKey() + " :");
               ans = sc.nextFloat();
+              while(ans<0 || ans>100){
+                System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                System.out.print("Try Again:");
+                ans = sc.nextFloat();
+              }
               mark.put(entry.getKey(),ans);
             }
           }
@@ -231,15 +238,17 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again: ");
+      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
       matric = sc.nextLine();
+      if(matric.equals("-1")) return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
     while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again: ");
+      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if(courseName.equals("-1")) return;
     }
 
     for (Record r : recordList) {
@@ -252,6 +261,11 @@ public final class RecordManager {
         }
         System.out.print("Enter mark for exam: ");
         ans = sc.nextFloat();
+        while(ans<0 || ans>100){
+          System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+          System.out.print("Try Again: ");
+          ans = sc.nextFloat();
+        }
         mark.put("Exam", ans);
         r.setMark(mark);
         break;

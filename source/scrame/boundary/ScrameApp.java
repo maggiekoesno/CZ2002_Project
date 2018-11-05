@@ -139,9 +139,6 @@ public class ScrameApp {
           RecordManager.setExamMark();
           break;
         case 10: 
-          
-
-
           RecordManager.printCourseStatistics();
           break;
       }
