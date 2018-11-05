@@ -162,15 +162,17 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again: ");
+      System.out.print("Matriculation ID doesn't exist! Try again (-1 to exit):  ");
       matric = sc.nextLine();
+      if(matric == "-1") return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
     while (CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again: ");
+      System.out.print("Course doesn't exist! Try again(-1 to exit): ");
       courseName = sc.nextLine();
+      if(courseName == "-1") return;
     }
 
     for (Record r : recordList) {
