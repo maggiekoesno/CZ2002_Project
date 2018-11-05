@@ -20,7 +20,7 @@ import scrame.exception.IllegalCourseTypeException;
 import scrame.helper.CourseType;
 
 public final class CourseManager {
-  private static HashSet<Course> courseList;
+  private static HashSet<Course> courseList = new HashSet<Course>();
   private static String fileName = "../data/courses.ser";
 
   // /**
