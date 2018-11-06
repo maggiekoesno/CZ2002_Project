@@ -101,7 +101,6 @@ public final class StudentManager {
       e.printStackTrace();
     }
 
-    sc.close();
   }
 
   public static void addStudent(String name, String major, String enroll, String matric)
@@ -157,7 +156,6 @@ public final class StudentManager {
     }
     if (!studentFound) {
       System.out.println("Holy guacamole, invalid matric number!");
-      sc.close();
       return;
     }
     for (Record r : recordFound) {
@@ -174,8 +172,7 @@ public final class StudentManager {
       }
       printIndividualAssessment(r);
     }
-
-    sc.close();
+    
   }
 
   /**

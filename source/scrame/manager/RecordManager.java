@@ -400,7 +400,6 @@ public final class RecordManager {
       }
     }
 
-    sc.close();
 
     int markCount = 0;
 
