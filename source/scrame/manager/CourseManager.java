@@ -21,7 +21,7 @@ import scrame.helper.CourseType;
 
 public final class CourseManager {
   private static HashSet<Course> courseList = new HashSet<Course>();
-  private static String fileName = "courses.ser";
+  private static String fileName = "../data/courses.ser";
 
   // /**
   //  * Search the course by courseId, and return the appropriate Course Object.

@@ -30,7 +30,7 @@ import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
-  private static String fileName = "records.ser";
+  private static String fileName = "../data/records.ser";
   // The name of the file to open.
 
   public static void registerStudentCourse() {
@@ -372,8 +372,11 @@ public final class RecordManager {
     String courseName = sc.nextLine();
 
     while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again: ");
+      System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if (courseName.equals("-1")) {
+        return;
+      }
     }
 
     int markCount = 0;
