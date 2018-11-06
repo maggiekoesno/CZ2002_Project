@@ -21,7 +21,7 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private String groupName;
-  private Map<String, Float> mark;
+  private Map<String, Float> mark = null;
 
   public Record(Student student, Course course, String groupName, HashMap<String, Float> mark) {
     this.student = student;
@@ -76,7 +76,7 @@ public class Record implements Serializable {
   }
 
   public boolean hasMark() { 
-    return mark != null;
+    return mark.equals(null);
   }
 
   public String getGroupName() {
