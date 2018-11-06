@@ -15,7 +15,6 @@ import java.nio.file.Files;
 
 import java.lang.IllegalArgumentException;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,18 +86,28 @@ public final class StudentManager {
     System.out.print("Enter " + name + "'s matriculation number: ");
     matric = sc.nextLine();
 
-    if (isStudentInList(matric)) {
-      throw new IllegalArgumentException("Another student with matric number of " + matric + " has been registered.");
+    try {
+      Student student = new Student(name, major, enroll, matric);
+      studentList.add(student);
+      
+      for (Student s : studentList) {
+        System.out.println(s.toString());
+      }
+
+      System.out.println("Student named " + name + " added successfully.");
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    studentList.add(new Student(name, major, enroll, matric));
-    System.out.println("Student named " + name + " added successfully.");
+    sc.close();
   }
 
   public static void addStudent(String name, String major, String enroll, String matric)
       throws IllegalArgumentException {
     if (isStudentInList(matric)) {
-      throw new IllegalArgumentException("Another student with matric number of " + matric + " has been registered.");
+      throw new IllegalArgumentException("Cannot add student with existing matric number.");
     }
 
     studentList.add(new Student(name, major, enroll, matric));
@@ -187,119 +196,35 @@ public final class StudentManager {
       int counterStudentList=0;
       for (Record r : recordList) {
         //if (r.getGroupName().equals(gname) &&
-            //c.getCourseName() == r.getCourse().getCourseName()) {
-        if (c.getCourseName() == r.getCourse().getCourseName()){
+            //c.getCourseId() == r.getCourse().getCourseId()) {
+
+        if (r.getCourse().getCourseName().equals(c.getCourseName())){
           System.out.println(r.getStudent().getName());
-          counterStudentList++;
+          counterStudentList++;   
         }
       }
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
-      try {
+      try{
         c.printAllGroups();
       } catch (IllegalCourseTypeException e) {
         e.printStackTrace();
+        System.exit(1);
       }
       //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
       System.out.print("\nEnter group name: ");
 
-      String groupName = sc.nextLine();
+      String gname = sc.nextLine();
       HashSet<Record> recordList = RecordManager.getRecordList();
       int counterStudentList=0;
       for (Record r : recordList) {
-        if (r.getGroupName().equals(groupName) &&
-            c.getCourseName() == r.getCourse().getCourseName()) {
+        if (r.getGroupName().equals(gname) && r.getCourse().getCourseName().equals(c.getCourseName())) {
           System.out.println(r.getStudent().getName());
           counterStudentList++;
         }
       }
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));
-    }
-  }
-
-  /**
-   * Overloaded function to print student list for courses of type CourseType.LEC
-   * 
-   * @param courseName name of course
-   */
-  public static void printStudentList(String courseName) {
-    if (!CourseManager.isCourseInList(courseName)) {
-      throw new IllegalArgumentException(
-        "Oops, it seems that course " + courseName + " has not been registered to the system yet!"
-      );
-    }
-
-    Course c = CourseManager.findCourse(courseName);
-    ArrayList<String> studentsFound = new ArrayList<String>();
-    HashSet<Record> recordList = RecordManager.getRecordList();
-
-    // for (Record r : recordList) {
-    //   System.out.println(r.toString());
-    // }
-
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName().equals(courseName) && r.getGroupName().equals("_LEC")) {
-        studentsFound.add(r.getStudent().getName());
-      }
-    }
-
-    int numberOfStudentsFound = studentsFound.size();
-
-    if (numberOfStudentsFound == 0) {
-      System.out.println("No students have registered to course " + courseName + ".");
-    } else if (numberOfStudentsFound == 1) {
-      System.out.println("1 student has registered to course " + courseName + ".");
-    } else {
-      System.out.println(Integer.toString(numberOfStudentsFound) + " students have registered to course " + courseName + ".");
-    }
-  }
-  
-  /**
-   * Overloaded function to print student list for courses of type CourseType.TUT and
-   * CourseType.LAB.
-   * 
-   * @param courseName name of course
-   * @param groupName name of group
-   */
-  public static void printStudentList(String courseName, String groupName) {
-    if (!CourseManager.isCourseInList(courseName)) {
-      throw new IllegalArgumentException(
-        "Oops, it seems that course " + courseName + " has not been registered to the system yet!"
-      );
-    }
-
-    Course c = CourseManager.findCourse(courseName);
-    CourseType courseType = c.getCourseType();
-    
-    HashMap<String, Integer> groups = c.getTutLabGroups();
-    if (!groups.containsKey(groupName)) {
-      throw new IllegalArgumentException("Oops, there is no group " + groupName + " in course " + courseName + ".");
-    }
-
-    ArrayList<String> studentsFound = new ArrayList<String>();
-    HashSet<Record> recordList = RecordManager.getRecordList();
-
-    // for (Record r : recordList) {
-    //   System.out.println(r.toString());
-    // }
-
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName().equals(courseName) && r.getGroupName().equals(groupName)) {
-        studentsFound.add(r.getStudent().getName());
-      }
-    }
-
-    int numberOfStudentsFound = studentsFound.size();
-
-    if (numberOfStudentsFound == 0) {
-      System.out.println("No students have registered to group " + groupName + " on course " + courseName + ".");
-    } else if (numberOfStudentsFound == 1) {
-      System.out.println("1 student has registered to group " + groupName + " on course " + courseName + ".");
-    } else {
-      System.out.println(
-        Integer.toString(numberOfStudentsFound) + " students have registered to group " + groupName + " on course " + courseName + "."
-      );
     }
   }
 
@@ -334,4 +259,6 @@ public final class StudentManager {
       }
     }
   }
+
 }
+

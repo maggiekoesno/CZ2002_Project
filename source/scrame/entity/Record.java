@@ -75,6 +75,10 @@ public class Record implements Serializable {
     return mark;
   }
 
+  public boolean hasMark() { 
+    return mark != null;
+  }
+
   public String getGroupName() {
     return groupName;
   }

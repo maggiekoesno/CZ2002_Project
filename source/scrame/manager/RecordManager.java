@@ -15,8 +15,7 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-// import org.apache.commons.math3;
+import java.util.Arrays;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
@@ -66,7 +65,9 @@ public final class RecordManager {
     //     return;
     //   }
     // }
-    
+    if(!validateRegisterStudentCourse(matric, courseName)){
+      return;
+  }
     String groupName = null;
 
     if (courseFound.getCourseType() == CourseType.LEC) {
@@ -96,6 +97,16 @@ public final class RecordManager {
     recordList.add(r);
   }
 
+  public static boolean validateRegisterStudentCourse(String matric, String courseName){
+      for(Record r: recordList){
+        if(r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)){
+          System.out.println("The student is registered already to this course !");
+          return false;
+        }
+      }
+      return true;
+  }
+
   public static void registerStudentCourse(String matric, String courseName) {
     if (!StudentManager.isStudentInList(matric)) {
       System.out.println("Oops, student is not registered yet!");
@@ -109,7 +120,9 @@ public final class RecordManager {
 
     Student studentFound = StudentManager.findStudent(matric);
     Course courseFound = CourseManager.findCourse(courseName);
-    
+    if(!validateRegisterStudentCourse(matric, courseName)){
+        return;
+    }
     try {
       for (Record r : RecordManager.getRecordList()) {
         String tempCourseName = r.getCourse().getCourseName();
@@ -153,7 +166,9 @@ public final class RecordManager {
 
     Student studentFound = StudentManager.findStudent(matric);
     Course courseFound = CourseManager.findCourse(courseName);
-
+    if(!validateRegisterStudentCourse(matric, courseName)){
+      return;
+  }
     try {
       courseFound.register(groupName);
       String studentName = studentFound.getName();
@@ -183,20 +198,21 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again: ");
+      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
       matric = sc.nextLine();
+      if(matric.equals("-1")) return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
-    while (CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again: ");
+    while (!CourseManager.isCourseInList(courseName)) {
+      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if(courseName.equals("-1")) return;
     }
 
     for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) &&
-          r.getCourse().getCourseName() == courseName) {
+      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -204,7 +220,7 @@ public final class RecordManager {
         }
         weightage = r.getCourse().getWeightage();
         for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-          System.out.println(entry.getKey() + " = " + entry.getValue());
+          System.out.println(entry.getKey() + " = " + entry.getValue()); //TODO : entry.getValue() buat apa?
           
           if (entry.getValue()[1].equals("false") &&
               !(entry.getKey().toLowerCase().equals("exam"))) {
@@ -213,8 +229,13 @@ public final class RecordManager {
             );
             ans = sc.nextInt();
             if (ans == 1) {
-              System.out.print("Enter mark for " + entry.getKey());
+              System.out.print("Enter mark for " + entry.getKey() + " :");
               ans = sc.nextFloat();
+              while(ans<0 || ans>100){
+                System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                System.out.print("Try Again:");
+                ans = sc.nextFloat();
+              }
               mark.put(entry.getKey(),ans);
             }
           }
@@ -227,7 +248,7 @@ public final class RecordManager {
       System.out.println("Student is not taking that course!");
     }
 
-    sc.close();
+    
   }
 
   public static void setExamMark() {
@@ -240,20 +261,22 @@ public final class RecordManager {
     System.out.print("Enter student matriculation ID: ");
     matric = sc.nextLine();
     while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again: ");
+      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
       matric = sc.nextLine();
+      if(matric.equals("-1")) return;
     }
 
     System.out.print("Enter course name: ");
     String courseName = sc.nextLine();
-    while (CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again: ");
+    while (!CourseManager.isCourseInList(courseName)) {
+      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if(courseName.equals("-1")) return;
     }
 
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric) &&
-          r.getCourse().getCourseName() == courseName) {
+          r.getCourse().getCourseName().equals(courseName)) {
         check = true;
         mark = r.getMark();
         if (mark == null) {
@@ -261,6 +284,11 @@ public final class RecordManager {
         }
         System.out.print("Enter mark for exam: ");
         ans = sc.nextFloat();
+        while(ans<0 || ans>100){
+          System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+          System.out.print("Try Again: ");
+          ans = sc.nextFloat();
+        }
         mark.put("Exam", ans);
         r.setMark(mark);
         break;
@@ -270,7 +298,51 @@ public final class RecordManager {
       System.out.println("Student is not taking that course!");
     }
 
-    sc.close();
+  }
+
+  /**
+   * Print student list for a given course name.
+   * 
+   * If the course is of type LEC, then go straight to print the list of all the students.
+   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
+   * proceed to print the list of the students in that group.
+   */
+  public static void printStudentList() {
+    System.out.print("Enter course name: ");
+    Scanner sc = new Scanner(System.in);
+    String courseName = sc.nextLine();
+    Course c = CourseManager.findCourse(courseName);
+
+    if (c.getCourseType() == CourseType.LEC) {
+      int counterStudentList=0;
+      for (Record r : recordList) {
+        if (r.getCourse().getCourseName().equals(c.getCourseName())){
+          System.out.println(r.getStudent().getName());
+          counterStudentList++;
+        }
+      }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
+    } else {
+      System.out.println("The list of groups: ");
+      try {
+        c.printAllGroups();
+      } catch (IllegalCourseTypeException e) {
+        e.printStackTrace();
+      }
+      //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
+      System.out.print("\nEnter group name: ");
+
+      String gname = sc.nextLine();
+      HashSet<Record> recordList = RecordManager.getRecordList();
+      int counterStudentList=0;
+      for (Record r : recordList) {
+        if (r.getGroupName().equals(gname) && r.getCourse().getCourseName().equals(c.getCourseName())) {
+          System.out.println(r.getStudent().getName());
+          counterStudentList++;
+        }
+      }
+      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
+    }
   }
 
   public static void inputToFile() {
@@ -313,16 +385,19 @@ public final class RecordManager {
     int n = 0;
     float sum = 0;
     float mean = 0;
-    float std = 0;
-    float sumSquareDiff = 0;
+    double std = 0;
+    double sumSquareDiff = 0;
 
     Scanner sc = new Scanner(System.in);
     System.out.println("Input the course name for statistics: ");
     String courseName = sc.nextLine();
 
     while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again");
+      System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
       courseName = sc.nextLine();
+      if (courseName.equals("-1")) {
+        return;
+      }
     }
 
     sc.close();
@@ -330,57 +405,69 @@ public final class RecordManager {
     int markCount = 0;
 
     Course courseFound = CourseManager.findCourse(courseName);
-    markCount = courseFound.getWeightage().size();
+    Map<String, String[]> tmpWeightage = courseFound.getWeightage();
+    for(Map.Entry<String, String[]> entry : tmpWeightage.entrySet()){
+      if(entry.getValue()[1].equals("false")){
+        markCount++;
+      }
+    }
+    // System.out.println("mark count : " + markCount);
     
-    for (Record r: recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
-        Map<String,Float> mark = r.getMark();
-        if (mark.size() < markCount) {
-          System.out.print("Whoops. the course hasnt been finished yet, ");
-          System.out.println("there is a student who is not marked.");
-          System.out.println(
-            "Student name: "+ r.getStudent().getName() +
-            " with matric :" + r.getStudent().getMatric()
-          );
+    for (Record r1: recordList) {
+      if (r1.getCourse().getCourseName().equals(courseName)) {
+        Map<String,Float> mark = r1.getMark();
+        System.out.println(mark.size());
+        if ( !r1.hasMark() || mark.size() < markCount) {
+          System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
+          System.out.println("Student name: "+ r1.getStudent().getName() + " with matric :" + r1.getStudent().getMatric());
           return;
         }
+        
       }
     }
 
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
-        sum += r.calculateAverage();
+    for (Record r2 : recordList) {
+      if (r2.getCourse().getCourseName().equals(courseName)) {
+        sum += r2.calculateAverage();
         n++;
       }
     }
     for (Record r : recordList) {
-      if (r.getCourse().getCourseName() == courseName) {
+      if (r.getCourse().getCourseName().equals(courseName)) {
         sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
       }
     }
     mean = sum / n;
     
+    float[] studentScore = new float[n];
 
     System.out.println(
       "There are " + n + " students registered in this course."
     );
     System.out.println("Average : " + mean);
     
-    // std = Math.sqrt(sumSquareDiff / n);
-    // System.out.println("Standard Deviation :" + std);
+    std = Math.sqrt(sumSquareDiff / n);
+    System.out.println("Standard Deviation :" + std);
 
-    // NormalDistribution distribution = new NormalDistribution(mean, std);
-
-    // float[] percentile = new float[] { 0.25f, 0.5f, 0.75f };
-    // float value;
-    // float[] borderValue = new float[3];
-    // int i = 0;
-    // for(i = 0;i<3;i++) {
-    //   value = distribution.inverseCumulativeProbability(percentile[i]);
-    //   borderValue[i] = value*std + mean;
-    // }
-    // System.out.println("1st Quartile : " + borderValue[0]);
-    // System.out.println("2nd Quartile : " + borderValue[1]);
-    // System.out.println("3rd Quartile : " + borderValue[2]);
+    int i = 0;
+    for (Record record2: recordList) {
+      if(record2.getCourse().getCourseName().equals(courseName)) {
+        studentScore[i] = record2.calculateAverage();
+        i++;
+      }
+    }
+    Arrays.sort(studentScore);
+    int[] borderValueIndex = new int[3];
+    borderValueIndex[0] = (int)1/4*(n+1);
+    borderValueIndex[1] = (int)2/4*(n+1);
+    borderValueIndex[2] = (int)3/4*(n+1);
+    System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
+    System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
+    System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
+  
+      
+    
   }
 }
+
+
