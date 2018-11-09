@@ -193,75 +193,73 @@ public final class RecordManager {
     return true;
   }
 
-  public static void setCourseworkMark() {
-    Scanner sc = new Scanner(System.in);
-    boolean check = false;
-    String matric;
-    Map<String, Float> mark;
-    Map<String, String[]> weightage;
-    float ans;
+  // public static void setCourseworkMark() {
+  //   Scanner sc = new Scanner(System.in);
+  //   boolean check = false;
+  //   String matric;
+  //   Map<String, Float> mark;
+  //   Map<String, String[]> weightage;
+  //   float ans;
 
-    System.out.print("Enter student matriculation ID: ");
-    matric = sc.nextLine();
-    while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
-      matric = sc.nextLine();
-      if(matric.equals("-1")) return;
-    }
+  //   System.out.print("Enter student matriculation number: ");
+  //   matric = sc.nextLine();
+  //   while (!StudentManager.isStudentInList(matric)) {
+  //     System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
+  //     matric = sc.nextLine();
+  //     if(matric.equals("-1")) return;
+  //   }
 
-    System.out.print("Enter course name: ");
-    String courseName = sc.nextLine();
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if(courseName.equals("-1")) return;
-    }
+  //   System.out.print("Enter course name: ");
+  //   String courseName = sc.nextLine();
+  //   while (!CourseManager.isCourseInList(courseName)) {
+  //     System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+  //     courseName = sc.nextLine();
+  //     if(courseName.equals("-1")) return;
+  //   }
 
-    for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
-        check = true;
-        mark = r.getMark();
-        if (mark == null) {
-          mark = new HashMap<String, Float>();
-        }
-        weightage = r.getCourse().getWeightage();
-        for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-          System.out.println(entry.getKey() + " = " + entry.getValue()); //TODO : entry.getValue() buat apa?
+  //   for (Record r : recordList) {
+  //     if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
+  //       check = true;
+  //       mark = r.getMark();
+  //       if (mark == null) {
+  //         mark = new HashMap<String, Float>();
+  //       }
+  //       weightage = r.getCourse().getWeightage();
+  //       for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+  //         System.out.println(entry.getKey() + " = " + entry.getValue()); //TODO : entry.getValue() buat apa?
           
-          if (entry.getValue()[1].equals("false") &&
-              !(entry.getKey().toLowerCase().equals("exam"))) {
-            System.out.print(
-              "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
-            );
-            ans = sc.nextInt();
-            if (ans == 1) {
-              System.out.print("Enter mark for " + entry.getKey() + " :");
-              ans = sc.nextFloat();
-              while(ans<0 || ans>100){
-                System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
-                System.out.print("Try Again:");
-                ans = sc.nextFloat();
-              }
-              mark.put(entry.getKey(),ans);
-            }
-          }
-        }
-        r.setMark(mark);
-        break;
-      }
-    }
-    if (check == false) {
-      System.out.println("Student is not taking that course!");
-    }
-
-    
-  }
+  //         if (entry.getValue()[1].equals("false") &&
+  //             !(entry.getKey().toLowerCase().equals("exam"))) {
+  //           System.out.print(
+  //             "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
+  //           );
+  //           ans = sc.nextInt();
+  //           if (ans == 1) {
+  //             System.out.print("Enter mark for " + entry.getKey() + " :");
+  //             ans = sc.nextFloat();
+  //             while(ans<0 || ans>100){
+  //               System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+  //               System.out.print("Try Again:");
+  //               ans = sc.nextFloat();
+  //             }
+  //             mark.put(entry.getKey(),ans);
+  //           }
+  //         }
+  //       }
+  //       r.setMark(mark);
+  //       break;
+  //     }
+  //   }
+  //   if (check == false) {
+  //     System.out.println("Student is not taking that course!");
+  //   }
+  // }
 
   public static void setExamMark() {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
     String matric;
-    Map<String, Float> mark;
+    HashMap<String, Float> mark;
     float ans;
 
     System.out.print("Enter student matriculation ID: ");
@@ -303,7 +301,6 @@ public final class RecordManager {
     if (check == false) {
       System.out.println("Student is not taking that course!");
     }
-
   }
 
   /**

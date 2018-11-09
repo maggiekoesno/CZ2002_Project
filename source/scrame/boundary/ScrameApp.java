@@ -4,11 +4,13 @@ import java.util.Scanner;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import scrame.boundary.AdminForm;
 import scrame.boundary.StudentForm;
 
 import scrame.entity.Course;
+import scrame.entity.Record;
 
 import scrame.exception.IllegalCourseTypeException;
 
@@ -369,9 +371,6 @@ public class ScrameApp {
             }
 
             String parts[] = tmp.split(",");
-            // System.out.println(parts[0]);
-            // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
-            // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
             if (parts[3].equals("\"\"")) {
               parts[3] = "";
             }
@@ -398,7 +397,76 @@ public class ScrameApp {
           break;
 
         case 8:
-          RecordManager.setCourseworkMark();
+          // RecordManager.setCourseworkMark();
+
+          boolean check = false;
+          HashMap<String, Float> mark;
+          HashMap<String, String[]> weightage;
+          float ans;
+
+          System.out.print("Enter student matriculation number: ");
+          matric = sc.nextLine();
+
+          while (!StudentManager.isStudentInList(matric)) {
+            System.out.print("No registered student with that matriculation number! ");
+            System.out.print("Try again (enter -1 to exit): ");
+            matric = sc.nextLine();
+            if (matric.equals("-1")) {
+              return;
+            }
+          }
+
+          System.out.print("Enter course name: ");
+          courseName = sc.nextLine();
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+            if (courseName.equals("-1")) {
+              return;
+            }
+          }
+
+          HashSet<Record> recordList = RecordManager.getRecordList();
+
+          for (Record r : recordList) {
+            if (r.getStudent().getMatric().equals(matric) &&
+                r.getCourse().getCourseName().equals(courseName)) {
+              check = true;
+              mark = r.getMark();
+              weightage = r.getCourse().getWeightage();
+
+              for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+                // System.out.println(entry.getKey() + " = " + entry.getValue());
+                //TODO : entry.getValue() buat apa?
+                
+                if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
+                  System.out.print(
+                    "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
+                  );
+                  ans = sc.nextInt();
+
+                  if (ans == 1) {
+                    System.out.print("Enter mark for " + entry.getKey() + ": ");
+                    ans = sc.nextFloat();
+                    while (ans < 0 || ans > 100) {
+                      System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                      System.out.print("Try Again: ");
+                      ans = sc.nextFloat();
+                    }
+                    mark.put(entry.getKey(), ans);
+                  }
+                }
+              }
+
+              r.setMark(mark);
+              break;
+            }
+          }
+
+          if (check == false) {
+            System.out.println("Student is not taking that course!");
+          }
+          
           break;
 
         case 9:
