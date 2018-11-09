@@ -31,7 +31,6 @@ import scrame.helper.CourseType;
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
   private static String fileName = "../data/records.ser";
-  // The name of the file to open.
 
   public static void registerStudentCourse() {
     Scanner sc = new Scanner(System.in);
@@ -97,16 +96,6 @@ public final class RecordManager {
     HashMap<String, Float> mark = null;
     Record r = new Record(studentFound, courseFound, groupName, mark);
     recordList.add(r);
-  }
-
-  public static boolean validateRegisterStudentCourse(String matric, String courseName) {
-      for (Record r: recordList) {
-        if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
-          System.out.println("The student is registered already to this course !");
-          return false;
-        }
-      }
-      return true;
   }
 
   public static void registerStudentCourse(String matric, String courseName) {
@@ -191,6 +180,17 @@ public final class RecordManager {
     HashMap<String, Float> mark = null;
     Record r = new Record(studentFound, courseFound, groupName, mark);
     recordList.add(r);
+  }
+
+  public static boolean validateRegisterStudentCourse(String matric, String courseName) {
+    for (Record r: recordList) {
+      if (r.getStudent().getMatric().equals(matric) &&
+          r.getCourse().getCourseName().equals(courseName)) {
+        System.out.println("The student is registered already to this course!");
+        return false;
+      }
+    }
+    return true;
   }
 
   public static void setCourseworkMark() {
@@ -320,7 +320,7 @@ public final class RecordManager {
     Course c = CourseManager.findCourse(courseName);
 
     if (c.getCourseType() == CourseType.LEC) {
-      int counterStudentList=0;
+      int counterStudentList = 0;
       for (Record r : recordList) {
         if (r.getCourse().getCourseName().equals(c.getCourseName())){
           System.out.println(r.getStudent().getName());
@@ -330,11 +330,7 @@ public final class RecordManager {
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
-      try {
-        c.printAllGroups();
-      } catch (IllegalCourseTypeException e) {
-        e.printStackTrace();
-      }
+      c.printAllGroups();
       //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
       System.out.print("\nEnter group name: ");
 

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import scrame.boundary.AdminForm;
 import scrame.boundary.StudentForm;
 
+import scrame.entity.Course;
+
 import scrame.exception.IllegalCourseTypeException;
 
 import scrame.manager.CourseManager;
@@ -26,6 +28,8 @@ public class ScrameApp {
     int userChoice;
     int functionChoice;
     boolean flagWhile = true;
+    String matric;
+    String courseName;
     Scanner sc = new Scanner(System.in);
     
     userChoice = 1; // admin
@@ -61,9 +65,10 @@ public class ScrameApp {
     // RecordManager.registerStudentCourse("U1720122H", "CZ2001");
     // RecordManager.registerStudentCourse("U1720121H", "CZ2002", "BCG2");
     // RecordManager.registerStudentCourse("U1720123H", "CZ2003", "SSP1");
-    if (userChoice == 2){
+    if (userChoice == 2) {
       System.out.print("Enter matriculation number: ");
-      String matric = sc.nextLine();
+      matric = sc.nextLine();
+
       if (!StudentManager.isStudentInList(matric)) {
         System.out.println("Oh no! This matriculation number is not registered yet :(");
       }
@@ -82,12 +87,28 @@ public class ScrameApp {
           break;
 
         case 1:
-          // RecordManager.registerStudentCourse();
-          RecordManager.registerStudentCourse("U1720120H", "CZ2001");
-          RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
-          RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
-          RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
-          RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
+          System.out.print("Please input matric number: ");
+          matric = sc.nextLine();
+          System.out.print("Please input course name: ");
+          courseName = sc.nextLine();
+
+          Course courseFound = CourseManager.findCourse(courseName);
+
+          if (courseFound.getCourseType() == CourseType.LEC) {
+            RecordManager.registerStudentCourse(matric, courseName);
+          } else {
+            courseFound.printAllGroups();
+            System.out.print("Which group do you want to register into? ");
+            String groupName = sc.nextLine();
+            RecordManager.registerStudentCourse(matric, courseName, groupName);
+          }
+          
+          // RecordManager.registerStudentCourse("U1720120H", "CZ2001");
+          // RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
+          // RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
+          // RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
+          // RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
+
           break;
 
         case 2:
@@ -106,16 +127,18 @@ public class ScrameApp {
           System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
           String enroll = sc.nextLine();
           System.out.print("Enter " + name + "'s matriculation number: ");
-          String matric = sc.nextLine();
+          matric = sc.nextLine();
 
           try {
             StudentManager.addStudent(name, major, enroll, matric);
-            // StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-            // StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
-            // StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
           } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
           }
+
+          // StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
+          // StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
+          // StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
+          // StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
 
           break;
 
@@ -124,7 +147,7 @@ public class ScrameApp {
           HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
           System.out.print("Enter new course name: ");
-          String courseName = sc.nextLine();
+          courseName = sc.nextLine();
 
           System.out.print("Enter " + courseName + "'s course type (e.g. LEC, TUT, LAB): ");
           String typeInput = sc.nextLine();

@@ -173,14 +173,10 @@ public final class StudentManager {
       System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
     } else {
       System.out.println("The list of groups: ");
-      try{
-        c.printAllGroups();
-      } catch (IllegalCourseTypeException e) {
-        e.printStackTrace();
-        System.exit(1);
-      }
+      c.printAllGroups();
       //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
-      System.out.print("\nEnter group name: ");
+      System.out.println();
+      System.out.print("Enter group name: ");
 
       String gname = sc.nextLine();
       HashSet<Record> recordList = RecordManager.getRecordList();

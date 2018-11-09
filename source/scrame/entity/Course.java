@@ -149,11 +149,12 @@ public class Course implements Serializable {
   /**
    * Print all groups on the course. 
    */
-  public void printAllGroups() throws IllegalCourseTypeException {
+  public void printAllGroups() {
     if (courseType == CourseType.LEC) {
-      throw new IllegalCourseTypeException(
+      System.out.println(
         "Oops, it appears that " + courseName + " doesn't have any groups."
       );
+      return;
     }
     
     String groupName;
