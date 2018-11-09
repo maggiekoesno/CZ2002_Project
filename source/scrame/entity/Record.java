@@ -76,7 +76,7 @@ public class Record implements Serializable {
   }
 
   public boolean hasMark() { 
-    return mark.equals(null);
+    return mark != null;
   }
 
   public String getGroupName() {

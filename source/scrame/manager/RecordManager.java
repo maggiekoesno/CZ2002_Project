@@ -30,7 +30,7 @@ import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
-  private static String fileName = "../data/records.ser";
+  private static String fileName = "records.ser";
 
   public static void registerStudentCourse() {
     Scanner sc = new Scanner(System.in);
@@ -192,31 +192,17 @@ public final class RecordManager {
     }
     return true;
   }
-
-  public static void setCourseworkMark() {
-    Scanner sc = new Scanner(System.in);
-    boolean check = false;
-    String matric;
+  /**
+   * A function that set the mark of the student in certain course
+   * @param matric Student's matric id
+   * @param courseName Name of the course
+   */
+  public static void setCourseworkMark(String matric, String courseName) {
     Map<String, Float> mark;
     Map<String, String[]> weightage;
     float ans;
-
-    System.out.print("Enter student matriculation ID: ");
-    matric = sc.nextLine();
-    while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
-      matric = sc.nextLine();
-      if(matric.equals("-1")) return;
-    }
-
-    System.out.print("Enter course name: ");
-    String courseName = sc.nextLine();
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if(courseName.equals("-1")) return;
-    }
-
+    boolean check = false;
+    Scanner sc = new Scanner(System.in);
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
         check = true;
@@ -256,29 +242,16 @@ public final class RecordManager {
 
     
   }
-
-  public static void setExamMark() {
+  /**
+   * A function that set the mark of a student in certain course
+   * @param matric Student's matric id
+   * @param courseName Name of the course
+   */
+  public static void setExamMark(String matric, String courseName) {
     Scanner sc = new Scanner(System.in);
     boolean check = false;
-    String matric;
     Map<String, Float> mark;
     float ans;
-
-    System.out.print("Enter student matriculation ID: ");
-    matric = sc.nextLine();
-    while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
-      matric = sc.nextLine();
-      if(matric.equals("-1")) return;
-    }
-
-    System.out.print("Enter course name: ");
-    String courseName = sc.nextLine();
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if(courseName.equals("-1")) return;
-    }
 
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric) &&
@@ -297,6 +270,7 @@ public final class RecordManager {
         }
         mark.put("Exam", ans);
         r.setMark(mark);
+        System.out.println("Mark successfully inputted");
         break;
       }
     }
@@ -360,7 +334,7 @@ public final class RecordManager {
       // e.printStackTrace();
     }
   }
-
+  
   public static void loadFromFile() {
     try {
       ObjectInputStream in = new ObjectInputStream(
@@ -382,7 +356,11 @@ public final class RecordManager {
     return recordList;
   }
 
-  public static void printCourseStatistics() {
+  /**
+   * A function that print the course statistics
+   * @param courseName the name of the course
+   */
+  public static void printCourseStatistics(String courseName) {
     int n = 0;
     float sum = 0;
     float mean = 0;
@@ -390,16 +368,6 @@ public final class RecordManager {
     double sumSquareDiff = 0;
 
     Scanner sc = new Scanner(System.in);
-    System.out.println("Input the course name for statistics: ");
-    String courseName = sc.nextLine();
-
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if (courseName.equals("-1")) {
-        return;
-      }
-    }
 
 
     int markCount = 0;
@@ -416,10 +384,11 @@ public final class RecordManager {
     for (Record r1: recordList) {
       if (r1.getCourse().getCourseName().equals(courseName)) {
         Map<String,Float> mark = r1.getMark();
-        System.out.println(mark.size());
+        // System.out.println(mark.size());
+        // System.out.println(r1.hasMark());
         if ( !r1.hasMark() || mark.size() < markCount) {
           System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-          System.out.println("Student name: "+ r1.getStudent().getName() + " with matric :" + r1.getStudent().getMatric());
+          System.out.println("Student name: "+ r1.getStudent().getName() + " with matric : " + r1.getStudent().getMatric());
           return;
         }
         

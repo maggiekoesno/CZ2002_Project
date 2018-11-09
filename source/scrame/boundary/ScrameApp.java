@@ -28,6 +28,7 @@ public class ScrameApp {
     int userChoice;
     int functionChoice;
     boolean flagWhile = true;
+    boolean quit = false; //elbert 8 9 10
 
     String matric;
     String courseName;
@@ -398,15 +399,77 @@ public class ScrameApp {
           break;
 
         case 8:
-          RecordManager.setCourseworkMark();
+          // String matric;
+          
+          // String courseName;
+          quit = false;
+          System.out.print("Enter student matriculation ID: ");
+          matric = sc.nextLine();
+          while (!StudentManager.isStudentInList(matric)) {
+            System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
+            matric = sc.nextLine();
+            if(matric.equals("-1")){
+              quit = true;
+              break;
+            } 
+          }
+          if(quit) break;
+          System.out.print("Enter course name: ");
+          courseName = sc.nextLine();
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+            if(courseName.equals("-1")){
+              quit = true;
+              break;
+            } 
+          }
+          if(quit) break;
+          RecordManager.setCourseworkMark(matric, courseName);
           break;
 
         case 9:
-          RecordManager.setExamMark();
+          quit = false;
+          System.out.print("Enter student matriculation ID: ");
+          matric = sc.nextLine();
+          while (!StudentManager.isStudentInList(matric)) {
+            System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
+            matric = sc.nextLine();
+            if(matric.equals("-1")){
+              quit = true;
+              break;
+            } 
+          }
+          if(quit) break;
+          System.out.print("Enter course name: ");
+          courseName = sc.nextLine();
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+            if(courseName.equals("-1")){
+              quit = true;
+              break;
+            } 
+          }
+          if(quit) break;
+          RecordManager.setExamMark(matric,courseName);
           break;
 
-        case 10: 
-          RecordManager.printCourseStatistics();
+        case 10:
+          System.out.println("Input the course name for statistics: ");
+          courseName = sc.nextLine();
+      
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+            if (courseName.equals("-1")) {
+              quit = true;
+              break;
+            }
+          }
+          if(quit)
+            break;
+          RecordManager.printCourseStatistics(courseName);
           break;
       }
     }
