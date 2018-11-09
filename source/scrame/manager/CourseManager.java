@@ -276,57 +276,6 @@ public final class CourseManager {
   }
 
   /**
-   * Take course name and display all the vacancies of the following courses.
-   */
-  public static void checkVacancy() {
-    Scanner sc = new Scanner(System.in);
-    System.out.print("Please input the course name: ");
-    String courseName = sc.nextLine();
-
-    while (!isCourseInList(courseName)) {
-      System.out.println("The course name you requested is not found!");
-      System.out.print("Please input the course name: ");
-      courseName = sc.nextLine();
-    }
-
-    Course courseFound = findCourse(courseName);
-    CourseType courseType = courseFound.getCourseType();
-
-    System.out.println();
-    System.out.println("++++++++++++++++++++++++++++++");
-    System.out.println("++++++ Course Vacancies ++++++");
-    System.out.println("++++++++++++++++++++++++++++++");
-
-    switch (courseType) {
-      case LEC:
-        int lectureVacancy = courseFound.getLectureVacancy();
-        System.out.println("++ Course Name ++++ Vacancy ++");
-        System.out.println("++++++++++++++++++++++++++++++");
-        System.out.print("++   " + courseName + "    ++++   ");
-        System.out.printf("%3d", lectureVacancy);
-        System.out.println("   ++");
-        System.out.println("++++++++++++++++++++++++++++++");
-        break;
-      case TUT:
-      case LAB:
-        HashMap<String, Integer> groups = courseFound.getTutLabGroups();
-        System.out.println("++ Group Name +++++ Vacancy ++");
-        System.out.println("++++++++++++++++++++++++++++++");
-        for (Map.Entry<String, Integer> entry : groups.entrySet()) {
-          if (entry.getKey().equals("_LEC")) {
-            continue;
-          }
-          System.out.print("++   " + entry.getKey() + "     +++++    ");
-          System.out.printf("%2d", entry.getValue());
-          System.out.println("   ++");
-        }
-        System.out.println("++++++++++++++++++++++++++++++");
-        break;
-    }
-  }
-
-
-  /**
    * Modify course weightage.
    */
   public static void setCourseWeightage() {
