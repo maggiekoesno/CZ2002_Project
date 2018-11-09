@@ -166,7 +166,9 @@ public class ScrameApp {
           break;
 
         case 3:
-          StudentManager.printTranscript();
+          System.out.print("Enter your matriculation number: ");
+          matric = sc.nextLine();
+          StudentManager.printTranscript(matric);
           break;
 
         case 4:

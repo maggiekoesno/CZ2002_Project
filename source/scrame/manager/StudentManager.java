@@ -105,28 +105,33 @@ public final class StudentManager {
     return studentFound;
   }
 
-  public static void printTranscript() {
-    Scanner sc = new Scanner(System.in);
-
-    System.out.print("Enter your matriculation number: ");
-    String matric = sc.nextLine();
-
+  /**
+   * Print student transcript on student's matric number.
+   * 
+   * @param matric matriculation number
+   */
+  public static void printTranscript(String matric) {
     boolean studentFound = false;
     HashSet<Record> recordList = RecordManager.getRecordList();
     HashSet<Record> recordFound = new HashSet<Record>();
+
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric)) {
         recordFound.add(r);
         studentFound = true;
       }
     }
+
     if (!studentFound) {
       System.out.println("Holy guacamole, invalid matric number!");
       return;
     }
+
     for (Record r : recordFound) {
-      if(!r.hasMark()){
-        System.out.println("Oops. " + r.getStudent().getName() + " haven't been marked on " + r.getCourse().getCourseName() + "!");
+      if (!r.hasMark()) {
+        System.out.println(
+          "Oops. " + r.getStudent().getName() + " haven't been marked on " +
+          r.getCourse().getCourseName() + "!");
         return;
       }
       System.out.println("Course name: " + r.getCourse().getCourseName());
@@ -140,9 +145,9 @@ public final class StudentManager {
         float mark = entry.getValue();
         System.out.println(component + ": " + Float.toString(mark));
       }
+
       printIndividualAssessment(r);
     }
-    
   }
 
   /**
