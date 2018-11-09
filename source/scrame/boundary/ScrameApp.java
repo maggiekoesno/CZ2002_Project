@@ -35,7 +35,9 @@ public class ScrameApp {
     String courseName;
     HashMap<String, Integer> tempVacancies;
     HashMap<String, String[]> tempWeightageList;
+    HashSet<Record> recordList;
     String tmp;
+    boolean check;
 
     Scanner sc = new Scanner(System.in);
     
@@ -399,7 +401,7 @@ public class ScrameApp {
         case 8:
           // RecordManager.setCourseworkMark();
 
-          boolean check = false;
+          check = false;
           HashMap<String, Float> mark;
           HashMap<String, String[]> weightage;
           float ans;
@@ -426,7 +428,7 @@ public class ScrameApp {
             }
           }
 
-          HashSet<Record> recordList = RecordManager.getRecordList();
+          recordList = RecordManager.getRecordList();
 
           for (Record r : recordList) {
             if (r.getStudent().getMatric().equals(matric) &&
@@ -465,12 +467,65 @@ public class ScrameApp {
 
           if (check == false) {
             System.out.println("Student is not taking that course!");
+          } else {
+            System.out.println("Coursework mark set successfully.");
           }
           
           break;
 
         case 9:
-          RecordManager.setExamMark();
+          check = false;
+
+          System.out.print("Enter student matriculation number: ");
+          matric = sc.nextLine();
+          while (!StudentManager.isStudentInList(matric)) {
+            System.out.print("Matriculation number doesn't exist! Try again (enter -1 to exit): ");
+            matric = sc.nextLine();
+            if (matric.equals("-1")) {
+              return;
+            }
+          }
+
+          System.out.print("Enter course name: ");
+          courseName = sc.nextLine();
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+
+            if (courseName.equals("-1")) {
+              return;
+            }
+          }
+
+          recordList = RecordManager.getRecordList();
+
+          for (Record r : recordList) {
+            if (r.getStudent().getMatric().equals(matric) &&
+                r.getCourse().getCourseName().equals(courseName)) {
+              check = true;
+              mark = r.getMark();
+              if (mark == null) {
+                mark = new HashMap<String, Float>();
+              }
+              System.out.print("Enter mark for exam: ");
+              ans = sc.nextFloat();
+              while(ans < 0 || ans > 100){
+                System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                System.out.print("Try Again: ");
+                ans = sc.nextFloat();
+              }
+              mark.put("Exam", ans);
+              r.setMark(mark);
+              break;
+            }
+          }
+
+          if (check == false) {
+            System.out.println("Student is not taking that course!");
+          } else {
+            System.out.println("Exam mark set successfully!");
+          }
+
           break;
 
         case 10: 

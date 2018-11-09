@@ -255,53 +255,53 @@ public final class RecordManager {
   //   }
   // }
 
-  public static void setExamMark() {
-    Scanner sc = new Scanner(System.in);
-    boolean check = false;
-    String matric;
-    HashMap<String, Float> mark;
-    float ans;
+  // public static void setExamMark() {
+  //   Scanner sc = new Scanner(System.in);
+  //   boolean check = false;
+  //   String matric;
+  //   HashMap<String, Float> mark;
+  //   float ans;
 
-    System.out.print("Enter student matriculation ID: ");
-    matric = sc.nextLine();
-    while (!StudentManager.isStudentInList(matric)) {
-      System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
-      matric = sc.nextLine();
-      if(matric.equals("-1")) return;
-    }
+  //   System.out.print("Enter student matriculation ID: ");
+  //   matric = sc.nextLine();
+  //   while (!StudentManager.isStudentInList(matric)) {
+  //     System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
+  //     matric = sc.nextLine();
+  //     if(matric.equals("-1")) return;
+  //   }
 
-    System.out.print("Enter course name: ");
-    String courseName = sc.nextLine();
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if(courseName.equals("-1")) return;
-    }
+  //   System.out.print("Enter course name: ");
+  //   String courseName = sc.nextLine();
+  //   while (!CourseManager.isCourseInList(courseName)) {
+  //     System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+  //     courseName = sc.nextLine();
+  //     if(courseName.equals("-1")) return;
+  //   }
 
-    for (Record r : recordList) {
-      if (r.getStudent().getMatric().equals(matric) &&
-          r.getCourse().getCourseName().equals(courseName)) {
-        check = true;
-        mark = r.getMark();
-        if (mark == null) {
-          mark = new HashMap<String, Float>();
-        }
-        System.out.print("Enter mark for exam: ");
-        ans = sc.nextFloat();
-        while(ans<0 || ans>100){
-          System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
-          System.out.print("Try Again: ");
-          ans = sc.nextFloat();
-        }
-        mark.put("Exam", ans);
-        r.setMark(mark);
-        break;
-      }
-    }
-    if (check == false) {
-      System.out.println("Student is not taking that course!");
-    }
-  }
+  //   for (Record r : recordList) {
+  //     if (r.getStudent().getMatric().equals(matric) &&
+  //         r.getCourse().getCourseName().equals(courseName)) {
+  //       check = true;
+  //       mark = r.getMark();
+  //       if (mark == null) {
+  //         mark = new HashMap<String, Float>();
+  //       }
+  //       System.out.print("Enter mark for exam: ");
+  //       ans = sc.nextFloat();
+  //       while(ans<0 || ans>100){
+  //         System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+  //         System.out.print("Try Again: ");
+  //         ans = sc.nextFloat();
+  //       }
+  //       mark.put("Exam", ans);
+  //       r.setMark(mark);
+  //       break;
+  //     }
+  //   }
+  //   if (check == false) {
+  //     System.out.println("Student is not taking that course!");
+  //   }
+  // }
 
   /**
    * Print student list for a given course name for courses of type LEC.
