@@ -528,8 +528,21 @@ public class ScrameApp {
 
           break;
 
-        case 10: 
-          RecordManager.printCourseStatistics();
+        case 10:
+          System.out.print("Input the course name for statistics: ");
+          courseName = sc.nextLine();
+
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
+            courseName = sc.nextLine();
+            if (courseName.equals("-1")) {
+              return;
+            }
+          }
+
+          RecordManager.printCourseStatistics(courseName);
+
+          // RecordManager.printCourseStatistics("CZ2001");
           break;
       }
     }

@@ -379,25 +379,17 @@ public final class RecordManager {
     return recordList;
   }
 
-  public static void printCourseStatistics() {
+  /**
+   * Print course statistics based on course name.
+   * 
+   * @param courseName course name
+   */
+  public static void printCourseStatistics(String courseName) {
     int n = 0;
     float sum = 0;
     float mean = 0;
     double std = 0;
     double sumSquareDiff = 0;
-
-    Scanner sc = new Scanner(System.in);
-    System.out.println("Input the course name for statistics: ");
-    String courseName = sc.nextLine();
-
-    while (!CourseManager.isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
-      courseName = sc.nextLine();
-      if (courseName.equals("-1")) {
-        return;
-      }
-    }
-
 
     int markCount = 0;
 
@@ -415,8 +407,10 @@ public final class RecordManager {
         Map<String,Float> mark = r1.getMark();
         System.out.println(mark.size());
         if ( !r1.hasMark() || mark.size() < markCount) {
-          System.out.println("Whoops. the course hasnt been finished yet, there is a student who is not marked.");
-          System.out.println("Student name: "+ r1.getStudent().getName() + " with matric :" + r1.getStudent().getMatric());
+          System.out.println("Whoops, the course hasnt been finished yet. There is a student who is not marked.");
+          System.out.println(
+            "Student name: "+ r1.getStudent().getName() +
+            " (Matric number: " + r1.getStudent().getMatric() + ")");
           return;
         }
         
@@ -461,10 +455,5 @@ public final class RecordManager {
     System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
     System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
     System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
-  
-      
-    
   }
 }
-
-
