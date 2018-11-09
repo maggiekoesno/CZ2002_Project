@@ -21,7 +21,7 @@ public class Record implements Serializable {
   private Student student;
   private Course course;
   private String groupName;
-  private Map<String, Float> mark = null;
+  private HashMap<String, Float> mark;
 
   public Record(Student student, Course course, String groupName, HashMap<String, Float> mark) {
     this.student = student;
@@ -35,7 +35,7 @@ public class Record implements Serializable {
   }
 
   private float calculateAverage(String check) {
-    Map<String, String[]> weightage = course.getWeightage();
+    HashMap<String, String[]> weightage = course.getWeightage();
     float sum = 0.0f;
 
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
@@ -71,19 +71,23 @@ public class Record implements Serializable {
     return course;
   }
 
-  public Map<String, Float> getMark() {
+  public HashMap<String, Float> getMark() {
+    if (!hasMark()) {
+      return new HashMap<String, Float>();
+    }
+    
     return mark;
   }
 
   public boolean hasMark() { 
-    return mark != null;
+    return !mark.equals(null);
   }
 
   public String getGroupName() {
     return groupName;
   }
 
-  public void setMark(Map<String, Float> mark) {
+  public void setMark(HashMap<String, Float> mark) {
     this.mark = mark;
   }
 }

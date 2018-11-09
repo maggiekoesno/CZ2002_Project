@@ -36,97 +36,52 @@ public final class StudentManager {
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
-  
-  public static void inputToFile() {
-    try {
-      ObjectOutputStream out = new ObjectOutputStream(
-        new FileOutputStream(fileName)
-      );
-      out.writeObject(studentList);
-      out.close();
-      System.out.println("Serialized data is saved in " + fileName);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
-  public static void loadFromFile() {
-    try {
-      ObjectInputStream in = new ObjectInputStream(
-        new FileInputStream(fileName)
-      );
-      studentList = (HashSet<Student>) in.readObject();
-      in.close();
-    } catch (EOFException e) {
-      studentList = new HashSet<Student>();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      System.out.println("Hashset<Student> class not found.");
-      e.printStackTrace();
-    }
-  }
-
-  public static void addStudent(String name, String major, String enroll, String matric)
-      throws IllegalArgumentException {
+  /**
+   * Add student with the given information.
+   * 
+   * @param name student's name
+   * @param major student's major
+   * @param enroll student's enrollment semester
+   * @param matric student's matric number
+   */
+  public static void addStudent(String name, String major, String enroll, String matric) {
     if (isStudentInList(matric)) {
-      throw new IllegalArgumentException("Cannot add student with existing matric number.");
+      System.out.println("Cannot add student with existing matric number.");
+      return;
     }
 
     studentList.add(new Student(name, major, enroll, matric));
     System.out.println("Student named " + name + " added successfully.");
   }
 
-  /** 
-   * Check if a student is registered.
+  /**
+   * Print student transcript on student's matric number.
    * 
-   * @param matric matric ID of the student
-   * 
-   * @return true if student in the list, false otherwise
+   * @param matric matriculation number
    */
-  public static boolean isStudentInList(String matric) {
-    for (Student s : studentList) {
-      if (s.getMatric().equals(matric)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static Student findStudent(String matric) {
-    Student studentFound = null;
-    for (Student s : studentList) {
-      if (s.getMatric().equals(matric)) {
-        studentFound = s;
-      }
-    }
-    return studentFound;
-  }
-
-  public static void printTranscript() {
-    Scanner sc = new Scanner(System.in);
-
-    System.out.print("Enter your matriculation number: ");
-    String matric = sc.nextLine();
-
+  public static void printTranscript(String matric) {
     boolean studentFound = false;
     HashSet<Record> recordList = RecordManager.getRecordList();
     HashSet<Record> recordFound = new HashSet<Record>();
+
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric)) {
         recordFound.add(r);
         studentFound = true;
       }
     }
+
     if (!studentFound) {
       System.out.println("Holy guacamole, invalid matric number!");
       return;
     }
+
     for (Record r : recordFound) {
-      if(!r.hasMark()){
-        System.out.println("Oops. " + r.getStudent().getName() + " haven't been marked on " + r.getCourse().getCourseName() + "!");
+      if (!r.hasMark()) {
+        System.out.println(
+          "Oops. " + r.getStudent().getName() + " haven't been marked on " +
+          r.getCourse().getCourseName() + "!");
         return;
       }
       System.out.println("Course name: " + r.getCourse().getCourseName());
@@ -140,54 +95,8 @@ public final class StudentManager {
         float mark = entry.getValue();
         System.out.println(component + ": " + Float.toString(mark));
       }
+
       printIndividualAssessment(r);
-    }
-    
-  }
-
-  /**
-   * Print student list for a given course name.
-   * 
-   * If the course is of type LEC, then go straight to print the list of all the students.
-   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
-   * proceed to print the list of the students in that group.
-   */
-  public static void printStudentList() {
-    System.out.print("Enter course name: ");
-    Scanner sc = new Scanner(System.in);
-    String courseName = sc.nextLine();
-    Course c = CourseManager.findCourse(courseName);
-
-    if (c.getCourseType() == CourseType.LEC) {
-      HashSet<Record> recordList = RecordManager.getRecordList();
-      int counterStudentList=0;
-      for (Record r : recordList) {
-        //if (r.getGroupName().equals(gname) &&
-            //c.getCourseId() == r.getCourse().getCourseId()) {
-
-        if (r.getCourse().getCourseName().equals(c.getCourseName())){
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;   
-        }
-      }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
-    } else {
-      System.out.println("The list of groups: ");
-      c.printAllGroups();
-      //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
-      System.out.println();
-      System.out.print("Enter group name: ");
-
-      String gname = sc.nextLine();
-      HashSet<Record> recordList = RecordManager.getRecordList();
-      int counterStudentList=0;
-      for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) && r.getCourse().getCourseName().equals(c.getCourseName())) {
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;
-        }
-      }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
     }
   }
 
@@ -223,5 +132,72 @@ public final class StudentManager {
     }
   }
 
-}
+  /** 
+   * Check if a student is registered.
+   * 
+   * @param matric matric ID of the student
+   * @return true if student in the list, false otherwise
+   */
+  public static boolean isStudentInList(String matric) {
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
+  /**
+   * Return student with a given matric number.
+   * 
+   * @param matric matric number
+   * @return student object
+   */
+  public static Student findStudent(String matric) {
+    Student studentFound = null;
+    for (Student s : studentList) {
+      if (s.getMatric().equals(matric)) {
+        studentFound = s;
+      }
+    }
+    return studentFound;
+  }
+
+  /**
+   * Input student list to file.
+   */
+  public static void inputToFile() {
+    try {
+      ObjectOutputStream out = new ObjectOutputStream(
+        new FileOutputStream(fileName)
+      );
+      out.writeObject(studentList);
+      out.close();
+      System.out.println("Serialized data is saved in " + fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Load student list from file.
+   */
+  public static void loadFromFile() {
+    try {
+      ObjectInputStream in = new ObjectInputStream(
+        new FileInputStream(fileName)
+      );
+      studentList = (HashSet<Student>) in.readObject();
+      in.close();
+    } catch (EOFException e) {
+      studentList = new HashSet<Student>();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      System.out.println("Hashset<Student> class not found.");
+      e.printStackTrace();
+    }
+  }
+}

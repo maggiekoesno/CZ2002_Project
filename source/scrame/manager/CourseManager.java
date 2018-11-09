@@ -24,201 +24,8 @@ public final class CourseManager {
   private static HashSet<Course> courseList = new HashSet<Course>();
   private static String fileName = "courses.ser";
 
-  // /**
-  //  * Search the course by courseId, and return the appropriate Course Object.
-  //  * 
-  //  * @param courseId the id of the course we want
-  //  * @return Course Object
-  //  */
-  // public static Course findCourse(int courseId) {
-  //   Course courseFound = null;
-  //   for (Course c : courseList) {
-  //     if (c.getCourseId() == courseId) {
-  //       courseFound = c;
-  //       break;
-  //     }
-  //   }
-  //   return courseFound;
-  // }
-
-  public static Course findCourse(String courseName)
-      throws IllegalArgumentException {
-    if (!isCourseInList(courseName)) {
-      throw new IllegalArgumentException(
-        "Oops, it seems that the course " + courseName + " has not been registered to the system yet!"
-      );
-    }
-
-    for (Course c : courseList) {
-      if (c.getCourseName().equals(courseName)) {
-        return c;
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Write list of all courses to file.
-   * 
-   * @param courseList list of courses 
-   */
-  public static void inputToFile() {
-    try {
-      ObjectOutputStream out = new ObjectOutputStream(
-        new FileOutputStream(fileName)
-      );
-      out.writeObject(courseList);
-      out.close();
-      System.out.println("Serialized data is saved in " + fileName);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Read the textfile and insert it into courseList.
-   */
-  public static void loadFromFile() {
-    try {
-      ObjectInputStream in = new ObjectInputStream(
-        new FileInputStream(fileName)
-      );
-      courseList = (HashSet<Course>) in.readObject();
-      in.close();
-    } catch (EOFException e) {
-      courseList = new HashSet<Course>();
-    } catch (IOException e) {
-      e.printStackTrace();
-      System.exit(1);
-    } catch (ClassNotFoundException e) {
-      System.out.println("Hashset<Course> class not found.");
-      e.printStackTrace();
-      System.exit(1);      
-    }
-  }
-
   /**
    * Add course into the courseList and insert it into textfile.
-   */
-  public static void addCourse() {
-    Scanner sc = new Scanner(System.in);
-
-    HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
-
-    System.out.print("Enter new course name: ");
-    String courseName = sc.nextLine();
-
-    System.out.print("Enter " + courseName + "'s course type (e.g. LEC, TUT, LAB): ");
-    String typeInput = sc.nextLine();
-
-    CourseType courseType = CourseType.LEC;
-    try {
-      courseType = courseTypeToEnum(typeInput);
-    } catch (IllegalCourseTypeException e) {
-      System.out.println(e.getMessage());
-      System.exit(1);
-    }
-
-    System.out.print("Enter " + courseName + "'s total vacancy: ");
-    int totalVacancy = sc.nextInt();
-
-    while (totalVacancy <= 0) {
-      System.out.println(
-        "Vacancy cannot be less than or equal to zero. Please try again!"
-      );
-      totalVacancy = sc.nextInt();
-    }
-    tempVacancies.put("_LEC",totalVacancy);
-
-    if (courseType != CourseType.LEC) {
-      int groupVacancy;
-      String groupName;
-
-      while (true) {
-        sc.nextLine();
-        System.out.print("Enter group name (e.g. SSP1) or -1 to exit: ");
-        groupName = sc.nextLine();
-        if (groupName.equals("-1")) {
-          break;
-        }
-        System.out.print("Enter the group vacancy: ");
-        groupVacancy = sc.nextInt();
-        if (groupVacancy <= 0) {
-          System.out.println("Vacancy cannot be less than or equal to zero.");
-          continue;
-        }
-        tempVacancies.put(groupName, groupVacancy);
-      }
-    }
-
-    System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
-    System.out.println(
-      "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
-    );
-    System.out.println("Example: ");
-    System.out.println(
-      "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
-    );
-    System.out.println(
-      "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
-    );
-    System.out.println(
-      "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
-    );
-    System.out.println("Attendance,30%,false,Coursework <-------, same");
-
-    System.out.println("Course Weightage Structure: ");
-    System.out.println("             100%                    ");
-    System.out.println("           /    \\                  ");
-    System.out.println("      60% Exam     40% Coursework           ");
-    System.out.println("                    /           \\          ");
-    System.out.println("            70% Assignment       30% Attendance   ");
-
-    // ArrayList<String> components = new ArrayList<String>();
-
-    // System.out.println("Enter component (e.g. Exam): (-1 to exit)");
-    // String component = sc.nextLine();
-    // components.add(component);
-    // System.out.println("Enter percentage (e.g. 60%): ");
-    // String percentage = sc.nextLine();
-    // System.out.println("Does " + component + "have any subcomponent(s)? (y/n)");
-    // String hasSubcomponents = sc.nextLine();
-
-    // if (components.isEmpty()) {
-    //   continue;
-    // }
-
-    String tmp;
-    while (true) {
-      System.out.println("Enter the weightage, -1 to exit:");
-      tmp = sc.next();
-      if (tmp.equals("-1")) {
-        break;
-      }
-      String parts[] = tmp.split(",");
-      if(parts[3].equals("\"\"")){
-        parts[3] = "";
-      }
-      
-      // System.out.println(parts[0]);      
-      // System.out.println(parts[1] + " " + parts[2] + " " + parts[3]);
-      tempWeightageList.put(parts[0], new String[]{parts[1], parts[2], parts[3]});
-    }
-
-    if (isCourseInList(courseName)) {
-      throw new IllegalArgumentException(courseName + " has been registered.");
-    }
-
-    courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));
-    System.out.println("Course " + courseName + " added succesfully!");
-  }
-
-  /**
-   * Overloaded function for testing.
    * 
    * @param courseName corurse name
    * @param courseType type of course
@@ -226,11 +33,11 @@ public final class CourseManager {
    * @param tempWeightageList weightagelist
    */
   public static void addCourse(String courseName, CourseType courseType,
-      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList)
-      throws IllegalArgumentException {
+      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
 
     if (isCourseInList(courseName)) {
-      throw new IllegalArgumentException(courseName + " has been registered.");
+      System.out.println(courseName + " has been registered.");
+      return;
     }
 
     courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));   
@@ -239,6 +46,10 @@ public final class CourseManager {
 
   /**
    * Helper function to convert course type to enum.
+   * 
+   * @param tempCourseType string of course type
+   * @return CourseType object
+   * @throws IllegalCourseTypeException
    */
   public static CourseType courseTypeToEnum(String tempCourseType)
       throws IllegalCourseTypeException {
@@ -277,69 +88,11 @@ public final class CourseManager {
 
   /**
    * Modify course weightage.
+   * 
+   * @param course course object
+   * @param weightage weightage
+   * @return true if successful, else false
    */
-  // public static void setCourseWeightage() {
-  //   System.out.println("Modify course weightage for specific course id");
-  //   System.out.print("Please input the course name: ");
-
-  //   Scanner sc = new Scanner(System.in);
-  //   String courseName = sc.nextLine();
-
-  //   while (!isCourseInList(courseName)) {
-  //     System.out.print("The course is not registered. Please try again: ");
-  //     courseName = sc.nextLine();
-  //   }
-
-  //   Course course = findCourse(courseName);
-  //   HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
-
-
-  //   System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
-  //   System.out.println(
-  //     "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
-  //   );
-  //   System.out.println("Example: ");
-  //   System.out.println(
-  //     "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
-  //   );
-  //   System.out.println(
-  //     "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
-  //   );
-  //   System.out.println(
-  //     "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
-  //   );
-  //   System.out.println("Attendance,30%,false,Coursework <-------, same");
-
-  //   System.out.println("Course Weightage Structure: ");
-  //   System.out.println("             100%                    ");
-  //   System.out.println("           /    \\                  ");
-  //   System.out.println("      60% Exam     40% Coursework           ");
-  //   System.out.println("                    /           \\          ");
-  //   System.out.println("            70% Assignment       30% Attendance   ");
-
-  //   while (true) {
-  //     System.out.println("Enter the weightage, -1 to exit:");
-  //     String tmp = sc.next();
-  //     if (tmp.equalsIgnoreCase("-1")) {
-        
-  //       break;
-  //     }
-  //     String parts[] = tmp.split(",");
-  //     // System.out.println(parts[0]);
-  //     // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
-  //     // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
-  //     if(parts[3].equals("\"\"")){
-  //       parts[3] = "";
-  //     }
-  //     tempWeightageList.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
-  //   }
-  //   for(Map.Entry<String, String[]> entry : tempWeightageList.entrySet()){
-  //     System.out.println(entry.getKey()+","+entry.getValue()[0]+entry.getValue()[1]+entry.getValue()[2]);
-  //   }
-  //   course.setWeightage(tempWeightageList);
-  //   System.out.println("Weightage set successfully!");
-  // }
-
   public static boolean setCourseWeightage(Course course, HashMap<String, String[]> weightage) {
     try {
       course.setWeightage(weightage);
@@ -348,5 +101,69 @@ public final class CourseManager {
     }
 
     return true;
+  }
+
+  /**
+   * Get course object on course name.
+   * 
+   * @param courseName course name
+   * @return course object
+   * @throws IllegalArgumentException
+   */
+  public static Course findCourse(String courseName)
+      throws IllegalArgumentException {
+    if (!isCourseInList(courseName)) {
+      throw new IllegalArgumentException(
+        "Oops, it seems that the course " + courseName + " has not been registered to the system yet!"
+      );
+    }
+
+    for (Course c : courseList) {
+      if (c.getCourseName().equals(courseName)) {
+        return c;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Write list of all courses to file.
+   */
+  public static void inputToFile() {
+    try {
+      ObjectOutputStream out = new ObjectOutputStream(
+        new FileOutputStream(fileName)
+      );
+      out.writeObject(courseList);
+      out.close();
+      System.out.println("Serialized data is saved in " + fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Read the textfile and insert it into courseList.
+   */
+  public static void loadFromFile() {
+    try {
+      ObjectInputStream in = new ObjectInputStream(
+        new FileInputStream(fileName)
+      );
+      courseList = (HashSet<Course>) in.readObject();
+      in.close();
+    } catch (EOFException e) {
+      courseList = new HashSet<Course>();
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    } catch (ClassNotFoundException e) {
+      System.out.println("Hashset<Course> class not found.");
+      e.printStackTrace();
+      System.exit(1);      
+    }
   }
 }

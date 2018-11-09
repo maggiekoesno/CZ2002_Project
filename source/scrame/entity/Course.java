@@ -262,7 +262,7 @@ public class Course implements Serializable {
    * 
    * @return weightage
    */
-  public Map<String, String[]> getWeightage() {
+  public HashMap<String, String[]> getWeightage() {
     return weightage;
   }
 }
