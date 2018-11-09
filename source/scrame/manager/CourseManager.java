@@ -101,7 +101,7 @@ public final class CourseManager {
   }
 
   /**
-   * Add course into the courseList and insert it into textfile
+   * Add course into the courseList and insert it into textfile.
    */
   public static void addCourse() {
     Scanner sc = new Scanner(System.in);
@@ -240,7 +240,7 @@ public final class CourseManager {
   /**
    * Helper function to convert course type to enum.
    */
-  private static CourseType courseTypeToEnum(String tempCourseType)
+  public static CourseType courseTypeToEnum(String tempCourseType)
       throws IllegalCourseTypeException {
     CourseType courseType = null;
     switch (tempCourseType) {
