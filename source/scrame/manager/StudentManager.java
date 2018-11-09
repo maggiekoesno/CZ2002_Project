@@ -69,39 +69,38 @@ public final class StudentManager {
     }
   }
 
-  public static void addStudent() {
-    String name;
-    String major;
-    String enroll;
-    String matric;
+  // public static void addStudent() {
+  //   String name;
+  //   String major;
+  //   String enroll;
+  //   String matric;
 
-    Scanner sc = new Scanner(System.in);
+  //   Scanner sc = new Scanner(System.in);
 
-    System.out.print("Enter new student's name: ");
-    name = sc.nextLine();
-    System.out.print("Enter " + name + "'s major (e.g. CSC): ");
-    major = sc.nextLine();
-    System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
-    enroll = sc.nextLine();
-    System.out.print("Enter " + name + "'s matriculation number: ");
-    matric = sc.nextLine();
+  //   System.out.print("Enter new student's name: ");
+  //   name = sc.nextLine();
+  //   System.out.print("Enter " + name + "'s major (e.g. CSC): ");
+  //   major = sc.nextLine();
+  //   System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
+  //   enroll = sc.nextLine();
+  //   System.out.print("Enter " + name + "'s matriculation number: ");
+  //   matric = sc.nextLine();
 
-    try {
-      Student student = new Student(name, major, enroll, matric);
-      studentList.add(student);
+  //   try {
+  //     Student student = new Student(name, major, enroll, matric);
+  //     studentList.add(student);
       
-      for (Student s : studentList) {
-        System.out.println(s.toString());
-      }
+  //     for (Student s : studentList) {
+  //       System.out.println(s.toString());
+  //     }
 
-      System.out.println("Student named " + name + " added successfully.");
-    } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-  }
+  //     System.out.println("Student named " + name + " added successfully.");
+  //   } catch (IllegalArgumentException e) {
+  //     System.out.println(e.getMessage());
+  //   } catch (Exception e) {
+  //     e.printStackTrace();
+  //   }
+  // }
 
   public static void addStudent(String name, String major, String enroll, String matric)
       throws IllegalArgumentException {

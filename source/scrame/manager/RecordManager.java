@@ -65,9 +65,11 @@ public final class RecordManager {
     //     return;
     //   }
     // }
-    if(!validateRegisterStudentCourse(matric, courseName)){
+
+    if (!validateRegisterStudentCourse(matric, courseName)) {
       return;
-  }
+    }
+     
     String groupName = null;
 
     if (courseFound.getCourseType() == CourseType.LEC) {
@@ -97,9 +99,9 @@ public final class RecordManager {
     recordList.add(r);
   }
 
-  public static boolean validateRegisterStudentCourse(String matric, String courseName){
-      for(Record r: recordList){
-        if(r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)){
+  public static boolean validateRegisterStudentCourse(String matric, String courseName) {
+      for (Record r: recordList) {
+        if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
           System.out.println("The student is registered already to this course !");
           return false;
         }
@@ -120,9 +122,11 @@ public final class RecordManager {
 
     Student studentFound = StudentManager.findStudent(matric);
     Course courseFound = CourseManager.findCourse(courseName);
-    if(!validateRegisterStudentCourse(matric, courseName)){
-        return;
+
+    if (!validateRegisterStudentCourse(matric, courseName)) {
+      return;
     }
+
     try {
       for (Record r : RecordManager.getRecordList()) {
         String tempCourseName = r.getCourse().getCourseName();
@@ -166,9 +170,11 @@ public final class RecordManager {
 
     Student studentFound = StudentManager.findStudent(matric);
     Course courseFound = CourseManager.findCourse(courseName);
-    if(!validateRegisterStudentCourse(matric, courseName)){
+    
+    if (!validateRegisterStudentCourse(matric, courseName)) {
       return;
-  }
+    }
+
     try {
       courseFound.register(groupName);
       String studentName = studentFound.getName();
