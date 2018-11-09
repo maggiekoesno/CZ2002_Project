@@ -28,8 +28,13 @@ public class ScrameApp {
     int userChoice;
     int functionChoice;
     boolean flagWhile = true;
+
     String matric;
     String courseName;
+    HashMap<String, Integer> tempVacancies;
+    HashMap<String, String[]> tempWeightageList;
+    String tmp;
+
     Scanner sc = new Scanner(System.in);
     
     userChoice = 1; // admin
@@ -184,8 +189,8 @@ public class ScrameApp {
           break;
 
         case 5:
-          HashMap<String, Integer> tempVacancies = new HashMap<String, Integer>();
-          HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+          tempVacancies = new HashMap<String, Integer>();
+          tempWeightageList = new HashMap<String, String[]>();
 
           System.out.print("Enter new course name: ");
           courseName = sc.nextLine();
@@ -257,7 +262,6 @@ public class ScrameApp {
           System.out.println("                    /           \\          ");
           System.out.println("            70% Assignment       30% Attendance   ");
 
-          String tmp;
           while (true) {
             System.out.println("Enter the weightage, -1 to exit:");
             tmp = sc.next();
@@ -265,7 +269,7 @@ public class ScrameApp {
               break;
             }
             String parts[] = tmp.split(",");
-            if(parts[3].equals("\"\"")){
+            if (parts[3].equals("\"\"")) {
               parts[3] = "";
             }
             
@@ -322,7 +326,75 @@ public class ScrameApp {
           break;
 
         case 7:
-          CourseManager.setCourseWeightage();
+          System.out.println("Modify course weightage for specific course name.");
+          System.out.print("Please input the course name: ");
+
+          courseName = sc.nextLine();
+
+          while (!CourseManager.isCourseInList(courseName)) {
+            System.out.print("The course is not registered. Please try again: ");
+            courseName = sc.nextLine();
+          }
+
+          tempWeightageList = new HashMap<String, String[]>();
+
+          System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
+          System.out.println(
+            "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
+          );
+          System.out.println("Example: ");
+          System.out.println(
+            "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
+          );
+          System.out.println(
+            "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
+          );
+          System.out.println(
+            "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
+          );
+          System.out.println("Attendance,30%,false,Coursework <-------, same");
+
+          System.out.println("Course Weightage Structure: ");
+          System.out.println("             100%                    ");
+          System.out.println("           /    \\                  ");
+          System.out.println("      60% Exam     40% Coursework           ");
+          System.out.println("                    /           \\          ");
+          System.out.println("            70% Assignment       30% Attendance   ");
+
+          while (true) {
+            System.out.println("Enter the weightage, -1 to exit:");
+            tmp = sc.next();
+            if (tmp.equalsIgnoreCase("-1")) {
+              break;
+            }
+
+            String parts[] = tmp.split(",");
+            // System.out.println(parts[0]);
+            // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
+            // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
+            if (parts[3].equals("\"\"")) {
+              parts[3] = "";
+            }
+
+            tempWeightageList.put(parts[0], new String[]{parts[1], parts[2], parts[3]});
+          }
+
+          Course course = CourseManager.findCourse(courseName);
+          if (CourseManager.setCourseWeightage(course, tempWeightageList)) {
+            System.out.println("Weightage set successfully!");
+          }
+
+          // tempWeightageList = new HashMap<String, String[]>();
+          // tempWeightageList.put("Exam", new String[]{"50%", "false", ""});
+          // tempWeightageList.put("Coursework", new String[]{"50%", "true", ""});
+          // tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
+          // tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
+
+          // Course course = CourseManager.findCourse("CZ2001");
+          // if (CourseManager.setCourseWeightage(course, tempWeightageList)) {
+          //   System.out.println("Weightage set successfully!");
+          // }
+
           break;
 
         case 8:

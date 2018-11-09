@@ -10,7 +10,7 @@ public class Student implements Serializable {
   private String matric;
 
   /**
-   * Constructor for Student object
+   * Constructor for Student object.
    * 
    * @param name name of the student
    * @param major major of the student

@@ -278,66 +278,75 @@ public final class CourseManager {
   /**
    * Modify course weightage.
    */
-  public static void setCourseWeightage() {
-    System.out.println("Modify course weightage for specific course id");
-    System.out.print("Please input the course name: ");
+  // public static void setCourseWeightage() {
+  //   System.out.println("Modify course weightage for specific course id");
+  //   System.out.print("Please input the course name: ");
 
-    Scanner sc = new Scanner(System.in);
-    String courseName = sc.nextLine();
+  //   Scanner sc = new Scanner(System.in);
+  //   String courseName = sc.nextLine();
 
-    while (!isCourseInList(courseName)) {
-      System.out.print("The course is not registered. Please try again: ");
-      courseName = sc.nextLine();
-    }
+  //   while (!isCourseInList(courseName)) {
+  //     System.out.print("The course is not registered. Please try again: ");
+  //     courseName = sc.nextLine();
+  //   }
 
-    Course course = findCourse(courseName);
-    HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
+  //   Course course = findCourse(courseName);
+  //   HashMap<String, String[]> tempWeightageList = new HashMap<String, String[]>();
 
 
-    System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
-    System.out.println(
-      "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
-    );
-    System.out.println("Example: ");
-    System.out.println(
-      "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
-    );
-    System.out.println(
-      "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
-    );
-    System.out.println(
-      "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
-    );
-    System.out.println("Attendance,30%,false,Coursework <-------, same");
+  //   System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
+  //   System.out.println(
+  //     "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
+  //   );
+  //   System.out.println("Example: ");
+  //   System.out.println(
+  //     "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
+  //   );
+  //   System.out.println(
+  //     "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
+  //   );
+  //   System.out.println(
+  //     "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
+  //   );
+  //   System.out.println("Attendance,30%,false,Coursework <-------, same");
 
-    System.out.println("Course Weightage Structure: ");
-    System.out.println("             100%                    ");
-    System.out.println("           /    \\                  ");
-    System.out.println("      60% Exam     40% Coursework           ");
-    System.out.println("                    /           \\          ");
-    System.out.println("            70% Assignment       30% Attendance   ");
+  //   System.out.println("Course Weightage Structure: ");
+  //   System.out.println("             100%                    ");
+  //   System.out.println("           /    \\                  ");
+  //   System.out.println("      60% Exam     40% Coursework           ");
+  //   System.out.println("                    /           \\          ");
+  //   System.out.println("            70% Assignment       30% Attendance   ");
 
-    while (true) {
-      System.out.println("Enter the weightage, -1 to exit:");
-      String tmp = sc.next();
-      if (tmp.equalsIgnoreCase("-1")) {
+  //   while (true) {
+  //     System.out.println("Enter the weightage, -1 to exit:");
+  //     String tmp = sc.next();
+  //     if (tmp.equalsIgnoreCase("-1")) {
         
-        break;
-      }
-      String parts[] = tmp.split(",");
-      // System.out.println(parts[0]);
-      // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
-      // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
-      if(parts[3].equals("\"\"")){
-        parts[3] = "";
-      }
-      tempWeightageList.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
-    }
-    for(Map.Entry<String, String[]> entry : tempWeightageList.entrySet()){
-      System.out.println(entry.getKey()+","+entry.getValue()[0]+entry.getValue()[1]+entry.getValue()[2]);
-    }
-    course.setWeightage(tempWeightageList);
-    System.out.println("Weightage set successfully !");
+  //       break;
+  //     }
+  //     String parts[] = tmp.split(",");
+  //     // System.out.println(parts[0]);
+  //     // System.out.println(parts[1]+","+parts[2]+","+parts[3]);
+  //     // System.out.println("is "+ parts[3]+" equal to \"\"?" + parts[3].equals("\"\"")); // debug
+  //     if(parts[3].equals("\"\"")){
+  //       parts[3] = "";
+  //     }
+  //     tempWeightageList.put(parts[0], new String[]{parts[1],parts[2],parts[3]});
+  //   }
+  //   for(Map.Entry<String, String[]> entry : tempWeightageList.entrySet()){
+  //     System.out.println(entry.getKey()+","+entry.getValue()[0]+entry.getValue()[1]+entry.getValue()[2]);
+  //   }
+  //   course.setWeightage(tempWeightageList);
+  //   System.out.println("Weightage set successfully!");
+  // }
 
+  public static boolean setCourseWeightage(Course course, HashMap<String, String[]> weightage) {
+    try {
+      course.setWeightage(weightage);
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+
+    return true;
   }
 }
