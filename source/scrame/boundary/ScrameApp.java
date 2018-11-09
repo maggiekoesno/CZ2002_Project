@@ -260,7 +260,24 @@ public class ScrameApp {
           break;
 
         case 6:
-          RecordManager.printStudentList();
+          // RecordManager.printStudentList();
+
+          System.out.print("Enter course name: ");
+          courseName = sc.nextLine();
+
+          Course c = CourseManager.findCourse(courseName);
+
+          if (c.getCourseType() == CourseType.LEC) {
+            RecordManager.printStudentList(courseName);
+          } else {
+            System.out.println("The list of groups: ");
+            c.printAllGroups();
+
+            System.out.print("\nEnter group name: ");
+            String groupName = sc.nextLine();
+
+            RecordManager.printStudentList(courseName, groupName);
+          }
           break;
 
         case 7:

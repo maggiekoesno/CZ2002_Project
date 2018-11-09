@@ -307,44 +307,43 @@ public final class RecordManager {
   }
 
   /**
-   * Print student list for a given course name.
+   * Print student list for a given course name for courses of type LEC.
    * 
-   * If the course is of type LEC, then go straight to print the list of all the students.
-   * Else if the course is of type TUT or LAB, then ask the user for the group name, then
-   * proceed to print the list of the students in that group.
+   * @param courseName course name
    */
-  public static void printStudentList() {
-    System.out.print("Enter course name: ");
-    Scanner sc = new Scanner(System.in);
-    String courseName = sc.nextLine();
-    Course c = CourseManager.findCourse(courseName);
+  public static void printStudentList(String courseName) {
+    int counterStudentList = 0;
 
-    if (c.getCourseType() == CourseType.LEC) {
-      int counterStudentList = 0;
-      for (Record r : recordList) {
-        if (r.getCourse().getCourseName().equals(c.getCourseName())){
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;
-        }
+    for (Record r : recordList) {
+      if (r.getCourse().getCourseName().equals(courseName)) {
+        System.out.println(r.getStudent().getName());
+        counterStudentList++;
       }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));      
-    } else {
-      System.out.println("The list of groups: ");
-      c.printAllGroups();
-      //HashMap<String, Integer> tutLabGroups = c.getTutLabGroups();
-      System.out.print("\nEnter group name: ");
-
-      String gname = sc.nextLine();
-      HashSet<Record> recordList = RecordManager.getRecordList();
-      int counterStudentList=0;
-      for (Record r : recordList) {
-        if (r.getGroupName().equals(gname) && r.getCourse().getCourseName().equals(c.getCourseName())) {
-          System.out.println(r.getStudent().getName());
-          counterStudentList++;
-        }
-      }
-      System.out.println("Total number of students : " + Integer.toString(counterStudentList));
     }
+
+    System.out.println("Total number of students: " + Integer.toString(counterStudentList));
+  }
+
+  /**
+   * Print student list for a given course name for courses of type TUT or LAB.
+   * 
+   * @param courseName course name
+   * @param groupName group name
+   */
+  public static void printStudentList(String courseName, String groupName) {
+    HashSet<Record> recordList = RecordManager.getRecordList();
+    int counterStudentList = 0;
+
+    for (Record r : recordList) {
+      if (r.getGroupName().equals(groupName) && r.getCourse().getCourseName().equals(courseName)) {
+        System.out.println(r.getStudent().getName());
+        counterStudentList++;
+      }
+    }
+
+    System.out.println(
+      "Total number of students in " + groupName + " is: " +
+      Integer.toString(counterStudentList));
   }
 
   public static void inputToFile() {
