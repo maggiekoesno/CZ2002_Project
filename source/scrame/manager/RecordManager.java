@@ -32,72 +32,13 @@ public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
   private static String fileName = "../data/records.ser";
 
-  public static void registerStudentCourse() {
-    Scanner sc = new Scanner(System.in);
-    
-    System.out.print("Please input matric number: ");
-    String matric = sc.nextLine();
-    Student studentFound = StudentManager.findStudent(matric);
-    
-    if (studentFound == null) {
-      System.out.println(
-        "Oops, student is not registered yet! Please register first."
-      );
-      return;
-    }
-
-    System.out.print("Please input course name: ");
-    String courseName = sc.nextLine();
-    
-    if (!CourseManager.isCourseInList(courseName)) {
-      System.out.println("Oops, course is not registered to the system yet.");
-      return;
-    }
-
-    Course courseFound = CourseManager.findCourse(courseName);
-
-    // for (Record r : recordList) {
-    //   if(r.getStudent().getMatric.equals(s.toUpperCase())
-    //     && r.getCourse().getCourseName().equals(cn)
-    //   ){
-    //     Syste
-    //     return;
-    //   }
-    // }
-
-    if (!validateRegisterStudentCourse(matric, courseName)) {
-      return;
-    }
-     
-    String groupName = null;
-
-    if (courseFound.getCourseType() == CourseType.LEC) {
-      groupName = "_LEC";
-      try {
-        courseFound.register();
-      } catch (IllegalCourseTypeException e) {
-        e.printStackTrace();
-      } catch (LectureFullException e) {
-        e.printStackTrace();
-      }
-    } else {
-      try {
-        courseFound.printAllGroups();
-        System.out.println("Which group do you want to register into? ");
-        groupName = sc.nextLine();
-        courseFound.register(groupName);
-        System.out.println("Succesfully registered!!");
-      } catch (IllegalCourseTypeException e) {
-        e.printStackTrace();
-      } catch (GroupFullException e) {
-        e.printStackTrace();
-      }
-    }
-    HashMap<String, Float> mark = null;
-    Record r = new Record(studentFound, courseFound, groupName, mark);
-    recordList.add(r);
-  }
-
+  /**
+   * Register student on a course and store in recordList. Applicable for course of
+   * type LEC.
+   * 
+   * @param matric matric number
+   * @param courseName course name
+   */
   public static void registerStudentCourse(String matric, String courseName) {
     if (!StudentManager.isStudentInList(matric)) {
       System.out.println("Oops, student is not registered yet!");
@@ -146,6 +87,14 @@ public final class RecordManager {
     ));
   }
 
+  /**
+   * Register student on a course and store in recordList. Applicable for course of
+   * type TUT or LAB.
+   * 
+   * @param matric matric number
+   * @param courseName course name
+   * @param groupName group name
+   */
   public static void registerStudentCourse(String matric, String courseName, String groupName) {
     if (!StudentManager.isStudentInList(matric)) {
       System.out.println("Oops, student is not registered yet!");
@@ -193,116 +142,6 @@ public final class RecordManager {
     return true;
   }
 
-  // public static void setCourseworkMark() {
-  //   Scanner sc = new Scanner(System.in);
-  //   boolean check = false;
-  //   String matric;
-  //   Map<String, Float> mark;
-  //   Map<String, String[]> weightage;
-  //   float ans;
-
-  //   System.out.print("Enter student matriculation number: ");
-  //   matric = sc.nextLine();
-  //   while (!StudentManager.isStudentInList(matric)) {
-  //     System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit):  ");
-  //     matric = sc.nextLine();
-  //     if(matric.equals("-1")) return;
-  //   }
-
-  //   System.out.print("Enter course name: ");
-  //   String courseName = sc.nextLine();
-  //   while (!CourseManager.isCourseInList(courseName)) {
-  //     System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-  //     courseName = sc.nextLine();
-  //     if(courseName.equals("-1")) return;
-  //   }
-
-  //   for (Record r : recordList) {
-  //     if (r.getStudent().getMatric().equals(matric) && r.getCourse().getCourseName().equals(courseName)) {
-  //       check = true;
-  //       mark = r.getMark();
-  //       if (mark == null) {
-  //         mark = new HashMap<String, Float>();
-  //       }
-  //       weightage = r.getCourse().getWeightage();
-  //       for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-  //         System.out.println(entry.getKey() + " = " + entry.getValue()); //TODO : entry.getValue() buat apa?
-          
-  //         if (entry.getValue()[1].equals("false") &&
-  //             !(entry.getKey().toLowerCase().equals("exam"))) {
-  //           System.out.print(
-  //             "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
-  //           );
-  //           ans = sc.nextInt();
-  //           if (ans == 1) {
-  //             System.out.print("Enter mark for " + entry.getKey() + " :");
-  //             ans = sc.nextFloat();
-  //             while(ans<0 || ans>100){
-  //               System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
-  //               System.out.print("Try Again:");
-  //               ans = sc.nextFloat();
-  //             }
-  //             mark.put(entry.getKey(),ans);
-  //           }
-  //         }
-  //       }
-  //       r.setMark(mark);
-  //       break;
-  //     }
-  //   }
-  //   if (check == false) {
-  //     System.out.println("Student is not taking that course!");
-  //   }
-  // }
-
-  // public static void setExamMark() {
-  //   Scanner sc = new Scanner(System.in);
-  //   boolean check = false;
-  //   String matric;
-  //   HashMap<String, Float> mark;
-  //   float ans;
-
-  //   System.out.print("Enter student matriculation ID: ");
-  //   matric = sc.nextLine();
-  //   while (!StudentManager.isStudentInList(matric)) {
-  //     System.out.print("Matriculation ID doesn't exist! Try again (enter -1 to exit): ");
-  //     matric = sc.nextLine();
-  //     if(matric.equals("-1")) return;
-  //   }
-
-  //   System.out.print("Enter course name: ");
-  //   String courseName = sc.nextLine();
-  //   while (!CourseManager.isCourseInList(courseName)) {
-  //     System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-  //     courseName = sc.nextLine();
-  //     if(courseName.equals("-1")) return;
-  //   }
-
-  //   for (Record r : recordList) {
-  //     if (r.getStudent().getMatric().equals(matric) &&
-  //         r.getCourse().getCourseName().equals(courseName)) {
-  //       check = true;
-  //       mark = r.getMark();
-  //       if (mark == null) {
-  //         mark = new HashMap<String, Float>();
-  //       }
-  //       System.out.print("Enter mark for exam: ");
-  //       ans = sc.nextFloat();
-  //       while(ans<0 || ans>100){
-  //         System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
-  //         System.out.print("Try Again: ");
-  //         ans = sc.nextFloat();
-  //       }
-  //       mark.put("Exam", ans);
-  //       r.setMark(mark);
-  //       break;
-  //     }
-  //   }
-  //   if (check == false) {
-  //     System.out.println("Student is not taking that course!");
-  //   }
-  // }
-
   /**
    * Print student list for a given course name for courses of type LEC.
    * 
@@ -343,42 +182,6 @@ public final class RecordManager {
       Integer.toString(counterStudentList));
   }
 
-  public static void inputToFile() {
-    try {
-      ObjectOutputStream out = new ObjectOutputStream(
-        new FileOutputStream(fileName)
-      );
-      out.writeObject(recordList);
-      out.close();
-      System.out.println("Serialized data is saved in" + fileName);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (Exception e) {
-      // e.printStackTrace();
-    }
-  }
-
-  public static void loadFromFile() {
-    try {
-      ObjectInputStream in = new ObjectInputStream(
-        new FileInputStream(fileName)
-      );
-      recordList = (HashSet<Record>) in.readObject();
-      in.close();
-    } catch (EOFException e) {
-      recordList = new HashSet<Record>();
-    } catch(IOException e) {
-      e.printStackTrace();
-    } catch(ClassNotFoundException e) {
-      System.out.println("Hashset<Record> class not found");
-      e.printStackTrace();
-    }
-  }
-
-  public static HashSet<Record> getRecordList() {
-    return recordList;
-  }
-
   /**
    * Print course statistics based on course name.
    * 
@@ -395,12 +198,11 @@ public final class RecordManager {
 
     Course courseFound = CourseManager.findCourse(courseName);
     Map<String, String[]> tmpWeightage = courseFound.getWeightage();
-    for(Map.Entry<String, String[]> entry : tmpWeightage.entrySet()){
-      if(entry.getValue()[1].equals("false")){
+    for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
+      if (entry.getValue()[1].equals("false")) {
         markCount++;
       }
     }
-    // System.out.println("mark count : " + markCount);
     
     for (Record r1: recordList) {
       if (r1.getCourse().getCourseName().equals(courseName)) {
@@ -423,6 +225,7 @@ public final class RecordManager {
         n++;
       }
     }
+
     for (Record r : recordList) {
       if (r.getCourse().getCourseName().equals(courseName)) {
         sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
@@ -455,5 +258,52 @@ public final class RecordManager {
     System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
     System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
     System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
+  }
+
+  /**
+   * Input record list to file.
+   */
+  public static void inputToFile() {
+    try {
+      ObjectOutputStream out = new ObjectOutputStream(
+        new FileOutputStream(fileName)
+      );
+      out.writeObject(recordList);
+      out.close();
+      System.out.println("Serialized data is saved in" + fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      // e.printStackTrace();
+    }
+  }
+
+  /**
+   * Load record list from file.
+   */
+  public static void loadFromFile() {
+    try {
+      ObjectInputStream in = new ObjectInputStream(
+        new FileInputStream(fileName)
+      );
+      recordList = (HashSet<Record>) in.readObject();
+      in.close();
+    } catch (EOFException e) {
+      recordList = new HashSet<Record>();
+    } catch(IOException e) {
+      e.printStackTrace();
+    } catch(ClassNotFoundException e) {
+      System.out.println("Hashset<Record> class not found");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Getter method for record list.
+   * 
+   * @return record list
+   */
+  public static HashSet<Record> getRecordList() {
+    return recordList;
   }
 }

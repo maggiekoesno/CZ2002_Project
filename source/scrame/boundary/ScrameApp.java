@@ -246,6 +246,20 @@ public class ScrameApp {
             }
           }
 
+          // ArrayList<String> components = new ArrayList<String>();
+
+          // System.out.println("Enter component (e.g. Exam): (-1 to exit)");
+          // String component = sc.nextLine();
+          // components.add(component);
+          // System.out.println("Enter percentage (e.g. 60%): ");
+          // String percentage = sc.nextLine();
+          // System.out.println("Does " + component + "have any subcomponent(s)? (y/n)");
+          // String hasSubcomponents = sc.nextLine();
+
+          // if (components.isEmpty()) {
+          //   continue;
+          // }
+
           System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
           System.out.println(
             "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
@@ -480,6 +494,7 @@ public class ScrameApp {
           break;
 
         case 9:
+          // RecordManager.setExamMark();
           check = false;
           quit = false;
           System.out.print("Enter student matriculation number: ");
