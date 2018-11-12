@@ -30,7 +30,7 @@ import scrame.helper.CourseType;
 
 public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
-  private static String fileName = "records.ser";
+  private static String fileName = "../data/records.ser";
 
   /**
    * Register student on a course and store in recordList. Applicable for course of
@@ -255,6 +255,7 @@ public final class RecordManager {
     System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
     System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
   }
+}
 
   /**
    * Input record list to file.
