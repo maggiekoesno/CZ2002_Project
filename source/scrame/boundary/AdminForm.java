@@ -14,17 +14,16 @@ public final class AdminForm {
       + "4. Add a student.\n" 
       + "5. Add a course.\n" 
       + "6. Print student list by lecture, tutorial or laboratory session for a course.\n" 
-      + "7. Enter course assessment components weightage.\n" 
-      + "8. Enter coursework mark – inclusive of its components.\n" 
-      + "9. Enter exam mark.\n" 
-      + "10. Print course statistics.\n"
+      + "7. Enter coursework mark – inclusive of its components.\n" 
+      + "8. Enter exam mark.\n" 
+      + "9. Print course statistics.\n"
       + "Enter 0 to exit SCRAME\n"
     );
 
     System.out.print("Enter your choice: ");
     choice = sc.nextInt();
 
-    while (choice < 0 || choice > 10) {
+    while (choice < 0 || choice > 9) {
       System.out.println("Invalid choice. Try again!");
       choice = sc.nextInt();
     }

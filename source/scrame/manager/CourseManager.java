@@ -87,23 +87,6 @@ public final class CourseManager {
   }
 
   /**
-   * Modify course weightage.
-   * 
-   * @param course course object
-   * @param weightage weightage
-   * @return true if successful, else false
-   */
-  public static boolean setCourseWeightage(Course course, HashMap<String, String[]> weightage) {
-    try {
-      course.setWeightage(weightage);
-    } catch (IllegalArgumentException e) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
    * Get course object on course name.
    * 
    * @param courseName course name
