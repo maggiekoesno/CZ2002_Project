@@ -174,13 +174,13 @@ public class ScrameApp {
 
         case 4:
           System.out.print("Enter new student's name: ");
-          String name = sc.next();
+          String name = sc.nextLine();
           System.out.print("Enter " + name + "'s major (e.g. CSC): ");
-          String major = sc.next();
+          String major = sc.nextLine();
           System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
-          String enroll = sc.next();
+          String enroll = sc.nextLine();
           System.out.print("Enter " + name + "'s matriculation number: ");
-          matric = sc.next();
+          matric = sc.nextLine();
 
           try {
             StudentManager.addStudent(name, major, enroll, matric);
