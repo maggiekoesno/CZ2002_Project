@@ -29,6 +29,7 @@ public class ScrameApp {
 
     int userChoice;
     int functionChoice;
+    boolean firstLoop = true;
     boolean flagWhile = true;
     boolean quit = false;
 
@@ -87,9 +88,13 @@ public class ScrameApp {
     while (flagWhile) {
       if (userChoice == 2)
         functionChoice = StudentForm.display();
-      else 
+      else if(firstLoop){
         functionChoice = AdminForm.display();
-
+        firstLoop = false;
+      }
+      else
+        functionChoice = AdminForm.displayMini();
+  
       switch (functionChoice) {
         case 0:
           System.out.println("Exiting SCRAME application... Goodbye!");

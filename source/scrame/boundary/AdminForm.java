@@ -30,5 +30,20 @@ public final class AdminForm {
 
     return choice;
   }
+
+  public static int displayMini() {
+    Scanner sc = new Scanner(System.in);
+    int choice = -1;
+
+    System.out.print("Enter your choice (from 1-9, 0 to exit) : ");
+    choice = sc.nextInt();
+
+    while (choice < 0 || choice > 9) {
+      System.out.println("Invalid choice. Try again!");
+      choice = sc.nextInt();
+    }
+
+    return choice;
+  }
 }
 
