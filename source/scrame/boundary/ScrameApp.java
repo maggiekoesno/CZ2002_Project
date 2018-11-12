@@ -216,6 +216,7 @@ public class ScrameApp {
             courseType = CourseManager.courseTypeToEnum(typeInput);
           } catch (IllegalCourseTypeException e) {
             System.out.println(e.getMessage());
+	    break;
           }
 
           System.out.print("Enter " + courseName + "'s total vacancy: ");
@@ -235,7 +236,7 @@ public class ScrameApp {
             String groupName;
 
             while (true) {
-              sc.next();
+              sc.nextLine();
               System.out.print("Enter group name (e.g. SSP1) or -1 to exit: ");
               groupName = sc.next();
               if (groupName.equals("-1")) {
