@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+import scrame.entity.FacultyMember;
+
 import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
+import scrame.exception.IllegalWeightageException;
+
 import scrame.helper.CourseType;
 
 public class Course implements Serializable {
@@ -21,6 +25,7 @@ public class Course implements Serializable {
   private CourseType courseType;
   private HashMap<String, Integer> tutLabGroups;
   private HashMap<String, String[]> weightage;
+  private FacultyMember coordinator;
 
   /**
    * Constructor for Course class.
@@ -31,12 +36,14 @@ public class Course implements Serializable {
    * @param weightage weightage of course components
    */
   public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies,
-      HashMap<String, String[]> weightage) {
+      HashMap<String, String[]> weightage, FacultyMember coordinator)
+      throws IllegalWeightageException {
     this.courseName = courseName;
     this.courseType = courseType;
     this.tutLabGroups = new HashMap<String, Integer>();
     addGroups(vacancies);
     setWeightage(weightage);
+    this.coordinator = coordinator;
   }
 
   /**
@@ -177,9 +184,9 @@ public class Course implements Serializable {
    * 
    * @param weightage weightage to be inserted
    */
-  public void setWeightage(HashMap<String, String[]> weightage) throws IllegalArgumentException {
+  public void setWeightage(HashMap<String, String[]> weightage) throws IllegalWeightageException {
     if (!validateWeightage(weightage)) {
-      throw new IllegalArgumentException("Illegal weightage argument.");
+      throw new IllegalWeightageException("Illegal weightage argument.");
     }
 
     this.weightage = weightage;

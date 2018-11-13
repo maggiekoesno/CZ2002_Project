@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.Formatter;
 
 import scrame.entity.Course;
+import scrame.entity.FacultyMember;
+import scrame.exception.DuplicateCourseException;
 import scrame.exception.IllegalCourseTypeException;
+import scrame.exception.IllegalWeightageException;
 import scrame.helper.CourseType;
 
 public final class CourseManager {
@@ -33,15 +36,17 @@ public final class CourseManager {
    * @param tempWeightageList weightagelist
    */
   public static void addCourse(String courseName, CourseType courseType,
-      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList) {
+      HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList,
+      FacultyMember coordinator)
+      throws DuplicateCourseException, IllegalWeightageException {
 
     if (isCourseInList(courseName)) {
-      System.out.println(courseName + " has been registered.");
-      return;
+      throw new DuplicateCourseException(courseName);
     }
 
-    courseList.add(new Course(courseName, courseType, tempVacancies, tempWeightageList));   
-    System.out.println("Course " + courseName + " added successfully!");
+    courseList.add(
+      new Course(courseName, courseType, tempVacancies, tempWeightageList, coordinator)
+    );
   }
 
   /**

@@ -7,7 +7,6 @@ public final class AdminForm {
   public static int display() {
     Scanner sc = new Scanner(System.in);
 
-
     System.out.println(
       "\n1. Register student for a course (this includes registering for Tutorial/Lab classes).\n" 
       + "2. Check available slots in a class (Class Vacancy).\n" 

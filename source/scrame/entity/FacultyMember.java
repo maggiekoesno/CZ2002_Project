@@ -1,6 +1,8 @@
 package scrame.entity;
 
-public class FacultyMember {
+import java.io.Serializable;
+
+public class FacultyMember implements Serializable {
   private String name;
   private String id;
   private String faculty;
