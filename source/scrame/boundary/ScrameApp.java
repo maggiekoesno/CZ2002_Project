@@ -109,6 +109,8 @@ public class ScrameApp {
             System.out.println(e.getMessage());
           } catch (DuplicateRecordException e) {
             System.out.println(e.getMessage());
+          } catch (IllegalCourseTypeException e) {
+            System.out.println(e.getMessage());
           }
           
           // RecordManager.registerStudentCourse("U1720120H", "CZ2001");
@@ -389,6 +391,8 @@ public class ScrameApp {
               RecordManager.printStudentList(courseName, groupName);
             }
           } catch (CourseNotFoundException e) {
+            System.out.println(e.getMessage());
+          } catch (IllegalCourseTypeException e) {
             System.out.println(e.getMessage());
           }
 

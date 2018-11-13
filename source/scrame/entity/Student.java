@@ -5,7 +5,6 @@ import java.io.Serializable;
 import scrame.exception.IllegalStudentArgumentException;
 
 public class Student implements Serializable {
-  private static final long serialVersionUID = 6954261678710602810L;
   private String name;
   private String major;
   private String enroll;

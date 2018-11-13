@@ -124,10 +124,12 @@ public final class RecordManager {
     } catch (IllegalCourseTypeException e) {
       System.out.println(e.getMessage());
     } catch (GroupFullException e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
     } catch (StudentNotFoundException e) {
       System.out.println(e.getMessage());
     } catch (CourseNotFoundException e) {
+      System.out.println(e.getMessage());
+    } catch (GroupNotFoundException e) {
       System.out.println(e.getMessage());
     }
   }
