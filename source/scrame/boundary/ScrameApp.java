@@ -50,6 +50,7 @@ public class ScrameApp {
     // userChoice = 1; // admin
 
     do {
+      System.out.println();
       System.out.println("Welcome to the SCRAME application!");
       System.out.println("1. Login as admin");
       System.out.println("2. Login as student");
@@ -111,12 +112,12 @@ public class ScrameApp {
           break;
 
         case 2:
-          System.out.print("Please input the course name: ");
+          System.out.print("Please enter course name: ");
           courseName = sc.next();
 
           while (!CourseManager.isCourseInList(courseName)) {
-            System.out.println("The course name you requested is not found!");
-            System.out.print("Please input the course name again: ");
+            System.out.println("The course name you requested is invalid!");
+            System.out.print("Please enter course name again: ");
             courseName = sc.next();
           }
 
