@@ -18,9 +18,9 @@ import java.util.Formatter;
 
 import scrame.entity.Course;
 import scrame.entity.FacultyMember;
-import scrame.exception.DuplicateCourseException;
-import scrame.exception.IllegalCourseTypeException;
-import scrame.exception.IllegalWeightageException;
+
+import scrame.exception.*;
+
 import scrame.helper.CourseType;
 
 public final class CourseManager {
@@ -38,7 +38,7 @@ public final class CourseManager {
   public static void addCourse(String courseName, CourseType courseType,
       HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList,
       FacultyMember coordinator)
-      throws DuplicateCourseException, IllegalWeightageException {
+      throws DuplicateCourseException, IllegalWeightageException, IllegalVacancyException {
 
     if (isCourseInList(courseName)) {
       throw new DuplicateCourseException(courseName);
@@ -96,14 +96,12 @@ public final class CourseManager {
    * 
    * @param courseName course name
    * @return course object
-   * @throws IllegalArgumentException
+   * @throws CourseNotFoundException
    */
   public static Course findCourse(String courseName)
-      throws IllegalArgumentException {
+      throws CourseNotFoundException {
     if (!isCourseInList(courseName)) {
-      throw new IllegalArgumentException(
-        "Oops, it seems that the course " + courseName + " has not been registered to the system yet!"
-      );
+      throw new CourseNotFoundException(courseName);
     }
 
     for (Course c : courseList) {

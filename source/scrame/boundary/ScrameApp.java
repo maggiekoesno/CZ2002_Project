@@ -13,9 +13,7 @@ import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.FacultyMember;
 
-import scrame.exception.IllegalCourseTypeException;
-import scrame.exception.DuplicateCourseException;
-import scrame.exception.IllegalWeightageException;
+import scrame.exception.*;
 
 import scrame.manager.CourseManager;
 import scrame.manager.RecordManager;
@@ -92,15 +90,21 @@ public class ScrameApp {
           System.out.print("Please input course name: ");
           courseName = sc.next();
 
-          courseFound = CourseManager.findCourse(courseName);
+          try {
+            courseFound = CourseManager.findCourse(courseName);
 
-          if (courseFound.getCourseType() == CourseType.LEC) {
-            RecordManager.registerStudentCourse(matric, courseName);
-          } else {
-            courseFound.printAllGroups();
-            System.out.print("Which group do you want to register into? ");
-            String groupName = sc.next();
-            RecordManager.registerStudentCourse(matric, courseName, groupName);
+            if (courseFound.getCourseType() == CourseType.LEC) {
+              RecordManager.registerStudentCourse(matric, courseName);
+            } else {
+              courseFound.printAllGroups();
+              System.out.print("Which group do you want to register into? ");
+              String groupName = sc.next();
+              RecordManager.registerStudentCourse(matric, courseName, groupName);
+            }
+          } catch (CourseNotFoundException e) {
+            System.out.println(e.getMessage());
+          } catch (DuplicateRecordException e) {
+            System.out.println(e.getMessage());
           }
           
           // RecordManager.registerStudentCourse("U1720120H", "CZ2001");
@@ -115,50 +119,48 @@ public class ScrameApp {
           System.out.print("Please enter course name: ");
           courseName = sc.next();
 
-          while (!CourseManager.isCourseInList(courseName)) {
-            System.out.println("The course name you requested is invalid!");
-            System.out.print("Please enter course name again: ");
-            courseName = sc.next();
-          }
+          try {
+            courseFound = CourseManager.findCourse(courseName);
 
-          System.out.println();
-          System.out.println("+-----------------------------------------------+");
-          System.out.println("|                Course Vacancies               |");
-          System.out.println("+----------------+-------------+----------------+");
+            System.out.println();
+            System.out.println("+-----------------------------------------------+");
+            System.out.println("|                Course Vacancies               |");
+            System.out.println("+----------------+-------------+----------------+");
 
-          courseFound = CourseManager.findCourse(courseName);
-
-          switch (courseFound.getCourseType()) {
-            case LEC:
-          System.out.println("|   Course Name  |   Vacancy   |   Total Size   |");
-          System.out.println("+----------------+-------------+----------------+");
-              int lectureVacancy = courseFound.getLectureVacancy();
-              int lectureTotalSize = courseFound.getLectureTotalSize();
-              System.out.print("|     " + courseName + "     |     ");
-              System.out.printf("%3d", lectureVacancy);
-              System.out.print("     |       ");
-              System.out.printf("%3d", lectureTotalSize);
-              System.out.println("      |");
-              break;
-            case TUT:
-            case LAB:
-              System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
-              System.out.println("+----------------+-------------+----------------+");
-              HashMap<String, Integer[]> groups = courseFound.getTutLabGroups();
-              for (Map.Entry<String, Integer[]> entry : groups.entrySet()) {
-                if (entry.getKey().equals("_LEC")) {
-                  continue;
+            switch (courseFound.getCourseType()) {
+              case LEC:
+                System.out.println("|   Course Name  |   Vacancy   |   Total Size   |");
+                System.out.println("+----------------+-------------+----------------+");
+                int lectureVacancy = courseFound.getLectureVacancy();
+                int lectureTotalSize = courseFound.getLectureTotalSize();
+                System.out.print("|     " + courseName + "     |     ");
+                System.out.printf("%3d", lectureVacancy);
+                System.out.print("     |       ");
+                System.out.printf("%3d", lectureTotalSize);
+                System.out.println("      |");
+                break;
+              case TUT:
+              case LAB:
+                System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
+                System.out.println("+----------------+-------------+----------------+");
+                HashMap<String, Integer[]> groups = courseFound.getTutLabGroups();
+                for (Map.Entry<String, Integer[]> entry : groups.entrySet()) {
+                  if (entry.getKey().equals("_LEC")) {
+                    continue;
+                  }
+                  System.out.print("|      " + entry.getKey() + "      |     ");
+                  System.out.printf("%2s", entry.getValue()[0]);
+                  System.out.print("      |       ");
+                  System.out.printf("%2s", entry.getValue()[1]);
+                  System.out.println("       |");
                 }
-                System.out.print("|      " + entry.getKey() + "      |     ");
-                System.out.printf("%2s", entry.getValue()[0]);
-                System.out.print("      |       ");
-                System.out.printf("%2s", entry.getValue()[1]);
-                System.out.println("       |");
-              }
+            }
+  
+            System.out.println("+----------------+-------------+----------------+");
+            break;
+          } catch (CourseNotFoundException e) {
+            System.out.println(e.getMessage());
           }
-
-          System.out.println("+----------------+-------------+----------------+");
-          break;
 
         case 3:
           System.out.print("Enter your matriculation number: ");
@@ -170,15 +172,15 @@ public class ScrameApp {
           System.out.print("Enter new student's name: ");
           String name = sc.nextLine();
           System.out.print("Enter " + name + "'s major (e.g. CSC): ");
-          String major = sc.next();
+          String major = sc.nextLine();
           System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
           String enroll = sc.nextLine();
           System.out.print("Enter " + name + "'s matriculation number: ");
-          matric = sc.next();
+          matric = sc.nextLine();
 
           try {
             StudentManager.addStudent(name, major, enroll, matric);
-          } catch (IllegalArgumentException e) {
+          } catch (IllegalStudentArgumentException e) {
             System.out.println(e.getMessage());
           }
 
@@ -312,6 +314,8 @@ public class ScrameApp {
             System.out.println(e.getMessage());
           } catch (IllegalWeightageException e) {
             System.out.println(e.getMessage());
+          } catch (IllegalVacancyException e) {
+            System.out.println(e.getMessage());
           }
 
           // tempVacancies = new HashMap<String, Integer>();
@@ -366,19 +370,24 @@ public class ScrameApp {
           System.out.print("Enter course name: ");
           courseName = sc.next();
 
-          Course c = CourseManager.findCourse(courseName);
+          try {
+            Course c = CourseManager.findCourse(courseName);
 
-          if (c.getCourseType() == CourseType.LEC) {
-            RecordManager.printStudentList(courseName);
-          } else {
-            System.out.println("The list of groups: ");
-            c.printAllGroups();
-
-            System.out.print("\nEnter group name: ");
-            String groupName = sc.next();
-
-            RecordManager.printStudentList(courseName, groupName);
+            if (c.getCourseType() == CourseType.LEC) {
+              RecordManager.printStudentList(courseName);
+            } else {
+              System.out.println("The list of groups: ");
+              c.printAllGroups();
+  
+              System.out.print("\nEnter group name: ");
+              String groupName = sc.next();
+  
+              RecordManager.printStudentList(courseName, groupName);
+            }
+          } catch (CourseNotFoundException e) {
+            System.out.println(e.getMessage());
           }
+
           break;
 
         case 7:

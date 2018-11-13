@@ -12,6 +12,7 @@ import scrame.exception.GroupFullException;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.LectureFullException;
 import scrame.exception.IllegalWeightageException;
+import scrame.exception.IllegalVacancyException;
 
 import scrame.helper.CourseType;
 
@@ -37,7 +38,7 @@ public class Course implements Serializable {
    */
   public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies,
       HashMap<String, String[]> weightage, FacultyMember coordinator)
-      throws IllegalWeightageException {
+      throws IllegalWeightageException, IllegalVacancyException {
     this.courseName = courseName;
     this.courseType = courseType;
     this.tutLabGroups = new HashMap<String, Integer[]>();
@@ -58,10 +59,10 @@ public class Course implements Serializable {
    * 
    * @param vacancies key-value pair of group name and number of vacancy
    */
-  public void addGroups(HashMap<String, Integer> vacancies) throws IllegalArgumentException {
+  public void addGroups(HashMap<String, Integer> vacancies) throws IllegalVacancyException {
     if (courseType == CourseType.LEC) {
       if (!vacancies.containsKey("_LEC")) {
-        throw new IllegalArgumentException("Please provide a vacancy number for lectures.");
+        throw new IllegalVacancyException("Please provide a vacancy number for lectures.");
       }
 
       tutLabGroups.put("_LEC", new Integer[]{vacancies.get("_LEC"), vacancies.get("_LEC")});
@@ -80,7 +81,7 @@ public class Course implements Serializable {
 
       // Test if lecture vacancy is the total vacancy of all tutorial/lab groups.
       if (totalVacancy != tempLectureVacancy) {
-        throw new IllegalArgumentException("Invalid vacancy argument.");
+        throw new IllegalVacancyException("Invalid vacancy argument.");
       }
 
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
@@ -162,21 +163,23 @@ public class Course implements Serializable {
       );
       return;
     }
-    
-    String groupName;
-    int available;
-    int vacancy;
-    
-    for (Map.Entry<String, Integer[]> entry : tutLabGroups.entrySet()) {
-      groupName = entry.getKey();
-      available = entry.getValue()[0];
-      vacancy = entry.getValue()[1];
 
-      if (groupName.equals("_LEC")) {
+    System.out.println();
+    System.out.println("+-----------------------------------------------+");
+    System.out.println("|                Groups in " + courseName + "               |");
+    System.out.println("+----------------+-------------+----------------+");
+
+    System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
+    System.out.println("+----------------+-------------+----------------+");
+    for (Map.Entry<String, Integer[]> entry : tutLabGroups.entrySet()) {
+      if (entry.getKey().equals("_LEC")) {
         continue;
       }
-
-      System.out.println(groupName + ": " + available + "/" + vacancy);
+      System.out.print("|      " + entry.getKey() + "      |     ");
+      System.out.printf("%2s", entry.getValue()[0]);
+      System.out.print("      |       ");
+      System.out.printf("%2s", entry.getValue()[1]);
+      System.out.println("       |");
     }
   }
 

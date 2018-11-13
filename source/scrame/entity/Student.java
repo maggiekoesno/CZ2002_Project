@@ -2,6 +2,8 @@ package scrame.entity;
 
 import java.io.Serializable;
 
+import scrame.exception.IllegalStudentArgumentException;
+
 public class Student implements Serializable {
   private static final long serialVersionUID = 6954261678710602810L;
   private String name;
@@ -17,15 +19,16 @@ public class Student implements Serializable {
    * @param enroll enroll time of the student
    * @param matric matric of the student
    */
-  public Student(String name, String major, String enroll, String matric) {
+  public Student(String name, String major, String enroll, String matric)
+      throws IllegalStudentArgumentException {
     if (!enroll.matches("[aA][yY]\\d{4} [sS][1-2]")) {
-      throw new IllegalArgumentException(
+      throw new IllegalStudentArgumentException(
         "Oops, your enrollment details are invalid."
       );
     }
 
     if (!matric.matches("[gGnNuU][1][0-8]\\d{5}\\D")) {
-      throw new IllegalArgumentException(
+      throw new IllegalStudentArgumentException(
         "Oops, you have entered an invalid matric number."
       );
     }

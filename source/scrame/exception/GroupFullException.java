@@ -14,4 +14,3 @@ public class GroupFullException extends Exception {
     return message;
   }
 }
-

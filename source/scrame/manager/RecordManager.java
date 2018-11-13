@@ -39,25 +39,36 @@ public final class RecordManager {
    * @param matric matric number
    * @param courseName course name
    */
-  public static void registerStudentCourse(String matric, String courseName) {
+  public static void registerStudentCourse(String matric, String courseName)
+      throws DuplicateRecordException {
+    Scanner sc = new Scanner(System.in);
+
     if (!StudentManager.isStudentInList(matric)) {
       System.out.println("Oops, student is not registered yet!");
       return;
     }
 
-    if (!CourseManager.isCourseInList(courseName)) {
-      System.out.println("Oops, course is not registered yet.");
-      return;
-    }
-
     Student studentFound = StudentManager.findStudent(matric);
-    Course courseFound = CourseManager.findCourse(courseName);
-
-    if (!validateRegisterStudentCourse(matric, courseName)) {
-      return;
-    }
 
     try {
+      Course courseFound = CourseManager.findCourse(courseName);
+
+      if (courseFound.getCourseType() == CourseType.LEC) {
+        RecordManager.printStudentList(courseName);
+      } else {
+        System.out.println("The list of groups: ");
+        courseFound.printAllGroups();
+
+        System.out.print("\nEnter group name: ");
+        String groupName = sc.next();
+
+        RecordManager.printStudentList(courseName, groupName);
+      }
+
+      if (!validateRegisterStudentCourse(matric, courseName)) {
+        return;
+      }
+
       for (Record r : RecordManager.getRecordList()) {
         String tempCourseName = r.getCourse().getCourseName();
         String tempStudentName = r.getStudent().getName();
@@ -65,9 +76,7 @@ public final class RecordManager {
 
         if (tempStudentName.equals(studentName) &&
             tempCourseName.equals(courseName)) {
-          throw new IllegalArgumentException(
-            studentName + " is already registered on course " + courseName + "."
-          );
+          throw new DuplicateRecordException(studentName, courseName);
         }
       }
 
@@ -76,15 +85,17 @@ public final class RecordManager {
       System.out.println(
         studentName + " is succesfully registered on course " + courseName + "!"
       );
+
+      recordList.add(new Record(
+        studentFound, courseFound, "_LEC", new HashMap<String, Float>()
+      ));
     } catch (IllegalCourseTypeException e) {
       e.printStackTrace();
     } catch (LectureFullException e) {
       e.printStackTrace();
+    } catch (CourseNotFoundException e) {
+      System.out.println(e.getMessage());
     }
-
-    recordList.add(new Record(
-      studentFound, courseFound, "_LEC", new HashMap<String, Float>()
-    ));
   }
 
   /**
@@ -99,36 +110,33 @@ public final class RecordManager {
     if (!StudentManager.isStudentInList(matric)) {
       System.out.println("Oops, student is not registered yet!");
       return;
-    }
-
-    if (!CourseManager.isCourseInList(courseName)) {
-      System.out.println("Oops, course is not registered yet.");
-      return;
-    }
-
-    Student studentFound = StudentManager.findStudent(matric);
-    Course courseFound = CourseManager.findCourse(courseName);
-    
-    if (!validateRegisterStudentCourse(matric, courseName)) {
-      return;
-    }
+    }  
 
     try {
+      Student studentFound = StudentManager.findStudent(matric);
+      Course courseFound = CourseManager.findCourse(courseName);
+      
+      if (!validateRegisterStudentCourse(matric, courseName)) {
+        return;
+      }
+
       courseFound.register(groupName);
       String studentName = studentFound.getName();
       System.out.println(
         studentName + " is succesfully registered on group " + groupName +
         " on course " + courseName + "!"
       );
+
+      HashMap<String, Float> mark = null;
+      Record r = new Record(studentFound, courseFound, groupName, mark);
+      recordList.add(r);
     } catch (IllegalCourseTypeException e) {
       System.out.println(e.getMessage());
     } catch (GroupFullException e) {
       e.printStackTrace();
+    } catch (CourseNotFoundException e) {
+      System.out.println(e.getMessage());
     }
-
-    HashMap<String, Float> mark = null;
-    Record r = new Record(studentFound, courseFound, groupName, mark);
-    recordList.add(r);
   }
 
   public static boolean validateRegisterStudentCourse(String matric, String courseName) {
@@ -196,71 +204,75 @@ public final class RecordManager {
 
     int markCount = 0;
 
-    Course courseFound = CourseManager.findCourse(courseName);
-    if(courseFound == null){
-      System.out.println("Course is not registered !");
-      return;
-    }
-    Map<String, String[]> tmpWeightage = courseFound.getWeightage();
-    for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
-      if (entry.getValue()[1].equals("false")) {
-        markCount++;
+    try {
+      Course courseFound = CourseManager.findCourse(courseName);
+      if (courseFound == null) {
+        System.out.println("Course is not registered !");
+        return;
       }
-    }
-    
-    for (Record r1: recordList) {
-      if (r1.getCourse().getCourseName().equals(courseName)) {
-        Map<String,Float> mark = r1.getMark();
-        // System.out.println(mark.size());
-        // System.out.println(r1.hasMark());
-        if ( !r1.hasMark() || mark.size() < markCount) {
-          System.out.println("Oops. there is a student that is not marked.");
-          return;
+      Map<String, String[]> tmpWeightage = courseFound.getWeightage();
+      for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
+        if (entry.getValue()[1].equals("false")) {
+          markCount++;
         }
+      }
+      
+      for (Record r1: recordList) {
+        if (r1.getCourse().getCourseName().equals(courseName)) {
+          Map<String,Float> mark = r1.getMark();
+          // System.out.println(mark.size());
+          // System.out.println(r1.hasMark());
+          if ( !r1.hasMark() || mark.size() < markCount) {
+            System.out.println("Oops. there is a student that is not marked.");
+            return;
+          }
+          
+        }
+
+        for (Record r2 : recordList) {
+          if (r2.getCourse().getCourseName().equals(courseName)) {
+            sum += r2.calculateAverage();
+            n++;
+          }
+        }
+
+        for (Record r : recordList) {
+          if (r.getCourse().getCourseName().equals(courseName)) {
+            sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
+          }
+        }
+        mean = sum / n;
         
-      }
+        float[] studentScore = new float[n];
 
-    for (Record r2 : recordList) {
-      if (r2.getCourse().getCourseName().equals(courseName)) {
-        sum += r2.calculateAverage();
-        n++;
-      }
+        System.out.println(
+          "There are " + n + " students registered in this course."
+        );
+        System.out.println("Average : " + mean);
+        
+        std = Math.sqrt(sumSquareDiff / n);
+        System.out.println("Standard Deviation :" + std);
+
+        int i = 0;
+        for (Record record2: recordList) {
+          if (record2.getCourse().getCourseName().equals(courseName)) {
+            studentScore[i] = record2.calculateAverage();
+            i++;
+          }
+        }
+        Arrays.sort(studentScore);
+        int[] borderValueIndex = new int[3];
+        borderValueIndex[0] = (int)1/4*(n+1);
+        borderValueIndex[1] = (int)2/4*(n+1);
+        borderValueIndex[2] = (int)3/4*(n+1);
+        System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
+        System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
+        System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
+      } 
+    } catch (CourseNotFoundException e) {
+      System.out.println(e.getMessage());
     }
-
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName().equals(courseName)) {
-        sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
-      }
-    }
-    mean = sum / n;
-    
-    float[] studentScore = new float[n];
-
-    System.out.println(
-      "There are " + n + " students registered in this course."
-    );
-    System.out.println("Average : " + mean);
-    
-    std = Math.sqrt(sumSquareDiff / n);
-    System.out.println("Standard Deviation :" + std);
-
-    int i = 0;
-    for (Record record2: recordList) {
-      if(record2.getCourse().getCourseName().equals(courseName)) {
-        studentScore[i] = record2.calculateAverage();
-        i++;
-      }
-    }
-    Arrays.sort(studentScore);
-    int[] borderValueIndex = new int[3];
-    borderValueIndex[0] = (int)1/4*(n+1);
-    borderValueIndex[1] = (int)2/4*(n+1);
-    borderValueIndex[2] = (int)3/4*(n+1);
-    System.out.println("1st Quartile : " + studentScore[borderValueIndex[0]]);
-    System.out.println("2nd Quartile : " + studentScore[borderValueIndex[1]]);
-    System.out.println("3rd Quartile : " + studentScore[borderValueIndex[2]]);
   }
-}
 
   /**
    * Input record list to file.

@@ -13,8 +13,6 @@ import java.io.EOFException;
 import java.io.Serializable;
 import java.nio.file.Files;
 
-import java.lang.IllegalArgumentException;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +23,7 @@ import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
 import scrame.exception.IllegalCourseTypeException;
+import scrame.exception.IllegalStudentArgumentException;
 import scrame.helper.CourseType;
 
 import scrame.manager.CourseManager;
@@ -45,7 +44,8 @@ public final class StudentManager {
    * @param enroll student's enrollment semester
    * @param matric student's matric number
    */
-  public static void addStudent(String name, String major, String enroll, String matric) {
+  public static void addStudent(String name, String major, String enroll, String matric)
+      throws IllegalStudentArgumentException {
     if (isStudentInList(matric)) {
       System.out.println("Cannot add student with existing matric number.");
       return;
