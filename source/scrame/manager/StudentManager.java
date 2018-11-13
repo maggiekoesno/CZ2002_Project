@@ -24,6 +24,7 @@ import scrame.entity.Record;
 import scrame.entity.Student;
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.IllegalStudentArgumentException;
+import scrame.exception.StudentNotFoundException;
 import scrame.helper.CourseType;
 
 import scrame.manager.CourseManager;
@@ -153,14 +154,18 @@ public final class StudentManager {
    * @param matric matric number
    * @return student object
    */
-  public static Student findStudent(String matric) {
-    Student studentFound = null;
+  public static Student findStudent(String matric) throws StudentNotFoundException {
+    if (!isStudentInList(matric)) {
+      throw new StudentNotFoundException();
+    }
+
     for (Student s : studentList) {
       if (s.getMatric().equals(matric)) {
-        studentFound = s;
+        return s;
       }
     }
-    return studentFound;
+
+    return null;
   }
 
   /**

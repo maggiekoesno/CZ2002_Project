@@ -43,14 +43,8 @@ public final class RecordManager {
       throws DuplicateRecordException {
     Scanner sc = new Scanner(System.in);
 
-    if (!StudentManager.isStudentInList(matric)) {
-      System.out.println("Oops, student is not registered yet!");
-      return;
-    }
-
-    Student studentFound = StudentManager.findStudent(matric);
-
     try {
+      Student studentFound = StudentManager.findStudent(matric);
       Course courseFound = CourseManager.findCourse(courseName);
 
       if (courseFound.getCourseType() == CourseType.LEC) {
@@ -93,6 +87,8 @@ public final class RecordManager {
       e.printStackTrace();
     } catch (LectureFullException e) {
       e.printStackTrace();
+    } catch (StudentNotFoundException e) {
+      System.out.println(e.getMessage());
     } catch (CourseNotFoundException e) {
       System.out.println(e.getMessage());
     }
@@ -107,11 +103,6 @@ public final class RecordManager {
    * @param groupName group name
    */
   public static void registerStudentCourse(String matric, String courseName, String groupName) {
-    if (!StudentManager.isStudentInList(matric)) {
-      System.out.println("Oops, student is not registered yet!");
-      return;
-    }  
-
     try {
       Student studentFound = StudentManager.findStudent(matric);
       Course courseFound = CourseManager.findCourse(courseName);
@@ -134,6 +125,8 @@ public final class RecordManager {
       System.out.println(e.getMessage());
     } catch (GroupFullException e) {
       e.printStackTrace();
+    } catch (StudentNotFoundException e) {
+      System.out.println(e.getMessage());
     } catch (CourseNotFoundException e) {
       System.out.println(e.getMessage());
     }
