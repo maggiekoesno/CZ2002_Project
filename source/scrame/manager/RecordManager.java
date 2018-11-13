@@ -197,6 +197,10 @@ public final class RecordManager {
     int markCount = 0;
 
     Course courseFound = CourseManager.findCourse(courseName);
+    if(courseFound == null){
+      System.out.println("Course is not registered !");
+      return;
+    }
     Map<String, String[]> tmpWeightage = courseFound.getWeightage();
     for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
       if (entry.getValue()[1].equals("false")) {
@@ -210,6 +214,7 @@ public final class RecordManager {
         // System.out.println(mark.size());
         // System.out.println(r1.hasMark());
         if ( !r1.hasMark() || mark.size() < markCount) {
+          System.out.println("Oops. there is a student that is not marked.");
           return;
         }
         
