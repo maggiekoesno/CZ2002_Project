@@ -115,6 +115,10 @@ public final class CourseManager {
     return null;
   }
 
+  public static HashSet<Course> getCourseList() {
+    return courseList;
+  }
+
   /**
    * Write list of all courses to file.
    */

@@ -272,4 +272,13 @@ public class Course implements Serializable {
   public HashMap<String, String[]> getWeightage() {
     return weightage;
   }
+
+  /**
+   * Getter method for coordinator.
+   * 
+   * @return coordinator
+   */
+  public FacultyMember getCoordinator() {
+    return coordinator;
+  }
 }
