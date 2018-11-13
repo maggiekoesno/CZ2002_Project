@@ -59,9 +59,7 @@ public final class RecordManager {
         RecordManager.printStudentList(courseName, groupName);
       }
 
-      if (!validateRegisterStudentCourse(matric, courseName)) {
-        return;
-      }
+      validateRegisterStudentCourse(matric, courseName);
 
       for (Record r : RecordManager.getRecordList()) {
         String tempCourseName = r.getCourse().getCourseName();
@@ -102,14 +100,13 @@ public final class RecordManager {
    * @param courseName course name
    * @param groupName group name
    */
-  public static void registerStudentCourse(String matric, String courseName, String groupName) {
+  public static void registerStudentCourse(String matric, String courseName, String groupName) 
+      throws DuplicateRecordException {
     try {
       Student studentFound = StudentManager.findStudent(matric);
       Course courseFound = CourseManager.findCourse(courseName);
       
-      if (!validateRegisterStudentCourse(matric, courseName)) {
-        return;
-      }
+      validateRegisterStudentCourse(matric, courseName);
 
       courseFound.register(groupName);
       String studentName = studentFound.getName();
@@ -134,15 +131,14 @@ public final class RecordManager {
     }
   }
 
-  public static boolean validateRegisterStudentCourse(String matric, String courseName) {
+  public static void validateRegisterStudentCourse(String matric, String courseName) 
+      throws DuplicateRecordException {
     for (Record r: recordList) {
       if (r.getStudent().getMatric().equals(matric) &&
           r.getCourse().getCourseName().equals(courseName)) {
-        System.out.println("The student is registered already to this course!");
-        return false;
+        throw new DuplicateRecordException(r.getStudent().getName(), courseName);
       }
     }
-    return true;
   }
 
   /**

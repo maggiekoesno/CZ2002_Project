@@ -22,7 +22,7 @@ public class Student implements Serializable {
       throws IllegalStudentArgumentException {
     if (!enroll.matches("[aA][yY]\\d{4} [sS][1-2]")) {
       throw new IllegalStudentArgumentException(
-        "Oops, your enrollment details are invalid."
+        "Sorry, your enrollment period is of inappropriate format."
       );
     }
 

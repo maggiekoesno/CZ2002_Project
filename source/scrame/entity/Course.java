@@ -227,9 +227,9 @@ public class Course implements Serializable {
     System.out.println("+-----------------------------------------------+");
     System.out.println("|                Groups in " + courseName + "               |");
     System.out.println("+----------------+-------------+----------------+");
-
     System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
     System.out.println("+----------------+-------------+----------------+");
+    
     for (Map.Entry<String, Integer[]> entry : tutLabGroups.entrySet()) {
       if (entry.getKey().equals("_LEC")) {
         continue;
@@ -240,6 +240,9 @@ public class Course implements Serializable {
       System.out.printf("%2s", entry.getValue()[1]);
       System.out.println("       |");
     }
+
+    System.out.println("+----------------+-------------+----------------+");
+    System.out.println();
   }
 
   /**

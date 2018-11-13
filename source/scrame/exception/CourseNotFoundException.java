@@ -6,8 +6,8 @@ public class CourseNotFoundException extends Exception {
 
   public CourseNotFoundException(String courseName) {
     super();
-    this.message = "Oops, it seems that the course " + courseName +
-                   " has not been registered to the system yet!";
+    this.message = "Oops, course " + courseName +
+                   " has not been registered yet!";
   }
 
   public String getMessage() {

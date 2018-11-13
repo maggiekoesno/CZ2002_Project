@@ -35,7 +35,7 @@ public final class AdminForm {
     Scanner sc = new Scanner(System.in);
     int choice = -1;
 
-    System.out.print("Enter your choice (from 1-9, 0 to exit) : ");
+    System.out.print("Enter your choice (from 1-9, 0 to exit): ");
     choice = sc.nextInt();
 
     while (choice < 0 || choice > 9) {

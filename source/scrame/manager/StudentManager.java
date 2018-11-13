@@ -53,7 +53,6 @@ public final class StudentManager {
     }
 
     studentList.add(new Student(name, major, enroll, matric));
-    System.out.println("Student named " + name + " added successfully.");
   }
 
   /**
@@ -166,6 +165,23 @@ public final class StudentManager {
     }
 
     return null;
+  }
+
+  /**
+   * Getter method for student list.
+   * 
+   * @return student list
+   */
+  public static HashSet<Student> getStudentList() {
+    return studentList;
+  }
+
+  public static void validateMatric(String matric) throws IllegalStudentArgumentException {
+    if (!matric.matches("[gGnNuU][1][0-8]\\d{5}\\D")) {
+      throw new IllegalStudentArgumentException(
+        "Oops, you have entered an invalid matric number."
+      );
+    }
   }
 
   /**

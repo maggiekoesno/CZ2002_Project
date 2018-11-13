@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Collections;
 
 import scrame.boundary.AdminForm;
 import scrame.boundary.StudentForm;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
+import scrame.entity.Student;
 import scrame.entity.FacultyMember;
 
 import scrame.exception.*;
@@ -20,6 +22,8 @@ import scrame.manager.RecordManager;
 import scrame.manager.StudentManager;
 
 import scrame.helper.CourseType;
+import scrame.helper.SortByStudentName;
+import scrame.helper.SortByCourseName;
 
 public class ScrameApp {
 
@@ -36,6 +40,7 @@ public class ScrameApp {
 
     String matric;
     String courseName;
+    Student studentFound;
     Course courseFound;
     HashMap<String, Integer> tempVacancies;
     HashMap<String, String[]> tempWeightageList;
@@ -47,15 +52,20 @@ public class ScrameApp {
     
     // userChoice = 1; // admin
 
-    do {
-      System.out.println();
-      System.out.println("Welcome to the SCRAME application!");
-      System.out.println("1. Login as admin");
-      System.out.println("2. Login as student");
+    System.out.println();
+    System.out.println("Welcome to the SCRAME application!");
+    System.out.println("1. Login as admin");
+    System.out.println("2. Login as student");
+    System.out.print("Enter choice: ");
+    userChoice = sc.nextInt();
+    sc.nextLine();
+
+    while (userChoice != 1 && userChoice != 2) {
+      System.out.println("Invalid choice, please try again!");
       System.out.print("Enter choice: ");
       userChoice = sc.nextInt();
       sc.nextLine();
-    } while (userChoice != 1 && userChoice != 2);
+    }
 
     if (userChoice == 2) {
       System.out.print("Enter matriculation number: ");
@@ -85,13 +95,18 @@ public class ScrameApp {
           break;
 
         case 1:
-          System.out.print("Please input matric number: ");
-          matric = sc.next();
-          System.out.print("Please input course name: ");
-          courseName = sc.next();
-
           try {
+            System.out.print("Please enter matric number: ");
+            matric = sc.next();
+
+            StudentManager.validateMatric(matric);
+            StudentManager.findStudent(matric);
+
+            System.out.print("Please enter course name: ");
+            courseName = sc.next();
             courseFound = CourseManager.findCourse(courseName);
+
+            RecordManager.validateRegisterStudentCourse(matric, courseName);
 
             if (courseFound.getCourseType() == CourseType.LEC) {
               RecordManager.registerStudentCourse(matric, courseName);
@@ -101,6 +116,10 @@ public class ScrameApp {
               String groupName = sc.next();
               RecordManager.registerStudentCourse(matric, courseName, groupName);
             }
+          } catch (IllegalStudentArgumentException e) {
+            System.out.println(e.getMessage());
+          } catch (StudentNotFoundException e) {
+            System.out.println(e.getMessage());
           } catch (CourseNotFoundException e) {
             System.out.println(e.getMessage());
           } catch (DuplicateRecordException e) {
@@ -182,15 +201,54 @@ public class ScrameApp {
 
           try {
             StudentManager.addStudent(name, major, enroll, matric);
+
+            System.out.println();
+            System.out.println("+-------------------------------------------------+");
+            System.out.println("|               Registered Students               |");
+            System.out.println("+----------------------------+--------------------+");
+            System.out.println("|        Student Name        |   Matric. Number   |");
+            System.out.println("+----------------------------+--------------------+");
+
+            for (Student s : StudentManager.getStudentList()) {
+              System.out.print("|  ");
+              System.out.printf("%-24s", s.getName());
+              System.out.print("  |     ");
+              System.out.println(s.getMatric() + "      |");
+            }
+
+            System.out.println("+----------------------------+--------------------+");
           } catch (IllegalStudentArgumentException e) {
             System.out.println(e.getMessage());
           }
 
-          // StudentManager.addStudent("Maggie", "CSC", "AY1718 S1", "U1720120H");
-          // StudentManager.addStudent("Kevin", "CSC", "AY1718 S1", "U1720121H");
-          // StudentManager.addStudent("Jason", "CSC", "AY1718 S1", "U1720122H");
-          // StudentManager.addStudent("Elbert", "CSC", "AY1718 S1", "U1720123H");
+          // try {
+          //   StudentManager.addStudent("Margaret Claire", "CSC", "AY1718 S1", "U1720120H");
+          //   StudentManager.addStudent("Kevin Winata", "CSC", "AY1718 S1", "U1720121H");
+          //   StudentManager.addStudent("Jason Sebastian", "CSC", "AY1718 S1", "U1720122H");
+          //   StudentManager.addStudent("Elbert Widjaja", "CSC", "AY1718 S1", "U1720123H");
+  
+          //   System.out.println();
+          //   System.out.println("+-------------------------------------------------+");
+          //   System.out.println("|               Registered Students               |");
+          //   System.out.println("+----------------------------+--------------------+");
+          //   System.out.println("|        Student Name        |   Matric. Number   |");
+          //   System.out.println("+----------------------------+--------------------+");
+  
+          //   ArrayList<Student> tempStudentList = new ArrayList<Student>(StudentManager.getStudentList());
+          //   Collections.sort(tempStudentList, new SortByStudentName());
 
+          //   for (Student s : tempStudentList) {
+          //     System.out.print("|  ");
+          //     System.out.printf("%-24s", s.getName());
+          //     System.out.print("  |     ");
+          //     System.out.println(s.getMatric() + "      |");
+          //   }
+
+          //   System.out.println("+----------------------------+--------------------+");
+          // } catch (IllegalStudentArgumentException e) {
+          //   System.out.println(e.getMessage());
+          // }
+          
           break;
 
         case 5:
@@ -221,9 +279,8 @@ public class ScrameApp {
           int totalVacancy = sc.nextInt();
 
           while (totalVacancy <= 0) {
-            System.out.println(
-              "Vacancy cannot be less than or equal to zero. Please try again!"
-            );
+            System.out.println("Vacancy cannot be less than or equal to zero. Please try again!");
+            System.out.print("Enter " + courseName + "'s total vacancy: ");
             totalVacancy = sc.nextInt();
           }
 
@@ -233,14 +290,16 @@ public class ScrameApp {
             int groupVacancy;
             String groupName;
 
+            System.out.println("Enter -1 on group name to exit.");
+
             while (true) {
               sc.nextLine();
-              System.out.print("Enter group name (e.g. SSP1) or -1 to exit: ");
+              System.out.print("Enter group name (e.g. SSP1): ");
               groupName = sc.next();
               if (groupName.equals("-1")) {
                 break;
               }
-              System.out.print("Enter the group vacancy: ");
+              System.out.print("Enter vacancy for group " + groupName + ": ");
               groupVacancy = sc.nextInt();
               if (groupVacancy <= 0) {
                 System.out.println("Vacancy cannot be less than or equal to zero.");
@@ -300,18 +359,19 @@ public class ScrameApp {
             );
             
             System.out.println();
-            System.out.println("+------------------------------------------+");
-            System.out.println("|            Registered Courses            |");
-            System.out.println("+-----------------+------------------------+");
-            System.out.println("|   Course Name   |   Course Coordinator   |");
-            System.out.println("+-----------------+------------------------+");
+            System.out.println("+--------------------------------------------+");
+            System.out.println("|             Registered Courses             |");
+            System.out.println("+-----------------+--------------------------+");
+            System.out.println("|   Course Name   |    Course Coordinator    |");
+            System.out.println("+-----------------+--------------------------+");
 
             for (Course c : CourseManager.getCourseList()) {
-              System.out.print("|     " + c.getCourseName() + "      |         ");
-              System.out.println(c.getCoordinator().getName() + "         |");
+              System.out.print("|     " + c.getCourseName() + "      |   ");
+              System.out.printf("%-20s", c.getCoordinator().getName());
+              System.out.println("   |");
             }
 
-            System.out.println("+-----------------+------------------------+");
+            System.out.println("+-----------------+--------------------------+");
           } catch (DuplicateCourseException e) {
             System.out.println(e.getMessage());
           } catch (IllegalWeightageException e) {
@@ -323,10 +383,10 @@ public class ScrameApp {
           // tempVacancies = new HashMap<String, Integer>();
           // HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
           
-          // tempVacanciesLec.put("_LEC", 100);
-          // tempVacancies.put("_LEC", 100);
-          // tempVacancies.put("SSP1", 60);
-          // tempVacancies.put("BCG2", 40);
+          // tempVacanciesLec.put("_LEC", 2);
+          // tempVacancies.put("_LEC", 2);
+          // tempVacancies.put("SSP1", 1);
+          // tempVacancies.put("BCG2", 1);
 
           // tempWeightageList = new HashMap<String, String[]>();
           // tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
@@ -336,31 +396,37 @@ public class ScrameApp {
 
           // try {
           //   CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList,
-          //     new FacultyMember("Albert", "101", "CSC", true)
+          //     new FacultyMember("Arvind Easwaran", "101", "CSC", true)
           //   );
           //   CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList,
-          //     new FacultyMember("Blaise", "102", "CSC", true)
+          //     new FacultyMember("Goh Wooi Boon", "102", "CSC", true)
           //   );
           //   CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList,
-          //     new FacultyMember("Carter", "103", "CSC", true)
+          //     new FacultyMember("Lua Rui Ping", "103", "CSC", true)
           //   );
 
           //   System.out.println();
-          //   System.out.println("+------------------------------------------+");
-          //   System.out.println("|            Registered Courses            |");
-          //   System.out.println("+-----------------+------------------------+");
-          //   System.out.println("|   Course Name   |   Course Coordinator   |");
-          //   System.out.println("+-----------------+------------------------+");
+          //   System.out.println("+--------------------------------------------+");
+          //   System.out.println("|             Registered Courses             |");
+          //   System.out.println("+-----------------+--------------------------+");
+          //   System.out.println("|   Course Name   |    Course Coordinator    |");
+          //   System.out.println("+-----------------+--------------------------+");
 
-          //   for (Course c : CourseManager.getCourseList()) {
-          //     System.out.print("|     " + c.getCourseName() + "      |         ");
-          //     System.out.println(c.getCoordinator().getName() + "         |");
+          //   ArrayList<Course> tempCourseList = new ArrayList<Course>(CourseManager.getCourseList());
+          //   Collections.sort(tempCourseList, new SortByCourseName());
+
+          //   for (Course c : tempCourseList) {
+          //     System.out.print("|     " + c.getCourseName() + "      |   ");
+          //     System.out.printf("%-20s", c.getCoordinator().getName());
+          //     System.out.println("   |");
           //   }
 
-          //   System.out.println("+-----------------+------------------------+");
+          //   System.out.println("+-----------------+--------------------------+");
           // } catch (DuplicateCourseException e) {
           //   System.out.println(e.getMessage());
           // } catch (IllegalWeightageException e) {
+          //   System.out.println(e.getMessage());
+          // } catch (IllegalVacancyException e) {
           //   System.out.println(e.getMessage());
           // }
 
