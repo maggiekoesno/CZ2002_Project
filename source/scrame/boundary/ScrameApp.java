@@ -62,8 +62,10 @@ public class ScrameApp {
       System.out.print("Enter matriculation number: ");
       matric = sc.next();
 
-      if (!StudentManager.isStudentInList(matric)) {
+      while (!StudentManager.isStudentInList(matric)) {
         System.out.println("Oh no! This matriculation number is not registered yet :(");
+        System.out.print("Enter matriculation number: ");
+        matric = sc.next();
       }
     }
 
@@ -119,37 +121,42 @@ public class ScrameApp {
           }
 
           System.out.println();
-          System.out.println("+------------------------------+");
-          System.out.println("|       Course Vacancies       |");
-          System.out.println("+----------------+-------------+");
+          System.out.println("+-----------------------------------------------+");
+          System.out.println("|                Course Vacancies               |");
+          System.out.println("+----------------+-------------+----------------+");
 
           courseFound = CourseManager.findCourse(courseName);
 
           switch (courseFound.getCourseType()) {
             case LEC:
-              System.out.println("|   Course Name  |   Vacancy   |");
-              System.out.println("+----------------+-------------+");
+          System.out.println("|   Course Name  |   Vacancy   |   Total Size   |");
+          System.out.println("+----------------+-------------+----------------+");
               int lectureVacancy = courseFound.getLectureVacancy();
+              int lectureTotalSize = courseFound.getLectureTotalSize();
               System.out.print("|     " + courseName + "     |     ");
               System.out.printf("%3d", lectureVacancy);
-              System.out.println("     |");
+              System.out.print("     |       ");
+              System.out.printf("%3d", lectureTotalSize);
+              System.out.println("      |");
               break;
             case TUT:
             case LAB:
-              System.out.println("|   Group Name   |   Vacancy   |");
-              System.out.println("+----------------+-------------+");
-              HashMap<String, Integer> groups = courseFound.getTutLabGroups();
-              for (Map.Entry<String, Integer> entry : groups.entrySet()) {
+              System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
+              System.out.println("+----------------+-------------+----------------+");
+              HashMap<String, Integer[]> groups = courseFound.getTutLabGroups();
+              for (Map.Entry<String, Integer[]> entry : groups.entrySet()) {
                 if (entry.getKey().equals("_LEC")) {
                   continue;
                 }
                 System.out.print("|      " + entry.getKey() + "      |     ");
-                System.out.printf("%2d", entry.getValue());
-                System.out.println("      |");
+                System.out.printf("%2s", entry.getValue()[0]);
+                System.out.print("      |       ");
+                System.out.printf("%2s", entry.getValue()[1]);
+                System.out.println("       |");
               }
           }
 
-          System.out.println("+------------------------------+");
+          System.out.println("+----------------+-------------+----------------+");
           break;
 
         case 3:
@@ -297,8 +304,9 @@ public class ScrameApp {
             for (Course c : CourseManager.getCourseList()) {
               System.out.print("|     " + c.getCourseName() + "      |         ");
               System.out.println(c.getCoordinator().getName() + "         |");
-              System.out.println("+-----------------+------------------------+");
             }
+
+            System.out.println("+-----------------+------------------------+");
           } catch (DuplicateCourseException e) {
             System.out.println(e.getMessage());
           } catch (IllegalWeightageException e) {
@@ -340,8 +348,9 @@ public class ScrameApp {
           //   for (Course c : CourseManager.getCourseList()) {
           //     System.out.print("|     " + c.getCourseName() + "      |         ");
           //     System.out.println(c.getCoordinator().getName() + "         |");
-          //     System.out.println("+-----------------+------------------------+");
           //   }
+
+          //   System.out.println("+-----------------+------------------------+");
           // } catch (DuplicateCourseException e) {
           //   System.out.println(e.getMessage());
           // } catch (IllegalWeightageException e) {

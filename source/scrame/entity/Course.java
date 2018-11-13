@@ -23,7 +23,7 @@ public class Course implements Serializable {
 
   private String courseName;
   private CourseType courseType;
-  private HashMap<String, Integer> tutLabGroups;
+  private HashMap<String, Integer[]> tutLabGroups;
   private HashMap<String, String[]> weightage;
   private FacultyMember coordinator;
 
@@ -40,7 +40,7 @@ public class Course implements Serializable {
       throws IllegalWeightageException {
     this.courseName = courseName;
     this.courseType = courseType;
-    this.tutLabGroups = new HashMap<String, Integer>();
+    this.tutLabGroups = new HashMap<String, Integer[]>();
     addGroups(vacancies);
     setWeightage(weightage);
     this.coordinator = coordinator;
@@ -64,7 +64,7 @@ public class Course implements Serializable {
         throw new IllegalArgumentException("Please provide a vacancy number for lectures.");
       }
 
-      tutLabGroups.put("_LEC", vacancies.get("_LEC"));
+      tutLabGroups.put("_LEC", new Integer[]{vacancies.get("_LEC"), vacancies.get("_LEC")});
     } else {
       int tempLectureVacancy = -1;
       int totalVacancy = 0;
@@ -84,7 +84,7 @@ public class Course implements Serializable {
       }
 
       for (Map.Entry<String, Integer> entry : vacancies.entrySet()) {
-        tutLabGroups.put(entry.getKey(), entry.getValue());
+        tutLabGroups.put(entry.getKey(), new Integer[]{entry.getValue(), entry.getValue()});
       }
     }
   }
@@ -105,16 +105,15 @@ public class Course implements Serializable {
       );
     }
 
-    int groupVacancy = tutLabGroups.get(groupName);
+    int groupVacancy = tutLabGroups.get(groupName)[0];
 
     if (groupVacancy == 0) {
       throw new GroupFullException(courseName, groupName);
     }
-    
-    tutLabGroups.put(groupName, --groupVacancy);
+    tutLabGroups.get(groupName)[0] = --groupVacancy;
 
-    int lectureVacancy = tutLabGroups.get("_LEC");
-    tutLabGroups.put("_LEC", --lectureVacancy);
+    int lectureVacancy = tutLabGroups.get("_LEC")[0];
+    tutLabGroups.get("_LEC")[0] = --lectureVacancy;
   }
 
   /**
@@ -128,12 +127,12 @@ public class Course implements Serializable {
       );
     }
 
-    int lectureVacancy = tutLabGroups.get("_LEC");
+    int lectureVacancy = tutLabGroups.get("_LEC")[0];
     if (lectureVacancy == 0) {
       throw new LectureFullException(courseName);
     }
     
-    tutLabGroups.put("_LEC", --lectureVacancy);
+    tutLabGroups.get("_LEC")[0] = --lectureVacancy;
   }
 
   /**
@@ -150,7 +149,7 @@ public class Course implements Serializable {
       );
     }
 
-    return tutLabGroups.get(groupName);
+    return tutLabGroups.get(groupName)[0];
   }
 
   /**
@@ -165,17 +164,19 @@ public class Course implements Serializable {
     }
     
     String groupName;
+    int available;
     int vacancy;
     
-    for (Map.Entry<String, Integer> entry : tutLabGroups.entrySet()) {
+    for (Map.Entry<String, Integer[]> entry : tutLabGroups.entrySet()) {
       groupName = entry.getKey();
-      vacancy = entry.getValue();
+      available = entry.getValue()[0];
+      vacancy = entry.getValue()[1];
 
       if (groupName.equals("_LEC")) {
         continue;
       }
 
-      System.out.println(groupName + ": " + vacancy);
+      System.out.println(groupName + ": " + available + "/" + vacancy);
     }
   }
 
@@ -252,7 +253,16 @@ public class Course implements Serializable {
    * @return lecture vacancy
    */
   public int getLectureVacancy() {
-    return tutLabGroups.get("_LEC");
+    return tutLabGroups.get("_LEC")[0];
+  }
+
+  /**
+   * Getter method for lecture total size.
+   * 
+   * @return lecture total size
+   */
+  public int getLectureTotalSize() {
+    return tutLabGroups.get("_LEC")[1];
   }
 
   /**
@@ -260,7 +270,7 @@ public class Course implements Serializable {
    * 
    * @return HashMap of tutorial/lab groups
    */
-  public HashMap<String, Integer> getTutLabGroups() {
+  public HashMap<String, Integer[]> getTutLabGroups() {
     return tutLabGroups;
   }
 
