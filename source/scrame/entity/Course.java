@@ -8,33 +8,69 @@ import java.util.HashMap;
 
 import scrame.entity.FacultyMember;
 
-import scrame.exception.GroupFullException;
-import scrame.exception.IllegalCourseTypeException;
-import scrame.exception.LectureFullException;
-import scrame.exception.IllegalWeightageException;
-import scrame.exception.IllegalVacancyException;
+import scrame.exception.*;
 
 import scrame.helper.CourseType;
 
+/**
+ * Course is the class representing a course registered in the school.
+ * A course can only have one faculty member as its coordinator. 
+ */
 public class Course implements Serializable {
-  private static final long serialVersionUID = 6720965137323151182L;
+
+  /**
+   * Constants for the String array inside weightage.
+   */
   public static final int WEIGHT = 0;
   public static final int HAS_CHILD = 1;
   public static final int PARENT = 2;
 
+  /**
+   * The name of the course.
+   */
   private String courseName;
+
+  /**
+   * The type of the course. Referenced from CourseType enum.
+   */
   private CourseType courseType;
+
+  /**
+   * The tutorial and lab groups of the course of type TUT and LAB.
+   * For courses of type LEC, the HashMap has only one key, "_LEC".
+   * <p>
+   * A Integer array is needed to store both the current vacancy and
+   * the total size of the groups.
+   */
   private HashMap<String, Integer[]> tutLabGroups;
+
+  /**
+   * The weightage of the course.
+   * <p>
+   * The key refers to the component, while the String array refers to:
+   * <ul>
+   * <li> Weight of the component
+   * <li> Whether the component has any subcomponents
+   * <li> The name of its parent component
+   * </ul>
+   */
   private HashMap<String, String[]> weightage;
+
+  /**
+   * The FacultyMember object of the course coordinator.
+   */
   private FacultyMember coordinator;
 
   /**
    * Constructor for Course class.
    * 
-   * @param courseName name of course
-   * @param courseType type of course (lec; lec and tut; lec, tut and lab)
-   * @param vacancies vacancies of type HashMap
-   * @param weightage weightage of course components
+   * @param courseName                  name of course
+   * @param courseType                  type of course
+   * @param vacancies                   vacancies of type <code>HashMap</code>
+   * @param weightage                   weightage of course components
+   * @param coordinator                 coordinator of the course
+   * @throws IllegalWeightageException  if an illegal weightage is supplied as argument
+   * @throws IllegalVacancyException    if an illegal vacancy is supplied as argument
    */
   public Course(String courseName, CourseType courseType, HashMap<String, Integer> vacancies,
       HashMap<String, String[]> weightage, FacultyMember coordinator)
@@ -48,7 +84,7 @@ public class Course implements Serializable {
   }
 
   /**
-   * Initialize course by registering groups.
+   * Initializes course by registering groups.
    * 
    * For CourseType.TUT and CourseType.LAB courses, need to check if the lecture vacancy is
    * consistent with the total vacancy of tutorial/lab groups.
@@ -57,7 +93,9 @@ public class Course implements Serializable {
    * the course has lectures only, then only register the lecture vacancy. Else, register
    * each group along with their vacancies.
    * 
-   * @param vacancies key-value pair of group name and number of vacancy
+   * @param vacancies                 HashMap of group name and number of vacancy
+   * @throws IllegalVacancyException  if an illegal vacancy <code>HashMap</code> is supplied as
+   *                                  argument
    */
   public void addGroups(HashMap<String, Integer> vacancies) throws IllegalVacancyException {
     if (courseType == CourseType.LEC) {
@@ -91,19 +129,27 @@ public class Course implements Serializable {
   }
 
   /**
-   * Register based on group names. This function is only for courses of type CourseType.TUT and
+   * Registers based on group names. This function is only for courses of type CourseType.TUT and
    * CourseType.LAB.
-   * 
+   * <p>
    * If registration is successful, decrement the vacancy for that particular group.
    * 
-   * @param groupName group name to be registered at
+   * @param groupName                     group name to be registered at
+   * @throws IllegalCourseTypeException   if course type is LEC
+   * @throws GroupFullException           if group is full
+   * @throws GroupNotFoundException       if group name is invalid
    */
-  public void register(String groupName) throws IllegalCourseTypeException, GroupFullException {
+  public void register(String groupName) throws IllegalCourseTypeException,
+      GroupFullException, GroupNotFoundException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "You should call register() instead, since course " + courseName +
         " does not have any tutorial/lab groups."
       );
+    }
+
+    if (!tutLabGroups.containsKey(groupName)) {
+      throw new GroupNotFoundException(groupName, courseName);
     }
 
     int groupVacancy = tutLabGroups.get(groupName)[0];
@@ -118,8 +164,13 @@ public class Course implements Serializable {
   }
 
   /**
-   * Register on courses only of type CourseType.LEC. If registration is successful, decrement
-   * the lecture vacancy.
+   * Registers on courses only of type CourseType.LEC.
+   * <p>
+   * If registration is successful, decrement the lecture vacancy.
+   * 
+   * @throws IllegalCourseTypeException   if course type is not of type LEC
+   * @throws LectureFullException         if lecture is full
+   * @throws GroupNotFoundException       if group name is invalid
    */
   public void register() throws IllegalCourseTypeException, LectureFullException {
     if (courseType != CourseType.LEC) {
@@ -137,31 +188,39 @@ public class Course implements Serializable {
   }
 
   /**
-   * Check group vacancy. Only applicable on courses only of type CourseType.TUT and
+   * Checks group vacancy. Only applicable on courses only of type CourseType.TUT and
    * CourseType.LAB.
    * 
-   * @param groupName group name to check
-   * @return group vacancy
+   * @param groupName                     group name to check
+   * @return                              group vacancy
+   * @throws IllegalCourseTypeException   if course type is of type TUT or LAB
+   * @throws GroupNotFoundException       if group name is invalid
    */
-  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException {
+  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException,
+      GroupNotFoundException {
     if (courseType == CourseType.LEC) {
       throw new IllegalCourseTypeException(
         "Course " + courseName + " does not have any tutorial/lab group."
       );
     }
 
+    if (!tutLabGroups.containsKey(groupName)) {
+      throw new GroupNotFoundException(groupName, courseName);
+    }
+
     return tutLabGroups.get(groupName)[0];
   }
 
   /**
-   * Print all groups on the course. 
+   * Prints all groups on the course.
+   * 
+   * @throws IllegalCourseTypeException if course type is of type LEC
    */
-  public void printAllGroups() {
+  public void printAllGroups() throws IllegalCourseTypeException {
     if (courseType == CourseType.LEC) {
-      System.out.println(
+      throw new IllegalCourseTypeException(
         "Oops, it appears that " + courseName + " doesn't have any groups."
       );
-      return;
     }
 
     System.out.println();
@@ -186,7 +245,8 @@ public class Course implements Serializable {
   /**
    * Setter method for weightage.
    * 
-   * @param weightage weightage to be inserted
+   * @param weightage                   weightage to be inserted
+   * @throws IllegalWeightageException  if weightage supplied is illegal
    */
   public void setWeightage(HashMap<String, String[]> weightage) throws IllegalWeightageException {
     if (!validateWeightage(weightage)) {
@@ -197,7 +257,7 @@ public class Course implements Serializable {
   }
 
   /**
-   * Validate weightage.
+   * Validates weightage.
    * 
    * @param weightage weightage in HashMap
    * @return true if weightage is validated, else false
@@ -209,7 +269,9 @@ public class Course implements Serializable {
   /**
    * Overloaded method to validate weightage.
    * 
-   * @return true if weightage is validated, else false
+   * @param weightage   weightage to be validated
+   * @param check       which component is being focused at
+   * @return            true if weightage is validated, else false
    */
   private boolean validateWeightage(HashMap<String, String[]> weightage, String check) {
     int total = 0;

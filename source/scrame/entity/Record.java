@@ -13,7 +13,6 @@ import scrame.entity.Student;
 import scrame.helper.CourseType;
 
 public class Record implements Serializable {
-  private static final long serialVersionUID = 3L;
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;

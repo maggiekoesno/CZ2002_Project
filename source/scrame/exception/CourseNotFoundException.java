@@ -14,4 +14,3 @@ public class CourseNotFoundException extends Exception {
     return message;
   }
 }
-
