@@ -1,10 +1,10 @@
 package scrame.exception;
 
-public class IllegalCourseTypeException extends Exception {
+public class IllegalWeightageException extends Exception {
 
   private String message;
   
-  public IllegalCourseTypeException(String message) {
+  public IllegalWeightageException(String message) {
     super();
     this.message = message;
   }

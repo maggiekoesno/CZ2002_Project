@@ -1,7 +1,6 @@
 package scrame.exception;
 
-public class GroupFullException
-  extends Exception {
+public class GroupFullException extends Exception {
 
   private String message;
 
