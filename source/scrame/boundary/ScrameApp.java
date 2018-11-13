@@ -86,15 +86,15 @@ public class ScrameApp {
     // }
 
     while (flagWhile) {
-      if (userChoice == 2)
+      if (userChoice == 2) {
         functionChoice = StudentForm.display();
-      else if(firstLoop){
+      } else if (firstLoop) {
         functionChoice = AdminForm.display();
         firstLoop = false;
-      }
-      else
+      } else {
         functionChoice = AdminForm.displayMini();
-  
+      }
+
       switch (functionChoice) {
         case 0:
           System.out.println("Exiting SCRAME application... Goodbye!");
@@ -216,7 +216,7 @@ public class ScrameApp {
             courseType = CourseManager.courseTypeToEnum(typeInput);
           } catch (IllegalCourseTypeException e) {
             System.out.println(e.getMessage());
-	    break;
+	          break;
           }
 
           System.out.print("Enter " + courseName + "'s total vacancy: ");
@@ -250,59 +250,6 @@ public class ScrameApp {
               }
               tempVacancies.put(groupName, groupVacancy);
             }
-          }
-
-          // ArrayList<String> components = new ArrayList<String>();
-
-          // System.out.println("Enter component (e.g. Exam): (-1 to exit)");
-          // String component = sc.nextLine();
-          // components.add(component);
-          // System.out.println("Enter percentage (e.g. 60%): ");
-          // String percentage = sc.nextLine();
-          // System.out.println("Does " + component + "have any subcomponent(s)? (y/n)");
-          // String hasSubcomponents = sc.nextLine();
-
-          // if (components.isEmpty()) {
-          //   continue;
-          // }
-
-          System.out.println("Enter the weightage of the exam, -1 to exit:"); // TODO: should simplify inputting process?
-          System.out.println(
-            "Format weightagename,percentage,true (if have child else false), \"\" (if no parent else \"nameOfParent\")"
-          );
-          System.out.println("Example: ");
-          System.out.println(
-            "Exam,60%,false,\"\" <----- false, because it has no subcoursework. and \"\" because it has no parent"
-          );
-          System.out.println(
-            "Coursework,40%,true,\"\" <----- true, because coursework is divided into more subcategories"
-          );
-          System.out.println(
-            "Assignment,70%,false,Coursework <-------, Coursework because its parent is Coursework"
-          );
-          System.out.println("Attendance,30%,false,Coursework <-------, same");
-
-          System.out.println("Course Weightage Structure: ");
-          System.out.println("             100%                    ");
-          System.out.println("           /    \\                  ");
-          System.out.println("      60% Exam     40% Coursework           ");
-          System.out.println("                    /           \\          ");
-          System.out.println("            70% Assignment       30% Attendance   ");
-
-          while (true) {
-            System.out.println("Enter the weightage, -1 to exit:");
-            tmp = sc.next();
-            if (tmp.equals("-1")) {
-              break;
-            }
-            String parts[] = tmp.split(",");
-            if (parts[3].equals("\"\"")) {
-              parts[3] = "";
-            }
-            
-            // System.out.println(parts[0]);      
-            // System.out.println(parts[1] + " " + parts[2] + " " + parts[3]);
-            tempWeightageList.put(parts[0], new String[]{parts[1], parts[2], parts[3]});
           }
 
           try {
