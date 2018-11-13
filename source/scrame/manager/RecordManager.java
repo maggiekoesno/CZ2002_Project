@@ -70,6 +70,7 @@ public final class RecordManager {
             tempCourseName.equals(courseName)) {
           throw new DuplicateRecordException(studentName, courseName);
         }
+        return;
       }
 
       courseFound.register();
@@ -226,16 +227,16 @@ public final class RecordManager {
           n++;
         }
       }
-
+      mean = sum / n;
       for (Record r : recordList) {
         if (r.getCourse().getCourseName().equals(courseName)) {
           sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
+          
         }
       }
-      mean = sum / n;
       
       float[] studentScore = new float[n];
-
+      System.out.println("+---------------------------------------------+");
       System.out.println(
         "There are " + n + " students registered in this course."
       );
@@ -255,13 +256,13 @@ public final class RecordManager {
 
       Arrays.sort(studentScore);
       int[] borderValueIndex = new int[3];
-      borderValueIndex[0] = (int)1/4*(n+1);
-      borderValueIndex[1] = (int)2/4*(n+1);
-      borderValueIndex[2] = (int)3/4*(n+1);
+      borderValueIndex[0] = Math.round((float)(0.25*(n+1)));
+      borderValueIndex[1] = Math.round((float)(0.5*(n+1)));
+      borderValueIndex[2] = Math.round((float)(0.75*(n+1)));
       System.out.println("1st Quartile (25%) : " + studentScore[borderValueIndex[0]]);
       System.out.println("2nd Quartile (50%) : " + studentScore[borderValueIndex[1]]);
       System.out.println("3rd Quartile (75%) : " + studentScore[borderValueIndex[2]]);
-      System.out.println("***********************************************");
+      System.out.println("+----------------------------------------------+");
 
       double sumExam = 0;
       double meanExam = 0;
