@@ -400,13 +400,50 @@ public class ScrameApp {
 
         case 7:
           // RecordManager.setCourseworkMark();
-
+          
           check = false;
           quit = false;
           HashMap<String, Float> mark;
           HashMap<String, String[]> weightage;
           float ans;
           
+          //----------------------------------------------------------------------------------------
+          //- THIS IS THE AUTOMATION FOR MARK AND COURSEWORK
+          //----------------------------------------------------------------------------------------
+        //  int auto = 1;
+        //   String automatric;
+          
+          // float examScore = 50;
+          // float courseWorkscore = 80;
+          // recordList = RecordManager.getRecordList();
+          // for(auto =1;auto<16;auto++){
+          //   if(auto<10){
+          //     automatric = "U172010"+Integer.toString(auto)+"H";
+          //   }
+          //   else{
+          //     automatric = "U17201"+Integer.toString(auto)+"H";
+          //   }
+          //   for (Record r : recordList) {
+          //     if (r.getStudent().getMatric().equals(automatric) &&
+          //         r.getCourse().getCourseName().equals("CZ2001")) {
+          //           mark = r.getMark();
+          //           mark.put("Exam", examScore);
+          //           mark.put("Coursework",courseWorkscore);
+          //           if(examScore == 100 || courseWorkscore == 100){
+          //             examScore = 50;
+          //             courseWorkscore = 70;
+          //           }
+          //           examScore +=5;
+          //           courseWorkscore+=5;
+          //           r.setMark(mark);
+                    
+          //       }
+          //   }
+          // } 
+          
+
+
+
           System.out.print("Enter student matriculation number: ");
           matric = sc.next();
           
@@ -543,6 +580,7 @@ public class ScrameApp {
           break;
 
         case 9:
+        
           quit = false;
           System.out.print("Input the course name for statistics: ");
           courseName = sc.next();
