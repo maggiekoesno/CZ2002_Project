@@ -95,18 +95,6 @@ public class ScrameApp {
           break;
 
         case 1:
-<<<<<<< HEAD
-=======
-          System.out.print("Please input matric number: ");
-          matric = sc.next();
-          if(!StudentManager.isStudentInList(matric)){
-            System.out.println("Oops. the student is not yet registered.");
-            break;
-          }
-          System.out.print("Please input course name: ");
-          courseName = sc.next();
-
->>>>>>> bb5ff757ef8997e9ed7b8cd7bffc26c5727a806d
           try {
             System.out.print("Please enter matric number: ");
             matric = sc.next();
