@@ -561,7 +561,7 @@ public class ScrameApp {
                     System.out.print("Enter mark for " + entry.getKey() + ": ");
                     ans = sc.nextFloat();
                     while (ans < 0 || ans > 100) {
-                      System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                      System.out.println("Whoops, Mark is out of range (0-100)");
                       System.out.print("Try Again: ");
                       ans = sc.nextFloat();
                     }
@@ -639,7 +639,7 @@ public class ScrameApp {
             System.out.println("Exam mark set successfully!");
           }
 
-          break;
+          break;  
 
         case 9:
         
