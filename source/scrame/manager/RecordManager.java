@@ -61,17 +61,17 @@ public final class RecordManager {
 
       validateRegisterStudentCourse(matric, courseName);
 
-      for (Record r : RecordManager.getRecordList()) {
-        String tempCourseName = r.getCourse().getCourseName();
-        String tempStudentName = r.getStudent().getName();
-        String studentName = studentFound.getName();
+      // for (Record r : RecordManager.getRecordList()) {
+      //   String tempCourseName = r.getCourse().getCourseName();
+      //   String tempStudentName = r.getStudent().getName();
+      //   String studentName = studentFound.getName();
 
-        if (tempStudentName.equals(studentName) &&
-            tempCourseName.equals(courseName)) {
-          throw new DuplicateRecordException(studentName, courseName);
-        }
-        return;
-      }
+      //   if (tempStudentName.equals(studentName) &&
+      //       tempCourseName.equals(courseName)) {
+      //     throw new DuplicateRecordException(studentName, courseName);
+      //   }
+      //   return;
+      // }
 
       courseFound.register();
       String studentName = studentFound.getName();
@@ -168,7 +168,7 @@ public final class RecordManager {
    */
   public static void printStudentList(String courseName, String groupName) {
     HashSet<Record> recordList = RecordManager.getRecordList();
-    int counterStudentList = 0;
+    int counterStudentList = -1;
 
     for (Record r : recordList) {
       if (r.getGroupName().equals(groupName) && r.getCourse().getCourseName().equals(courseName)) {
