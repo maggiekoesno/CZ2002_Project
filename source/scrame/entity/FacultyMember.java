@@ -3,8 +3,19 @@ package scrame.entity;
 import java.io.Serializable;
 
 public class FacultyMember implements Serializable {
+  /**
+   * the name of the faculty mamber
+   */
   private String name;
+  
+  /**
+   * The id as a string of the faculty member
+   */
   private String id;
+
+  /**
+   * The faculty in which the faculty member is placed
+   */
   private String faculty;
   private boolean isCourseCoordinator;
 
