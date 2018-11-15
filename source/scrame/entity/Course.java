@@ -297,6 +297,20 @@ public class Course implements Serializable {
     return (total == 100 && flag);
   }
 
+  public ArrayList<String> getGroupNames() {
+    ArrayList<String> temp = new ArrayList<String>();
+
+    for (Map.Entry<String, Integer[]> entry : tutLabGroups.entrySet()) {
+      if (entry.getKey().equals("_LEC")) {
+        continue;
+      }
+
+      temp.add(entry.getKey());
+    }
+
+    return temp;
+  }
+
   /**
    * Getter method for course name.
    * 

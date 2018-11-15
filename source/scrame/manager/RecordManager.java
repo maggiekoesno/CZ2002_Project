@@ -15,7 +15,9 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
@@ -48,28 +50,15 @@ public final class RecordManager {
       Course courseFound = CourseManager.findCourse(courseName);
 
       validateRegisterStudentCourse(matric, courseName);
-
-      for (Record r : RecordManager.getRecordList()) {
-        String tempCourseName = r.getCourse().getCourseName();
-        String tempStudentName = r.getStudent().getName();
-        String studentName = studentFound.getName();
-
-        if (tempStudentName.equals(studentName) &&
-            tempCourseName.equals(courseName)) {
-          throw new DuplicateRecordException(studentName, courseName);
-        }
-        return;
-      }
-
       courseFound.register();
+      recordList.add(new Record(
+        studentFound, courseFound, "_LEC", new HashMap<String, Float>()
+      ));
+
       String studentName = studentFound.getName();
       System.out.println(
         studentName + " is succesfully registered on course " + courseName + "!"
       );
-
-      recordList.add(new Record(
-        studentFound, courseFound, "_LEC", new HashMap<String, Float>()
-      ));
     } catch (IllegalCourseTypeException e) {
       e.printStackTrace();
     } catch (LectureFullException e) {
@@ -120,6 +109,13 @@ public final class RecordManager {
     }
   }
 
+  /**
+   * Check if the student has registered on the course.
+   * 
+   * @param matric                    student's matric number
+   * @param courseName                course name
+   * @throws DuplicateRecordException if the student has registered on the course
+   */
   public static void validateRegisterStudentCourse(String matric, String courseName) 
       throws DuplicateRecordException {
     for (Record r: recordList) {
@@ -131,43 +127,95 @@ public final class RecordManager {
   }
 
   /**
-   * Print student list for a given course name for courses of type LEC.
+   * Print student list for a given course name.
    * 
-   * @param courseName course name
+   * @param courseName  course name
+   * @param byGroup     true if print by group, else print by lecture
    */
-  public static void printStudentList(String courseName) {
-    int counterStudentList = 0;
-
-    for (Record r : recordList) {
-      if (r.getCourse().getCourseName().equals(courseName)) {
-        System.out.println(r.getStudent().getName());
-        counterStudentList++;
-      }
+  public static void printStudentList(String courseName, boolean byGroup) {
+    if (!byGroup) {
+      printStudentListByLecture(courseName);
+    } else {
+      printStudentListByGroup(courseName);
     }
-
-    System.out.println("Total number of students: " + Integer.toString(counterStudentList));
   }
 
   /**
-   * Print student list for a given course name for courses of type TUT or LAB.
+   * Print student list by lecture, sorted by name in alphabetical order.
    * 
    * @param courseName course name
-   * @param groupName group name
    */
-  public static void printStudentList(String courseName, String groupName) {
-    HashSet<Record> recordList = RecordManager.getRecordList();
-    int counterStudentList = 0;
+  private static void printStudentListByLecture(String courseName) {
+    ArrayList<String> tempStudentNames = new ArrayList<String>();
 
     for (Record r : recordList) {
-      if (r.getGroupName().equals(groupName) && r.getCourse().getCourseName().equals(courseName)) {
-        System.out.println(r.getStudent().getName());
-        counterStudentList++;
+      if (r.getCourse().getCourseName().equals(courseName)) {
+        tempStudentNames.add(r.getStudent().getName());
       }
     }
 
-    System.out.println(
-      "Total number of students in " + groupName + " is: " +
-      Integer.toString(counterStudentList));
+    System.out.println();
+    System.out.println("+----------------------------------+");
+    System.out.println("|  Students Registered by Lecture  |");
+    System.out.println("+----------------------------------+");
+
+    Collections.sort(tempStudentNames);
+
+    for (String s : tempStudentNames) {
+      System.out.print("|  ");
+      System.out.printf("%-30s", s);
+      System.out.println("  |");
+    }
+
+    System.out.println("+----------------------------------+");
+  }
+
+  /**
+   * Print student list by group. Sorted by student name in alphabetical order.
+   * 
+   * @param courseName course name
+   */
+  private static void printStudentListByGroup(String courseName) {
+    try {
+      ArrayList<String> groupNames = CourseManager.findCourse(courseName).getGroupNames();
+      ArrayList<String> tempStudentNames = new ArrayList<String>();
+
+      while (!groupNames.isEmpty()) {
+        String groupName = groupNames.remove(0);
+
+        for (Record r : recordList) {
+          if (r.getCourse().getCourseName().equals(courseName) &&
+              r.getGroupName().equals(groupName)) {
+            tempStudentNames.add(r.getStudent().getName());
+          }
+        }
+
+        System.out.println();
+        System.out.println("+----------------------------------+");
+        System.out.println("|   Students Registered by Group   |");
+        System.out.println("+--------+-------------------------+");
+
+        boolean firstNameInCourse = true;
+        Collections.sort(tempStudentNames);
+
+        for (String s : tempStudentNames) {
+          if (firstNameInCourse) {
+            System.out.print("|  " + groupName + "  |  ");
+            firstNameInCourse = false;
+          } else {
+            System.out.print("|        |  ");
+          }
+
+          System.out.printf("%-21s", s);
+          System.out.println("  |");
+        }
+
+        System.out.println("+--------+-------------------------+");
+        tempStudentNames.clear();
+      }
+    } catch (CourseNotFoundException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   /**
