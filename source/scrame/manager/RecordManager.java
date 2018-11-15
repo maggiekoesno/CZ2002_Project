@@ -73,9 +73,9 @@ public final class RecordManager {
         studentName + " is succesfully registered on course " + courseName + "!"
       );
     } catch (IllegalCourseTypeException e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
     } catch (LectureFullException e) {
-      e.printStackTrace();
+      System.out.println(e.getMessage());
     } catch (StudentNotFoundException e) {
       System.out.println(e.getMessage());
     } catch (CourseNotFoundException e) {

@@ -258,6 +258,7 @@ public class ScrameApp {
         case 3:
           System.out.print("Enter your matric number: ");
           matric = sc.next();
+          sc.nextLine();
           StudentManager.printTranscript(matric);
           break;
 
@@ -631,7 +632,6 @@ public class ScrameApp {
             RecordManager.registerStudentCourse("U1720122H", "CZ2001");
             RecordManager.registerStudentCourse("U1720122H", "CZ2002", "BCG2");
             RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
-            RecordManager.registerStudentCourse("U1720123H", "CZ2001");
             RecordManager.registerStudentCourse("U1720123H", "CZ2002", "SSP1");
             RecordManager.registerStudentCourse("U1720123H", "CZ2003", "BCG2");
           } catch (DuplicateRecordException e) {
@@ -717,6 +717,38 @@ public class ScrameApp {
             for (Record r : recordList) {
               if (r.getStudent().getMatric().equals(automatric) &&
                   r.getCourse().getCourseName().equals("CZ2001")) {
+                mark = r.getMark();
+                mark.put("Exam", examScore);
+                mark.put("Coursework", courseworkScore);
+
+                if (examScore == 100 || courseworkScore == 100) {
+                  examScore = 50;
+                  courseworkScore = 70;
+                }
+
+                examScore += 5;
+                courseworkScore += 5;
+                r.setMark(mark);
+              }
+
+              if (r.getStudent().getMatric().equals(automatric) &&
+                  r.getCourse().getCourseName().equals("CZ2002")) {
+                mark = r.getMark();
+                mark.put("Exam", examScore);
+                mark.put("Coursework", courseworkScore);
+
+                if (examScore == 100 || courseworkScore == 100) {
+                  examScore = 50;
+                  courseworkScore = 70;
+                }
+
+                examScore += 5;
+                courseworkScore += 5;
+                r.setMark(mark);
+              }
+
+              if (r.getStudent().getMatric().equals(automatric) &&
+                  r.getCourse().getCourseName().equals("CZ2003")) {
                 mark = r.getMark();
                 mark.put("Exam", examScore);
                 mark.put("Coursework", courseworkScore);
