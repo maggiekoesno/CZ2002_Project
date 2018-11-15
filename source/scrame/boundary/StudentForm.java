@@ -30,7 +30,7 @@ public final class StudentForm {
    * Display and get the choice from user
    * @return  integer of the selected choide of action
    */
-  public static int display(){
+  public static int display() {
     Scanner sc = new Scanner(System.in);
     System.out.print("Select the app's functionality: ");
     choice = sc.nextInt();

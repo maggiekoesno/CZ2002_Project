@@ -141,7 +141,6 @@ public final class CourseManager {
       );
       out.writeObject(courseList);
       out.close();
-      System.out.println("Serialized data is saved in " + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {

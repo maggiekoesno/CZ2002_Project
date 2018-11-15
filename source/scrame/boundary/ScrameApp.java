@@ -122,16 +122,26 @@ public class ScrameApp {
         System.out.print("Enter matric number: ");
         matric = sc.next();
       }
+
+      try {
+        System.out.println("Welcome, " + StudentManager.findStudent(matric).getName() + "!");
+      } catch (StudentNotFoundException e) {
+        System.out.println(e.getMessage());
+      }
     }
 
     while (flagWhile) {
       if (userChoice == 2) {
+        if (firstLoop) {
+          StudentForm.showInformation();
+          firstLoop = false;  
+        }
         functionChoice = StudentForm.display();
-      } else if (firstLoop) {
-        AdminForm.showInformation();
-        functionChoice = AdminForm.display();
-        firstLoop = false;
       } else {
+        if (firstLoop) {
+          AdminForm.showInformation();
+          firstLoop = false;
+        }
         functionChoice = AdminForm.display();
       }
 

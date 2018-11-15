@@ -207,7 +207,6 @@ public final class StudentManager {
       );
       out.writeObject(studentList);
       out.close();
-      System.out.println("Serialized data is saved in " + fileName);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
