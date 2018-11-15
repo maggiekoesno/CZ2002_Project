@@ -1,9 +1,2 @@
-/.vscode
 classes/
-.DS_Store
-node_modules/
 data/
-*.sh
-**/.project
-bin/
-source/bin/
