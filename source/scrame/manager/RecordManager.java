@@ -50,6 +50,22 @@ public final class RecordManager {
       Course courseFound = CourseManager.findCourse(courseName);
 
       validateRegisterStudentCourse(matric, courseName);
+<<<<<<< HEAD
+=======
+
+      // for (Record r : RecordManager.getRecordList()) {
+      //   String tempCourseName = r.getCourse().getCourseName();
+      //   String tempStudentName = r.getStudent().getName();
+      //   String studentName = studentFound.getName();
+
+      //   if (tempStudentName.equals(studentName) &&
+      //       tempCourseName.equals(courseName)) {
+      //     throw new DuplicateRecordException(studentName, courseName);
+      //   }
+      //   return;
+      // }
+
+>>>>>>> b67acd46838b67dd850ccac54b15fd8d47087179
       courseFound.register();
       recordList.add(new Record(
         studentFound, courseFound, "_LEC", new HashMap<String, Float>()
@@ -192,10 +208,16 @@ public final class RecordManager {
    * 
    * @param courseName course name
    */
+<<<<<<< HEAD
   private static void printStudentListByGroup(String courseName) {
     try {
       ArrayList<String> groupNames = CourseManager.findCourse(courseName).getGroupNames();
       ArrayList<String> tempStudentNames = new ArrayList<String>();
+=======
+  public static void printStudentList(String courseName, String groupName) {
+    HashSet<Record> recordList = RecordManager.getRecordList();
+    int counterStudentList = -1;
+>>>>>>> b67acd46838b67dd850ccac54b15fd8d47087179
 
       while (!groupNames.isEmpty()) {
         String groupName = groupNames.remove(0);

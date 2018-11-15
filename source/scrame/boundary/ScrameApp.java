@@ -452,6 +452,7 @@ public class ScrameApp {
               );
               break;
             }
+<<<<<<< HEAD
   
             for (Record r : RecordManager.getRecordList()) {
               if (r.getStudent().getMatric().equals(matric) &&
@@ -482,6 +483,39 @@ public class ScrameApp {
   
                     if (yesOrNo.equals("y")) {
                       System.out.print("Enter mark for " + entry.getKey() + ": ");
+=======
+          }
+
+          if (quit) {
+            break;
+          }
+
+          recordList = RecordManager.getRecordList();
+
+          for (Record r : recordList) {
+            if (r.getStudent().getMatric().equals(matric) &&
+                r.getCourse().getCourseName().equals(courseName)) {
+              check = true;
+              mark = r.getMark();
+              weightage = r.getCourse().getWeightage();
+
+              for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+                // System.out.println(entry.getKey() + " = " + entry.getValue());
+                //TODO : entry.getValue() buat apa?
+                
+                if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
+                  System.out.print(
+                    "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
+                  );
+                  ans = sc.nextInt();
+
+                  if (ans == 1) {
+                    System.out.print("Enter mark for " + entry.getKey() + ": ");
+                    ans = sc.nextFloat();
+                    while (ans < 0 || ans > 100) {
+                      System.out.println("Whoops, Mark is out of range (0-100)");
+                      System.out.print("Try Again: ");
+>>>>>>> b67acd46838b67dd850ccac54b15fd8d47087179
                       ans = sc.nextFloat();
   
                       while (ans < 0 || ans > 100) {
@@ -541,7 +575,7 @@ public class ScrameApp {
               System.out.print("Enter mark for exam: ");
               ans = sc.nextFloat();
               while(ans < 0 || ans > 100){
-                System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
+                System.out.println("Wwhoops, mark is out of range (0-100)");
                 System.out.print("Try Again: ");
                 ans = sc.nextFloat();
               }
@@ -557,7 +591,7 @@ public class ScrameApp {
             System.out.println("Exam mark set successfully!");
           }
 
-          break;
+          break;  
 
         case 9:
           System.out.print("Input the course name for statistics: ");
