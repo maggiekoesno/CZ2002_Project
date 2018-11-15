@@ -1,3 +1,5 @@
 classes/
 data/
 clear_data.sh
+.classpath
+.project

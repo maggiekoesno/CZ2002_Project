@@ -10,6 +10,7 @@ import java.util.Collections;
 
 import scrame.boundary.AdminForm;
 import scrame.boundary.StudentForm;
+import scrame.boundary.Form;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
@@ -25,8 +26,6 @@ import scrame.manager.StudentManager;
 import scrame.helper.CourseType;
 import scrame.helper.SortByStudentName;
 import scrame.helper.SortByCourseName;
-
-import scrame.boundary.Form;
 
 /**
  * ScrameApp is the main boundary app that interacts with other manager classes.
