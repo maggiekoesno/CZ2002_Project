@@ -12,16 +12,47 @@ import scrame.entity.Student;
 
 import scrame.helper.CourseType;
 
+/**
+ * Record is the class representing a class-student pair
+ * indicating that a student is enrolled in a class
+ */
 public class Record implements Serializable {
+  /**
+   * Constants for the String array inside weightage.
+   */
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
-
+  
+  /**
+   * Reference to the student object
+   */
   private Student student;
+  
+  /**
+   * Reference to the course object
+   */
   private Course course;
+
+  /**
+   * The group name in which the student is registered in
+   */
   private String groupName;
+
+  /**
+   * Store the value of the leaf nodes in weightage of the course
+   * to later be calculated as the average score
+   */
   private HashMap<String, Float> mark;
 
+  /**
+   * Constructor for Record class
+   * 
+   * @param student   the student object
+   * @param course    the course object
+   * @param groupName string of the groupname, "_LEC" for lecture type course
+   * @param mark      hashMap of the mark (contains leaf nodes of the weightage)
+   */
   public Record(Student student, Course course, String groupName, HashMap<String, Float> mark) {
     this.student = student;
     this.course = course;
@@ -29,10 +60,19 @@ public class Record implements Serializable {
     this.mark = mark;
   }
 
+  /**
+   * Helps abstracting the recursive functionality of calculateAverage
+   * @return the average of one's mark in class
+   */
   public float calculateAverage() {
     return calculateAverage("");
   }
 
+  /**
+   * Return the average by calculating Mark based on Course weightage
+   * @param check The parent name whose children tally need to be calculated
+   * @return The average of the parent's child based on course weightage
+   */
   private float calculateAverage(String check) {
     HashMap<String, String[]> weightage = course.getWeightage();
     float sum = 0.0f;
@@ -56,20 +96,36 @@ public class Record implements Serializable {
 
     return sum;
   }
-
+  
+  /**
+   * The human readable represntation of the record object
+   * @return the human readable representation of the record object
+   */
   @Override
   public String toString() {
     return student.getName() + ", " + course.getCourseName() + ", " + groupName;
   }
-
+  
+  /**
+   * As a getter to the student object
+   * @return the student object
+   */
   public Student getStudent() {
     return student;
   }
 
+  /**
+   * As a getter to the course object
+   * @return the course object
+   */
   public Course getCourse() {
     return course;
   }
 
+  /**
+   * As a getter to the mark object
+   * @return the mark hashmap
+   */
   public HashMap<String, Float> getMark() {
     if (!hasMark()) {
       return new HashMap<String, Float>();
@@ -78,14 +134,25 @@ public class Record implements Serializable {
     return mark;
   }
 
+  /**
+   * To help check whether the mark has already been filled
+   * @return boolean of whether the mark is null or set
+   */
   public boolean hasMark() { 
     return mark != null ;
   }
 
+  /**
+   * As a getter to the group name registered
+   * @return the string of group name
+   */
   public String getGroupName() {
     return groupName;
   }
 
+  /**
+   * As a setter tot he mark hashmap
+   */
   public void setMark(HashMap<String, Float> mark) {
     this.mark = mark;
   }
