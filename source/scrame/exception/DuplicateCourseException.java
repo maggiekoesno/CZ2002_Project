@@ -6,7 +6,7 @@ package scrame.exception;
 public class DuplicateCourseException extends Exception {
 
   /**
-   * The message of the exception
+   * The message of the exception.
    */
   private String message;
   

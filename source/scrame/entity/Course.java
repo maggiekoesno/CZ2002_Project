@@ -246,7 +246,7 @@ public class Course implements Serializable {
   }
 
   /**
-   * Setter method for weightage.
+   * Sets weightage.
    * 
    * @param weightage                   weightage to be inserted
    * @throws IllegalWeightageException  if weightage supplied is illegal
@@ -270,7 +270,7 @@ public class Course implements Serializable {
   }
 
   /**
-   * Overloaded method to validate weightage.
+   * Validates weightage as overloaded method.
    * 
    * @param weightage   weightage to be validated
    * @param check       which component is being focused at
@@ -297,6 +297,10 @@ public class Course implements Serializable {
     return (total == 100 && flag);
   }
 
+  /**
+   * Getter function of group names
+   * @return arrayList of the group names
+   */
   public ArrayList<String> getGroupNames() {
     ArrayList<String> temp = new ArrayList<String>();
 

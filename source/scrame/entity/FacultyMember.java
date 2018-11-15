@@ -2,19 +2,22 @@ package scrame.entity;
 
 import java.io.Serializable;
 
+/**
+ * Faculty Member representing the faculties in school.
+ */
 public class FacultyMember implements Serializable {
   /**
-   * the name of the faculty mamber
+   * The name of the faculty mamber.
    */
   private String name;
   
   /**
-   * The id as a string of the faculty member
+   * The id as a string of the faculty member.
    */
   private String id;
 
   /**
-   * The faculty in which the faculty member is placed
+   * The faculty in which the faculty member is placed.
    */
   private String faculty;
   private boolean isCourseCoordinator;
@@ -25,7 +28,6 @@ public class FacultyMember implements Serializable {
    * @param name     name of the faculty member
    * @param id       id of the faculty member
    * @param faculty  faculty of the faculty member
-   * 
    */
   public FacultyMember(String name, String id, String faculty) {
     this.name = name;
@@ -50,7 +52,8 @@ public class FacultyMember implements Serializable {
   }
 
   /**
-   * Getter method for faculty member name
+   * Getter method for faculty member name.
+   * 
    * @return the string of get name
    */
   public String getName() {
@@ -58,7 +61,8 @@ public class FacultyMember implements Serializable {
   }
 
   /**
-   * Getter method for faculty Id
+   * Getter method for faculty Id.
+   * 
    * @return the string of id of the faculty mamber
    */
   public String getId() {
@@ -66,7 +70,8 @@ public class FacultyMember implements Serializable {
   }
 
   /**
-   * Getter method for faculty name
+   * Getter method for faculty name.
+   * 
    * @return the string of the faculty name
    */
   public String getFaculty() {
@@ -74,14 +79,15 @@ public class FacultyMember implements Serializable {
   }
 
   /**
-   * Setter method for faculty id
+   * Setter of the faculty id.
    */
   public void setId(String id) {
     this.id = id;
   }
 
   /**
-   * Check whether faculty member is the course coordinator
+   * Checks whether faculty member is the course coordinator.
+   * 
    * @return the boolean of the mentioned expression
    */
   public boolean getIsCourseCoordinator() {
@@ -89,21 +95,21 @@ public class FacultyMember implements Serializable {
   }
 
   /**
-   * Setter method for faculty name
+   * Setter method for faculty name.
    */
   public void setFaculty(String faculty) {
     this.faculty = faculty;
   }
 
   /**
-   * Setter method for coursecoordinator
+   * Setter method for coursecoordinator.
    */
   public void setIsCourseCoodinator(boolean isCourseCoordinator) {
     this.isCourseCoordinator = isCourseCoordinator;
   }
 
   /**
-   * Setter method for faculty member name
+   * Setter method for faculty member name.
    */
   public void setName(String name) {
     this.name = name;

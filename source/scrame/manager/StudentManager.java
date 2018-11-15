@@ -31,15 +31,15 @@ import scrame.manager.CourseManager;
 import scrame.manager.RecordManager;
 
 /**
- * Static class that manages the student list and perform related actions
+ * Static class that manages the student list and perform related actions.
  */
 public final class StudentManager {
   /**
-   * The student list is stored in a hashset
+   * The student list is stored in a hashset.
    */
   private static HashSet<Student> studentList = new HashSet<Student>();
   /**
-   * The path to where the serialized form of the data is stored
+   * The path to where the serialized form of the data is stored.
    */
   private static String fileName = "../data/students.ser";
   
@@ -51,7 +51,7 @@ public final class StudentManager {
   private static final int PARENT = 2;
 
   /**
-   * Add student with the given information.
+   * Adds student with the given information.
    * 
    * @param name student's name
    * @param major student's major
@@ -69,7 +69,7 @@ public final class StudentManager {
   }
 
   /**
-   * Print student transcript on student's matric number.
+   * Prints student transcript on student's matric number.
    * 
    * @param matric matriculation number
    */
@@ -114,7 +114,7 @@ public final class StudentManager {
   }
 
   /**
-   * Private method to print weightage as pairs of component and mark.
+   * Prints weightage as pairs of component and mark.
    * 
    * @param r individual record of student and course 
    */
@@ -146,7 +146,7 @@ public final class StudentManager {
   }
 
   /** 
-   * Check if a student is registered.
+   * Checks if a student is registered.
    * 
    * @param matric matric ID of the student
    * @return true if student in the list, false otherwise
@@ -161,7 +161,7 @@ public final class StudentManager {
   }
 
   /**
-   * Return student with a given matric number.
+   * Returns student with a given matric number.
    * 
    * @param matric matric number
    * @return student object
@@ -198,7 +198,7 @@ public final class StudentManager {
   }
 
   /**
-   * Input student list to file.
+   * Inputs student list to file.
    */
   public static void inputToFile() {
     try {
@@ -215,7 +215,7 @@ public final class StudentManager {
   }
 
   /**
-   * Load student list from file.
+   * Loads student list from file.
    */
   public static void loadFromFile() {
     try {

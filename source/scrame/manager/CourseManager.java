@@ -24,21 +24,21 @@ import scrame.exception.*;
 import scrame.helper.CourseType;
 
 /**
- * Static class that manage the individual course and all courses
+ * Static class that manage the individual course and all courses.
  */
 public final class CourseManager {
   /**
-   * The list of courses is stored in a HashSet
+   * The list of courses is stored in a HashSet.
    */
   private static HashSet<Course> courseList = new HashSet<Course>();
 
   /**
-   * The path to where the serialized form of the data to be stored
+   * The path to where the serialized form of the data to be stored.
    */
   private static String fileName = "../data/courses.ser";
 
   /**
-   * Add course into the courseList and insert it into textfile.
+   * Adds course into the courseList and insert it into textfile.
    * 
    * @param courseName corurse name
    * @param courseType type of course
@@ -60,7 +60,7 @@ public final class CourseManager {
   }
 
   /**
-   * Helper function to convert course type to enum.
+   * Converts course type string to enum.
    * 
    * @param tempCourseType string of course type
    * @return CourseType object
@@ -87,7 +87,7 @@ public final class CourseManager {
   }
 
   /**
-   * A function to check whether a course is in the list
+   * Checks whether a course is in the list.
    * 
    * @param courseName id of the course
    * @return true if the course is in the list, false otherwise
@@ -102,11 +102,11 @@ public final class CourseManager {
   }
 
   /**
-   * Get course object on course name.
+   * Finds the course object based on course name.
    * 
    * @param courseName course name
-   * @return course object
-   * @throws CourseNotFoundException
+   * @return           course object
+   * @throws           CourseNotFoundException
    */
   public static Course findCourse(String courseName)
       throws CourseNotFoundException {
@@ -124,7 +124,8 @@ public final class CourseManager {
   }
 
   /**
-   * Getter to the courselist hashset
+   * Getter to the courselist hashset.
+   * 
    * @return the hashset of the courselist
    */
   public static HashSet<Course> getCourseList() {
@@ -132,7 +133,7 @@ public final class CourseManager {
   }
 
   /**
-   * Write list of all courses to file.
+   * Writes list of all courses to file.
    */
   public static void inputToFile() {
     try {
@@ -149,7 +150,7 @@ public final class CourseManager {
   }
 
   /**
-   * Read the textfile and insert it into courseList.
+   * Reads the textfile and insert it into courseList.
    */
   public static void loadFromFile() {
     try {

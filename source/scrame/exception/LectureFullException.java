@@ -2,18 +2,18 @@ package scrame.exception;
 
 /**
  * The exception thrown when there is an attempt to register
- * to an already full course
+ * to an already full course.
  */
 public class LectureFullException extends Exception {
 
   /**
-   * The exception message
+   * The exception message.
    */
   private String message;
   
   /**
-   * The constructor of the exception
-   * @param courseName the nameOf the Course in problem
+   * The constructor of the exception.
+   * @param courseName the name of the Course in problem
    */
   public LectureFullException(String courseName) {
     super();
@@ -21,7 +21,7 @@ public class LectureFullException extends Exception {
   }
 
   /**
-   * Getter to the exception message
+   * Getter to the exception message.
    * @return the message as a string
    */
   public String getMessage() {

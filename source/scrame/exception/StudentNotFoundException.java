@@ -1,17 +1,17 @@
 package scrame.exception;
 
 /**
- * Exception thrown when you try to find a non existing student
+ * Exception thrown when you try to find a non existing student.
  */
 public class StudentNotFoundException extends Exception {
 
   /**
-   * The exception message
+   * The exception message.
    */
   private String message;
 
   /**
-   * The constructor of the exception
+   * Constructor of the exception.
    */
   public StudentNotFoundException() {
     super();
@@ -19,7 +19,7 @@ public class StudentNotFoundException extends Exception {
   }
 
   /**
-   * Getter to the exception message
+   * Getter to the exception message.
    * @return the message as a string
    */
   public String getMessage() {
