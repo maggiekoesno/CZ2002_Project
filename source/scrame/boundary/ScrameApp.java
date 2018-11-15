@@ -26,6 +26,8 @@ import scrame.helper.CourseType;
 import scrame.helper.SortByStudentName;
 import scrame.helper.SortByCourseName;
 
+import scrame.boundary.Form;
+
 public class ScrameApp {
   private static final int HAS_CHILD = 1;
 
@@ -94,6 +96,7 @@ public class ScrameApp {
     String tmp;
     boolean check;
     
+    Form form;
     Scanner sc = new Scanner(System.in);
     
     // userChoice = 1; // admin
@@ -128,22 +131,19 @@ public class ScrameApp {
       } catch (StudentNotFoundException e) {
         System.out.println(e.getMessage());
       }
+
+      form = new StudentForm();
+    }
+    else {
+      form = new AdminForm();
     }
 
     while (flagWhile) {
-      if (userChoice == 2) {
-        if (firstLoop) {
-          StudentForm.showInformation();
-          firstLoop = false;  
-        }
-        functionChoice = StudentForm.display();
-      } else {
-        if (firstLoop) {
-          AdminForm.showInformation();
-          firstLoop = false;
-        }
-        functionChoice = AdminForm.display();
+      if (firstLoop) {
+        form.showInformation();
+        firstLoop = false;  
       }
+      functionChoice = form.display();
 
       switch (functionChoice) {
         case 0:
