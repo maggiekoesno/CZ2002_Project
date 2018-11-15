@@ -38,10 +38,12 @@ import scrame.manager.RecordManager;
  * Static class that manages the student list and perform related actions.
  */
 public final class StudentManager {
+
   /**
    * The student list is stored in a hashset.
    */
   private static HashSet<Student> studentList = new HashSet<Student>();
+
   /**
    * The path to where the serialized form of the data is stored.
    */
@@ -224,6 +226,12 @@ public final class StudentManager {
     return studentList;
   }
 
+  /**
+   * A function to validate matric number base on its format.
+   * 
+   * @param matric                            matric number to be validated
+   * @throws IllegalStudentArgumentException  if invalid matric is supplied
+   */
   public static void validateMatric(String matric) throws IllegalStudentArgumentException {
     if (!matric.matches("[gGnNuU][1][0-8]\\d{5}\\D")) {
       throw new IllegalStudentArgumentException(

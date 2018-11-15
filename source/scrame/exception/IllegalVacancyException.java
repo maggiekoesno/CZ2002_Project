@@ -5,6 +5,7 @@ package scrame.exception;
  * tally up correctly to the course total vacancy.
  */
 public class IllegalVacancyException extends Exception {
+  
   /**
    * The exception message
    */

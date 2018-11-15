@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Faculty Member representing the faculties in school.
  */
 public class FacultyMember implements Serializable {
+  
   /**
    * The name of the faculty mamber.
    */

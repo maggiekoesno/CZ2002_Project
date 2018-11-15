@@ -3,10 +3,12 @@ package scrame.boundary;
 import java.util.Scanner;
 
 import scrame.boundary.Form;
+
 /**
  * A boundary class that helps to restrict the action performed by the user based on admin role.
  */
 public final class AdminForm implements Form {
+
   /**
    * A delimiter integer that helps in the implementation of other functions.
    */
@@ -59,7 +61,7 @@ public final class AdminForm implements Form {
    * @return        boolean whether the action is allowable or not
    */
   public boolean validateChoice(int choice) {
-    return (choice >= 0 && choice <= 19) ? true : false;
+    return (choice >= 0 && choice <= 9) ? true : false;
   }
 }
 

@@ -8,6 +8,7 @@ import scrame.exception.IllegalStudentArgumentException;
  * Student represent a student in the school.
  */
 public class Student implements Serializable {
+  
   /**
    * The name of the student.
    */

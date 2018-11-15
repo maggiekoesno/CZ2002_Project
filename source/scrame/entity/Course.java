@@ -117,7 +117,6 @@ public class Course implements Serializable {
         totalVacancy += entry.getValue();
       }
 
-      // Test if lecture vacancy is the total vacancy of all tutorial/lab groups.
       if (totalVacancy != tempLectureVacancy) {
         throw new IllegalVacancyException("Invalid vacancy argument.");
       }
@@ -255,7 +254,6 @@ public class Course implements Serializable {
     int total = 0;
     boolean flag = true;
 
-    // Check if component's weights sum up to 100%.
     for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
       String component = entry.getKey();
       String[] info = entry.getValue();
@@ -269,6 +267,7 @@ public class Course implements Serializable {
         total += Integer.parseInt(w.substring(0, w.length() - 1));
       }
     }
+    
     return (total == 100 && flag);
   }
 

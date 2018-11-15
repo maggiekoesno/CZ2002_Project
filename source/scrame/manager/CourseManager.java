@@ -27,6 +27,7 @@ import scrame.helper.CourseType;
  * Static class that manage the individual course and all courses.
  */
 public final class CourseManager {
+
   /**
    * The list of courses is stored in a HashSet.
    */
@@ -130,7 +131,7 @@ public final class CourseManager {
   /**
    * Getter to the courselist hashset.
    * 
-   * @return the hashset of the courselist
+   * @return the hashset of the course list
    */
   public static HashSet<Course> getCourseList() {
     return courseList;
@@ -154,7 +155,7 @@ public final class CourseManager {
   }
 
   /**
-   * Reads the textfile and insert it into courseList.
+   * Reads the text file and insert it into course list.
    */
   public static void loadFromFile() {
     try {

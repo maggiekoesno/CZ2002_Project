@@ -17,6 +17,7 @@ import scrame.helper.CourseType;
  * indicating that a student is enrolled in a class
  */
 public class Record implements Serializable {
+  
   /**
    * Constants for the String array inside weightage.
    */

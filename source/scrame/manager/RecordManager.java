@@ -34,6 +34,7 @@ import scrame.helper.CourseType;
  * Static class that manages records list and perform related actions.
  */
 public final class RecordManager {
+  
   /**
    * The record list is stored as a hashset.
    */
@@ -308,19 +309,19 @@ public final class RecordManager {
     float[] studentScore = new float[n];
 
     System.out.println();
-    System.out.println("+---------------------------------------------------+");
+    System.out.println("+----------------------------------------------------+");
     System.out.println("|  There are " + n + " students registered in this course.  |");
-    System.out.println("|                                                   |");
+    System.out.println("|                                                    |");
     
     System.out.print("|  Overall score average         : ");
     System.out.printf("%-10.4f", mean);
-    System.out.println("       |");
+    System.out.println("        |");
 
     System.out.print("|  Standard deviation            : ");
     System.out.printf("%-10.4f", (float) (Math.sqrt(sumSquareDiff / n)));
-    System.out.println("       |");
+    System.out.println("        |");
 
-    System.out.println("|                                                   |");
+    System.out.println("|                                                    |");
 
     int i = 0;
     for (Record r2 : recordList) {
@@ -339,15 +340,15 @@ public final class RecordManager {
 
     System.out.print("|  1st quartile (25%)            : ");
     System.out.printf("%-10.4f", studentScore[borderValueIndex[0] - 1]);
-    System.out.println("       |");
+    System.out.println("        |");
 
     System.out.print("|  2nd quartile (50%)            : ");
     System.out.printf("%-10.4f", studentScore[borderValueIndex[1] - 1]);
-    System.out.println("       |");
+    System.out.println("        |");
 
     System.out.print("|  3rd quartile (75%)            : ");
     System.out.printf("%-10.4f", studentScore[borderValueIndex[2] - 1]);
-    System.out.println("       |");
+    System.out.println("        |");
 
     double sumExam = 0;
     double meanExam = 0;
@@ -369,15 +370,15 @@ public final class RecordManager {
     }
 
     stdExam = Math.sqrt(sumSquareDiffExam / n);
-    System.out.println("|                                                   |");
+    System.out.println("|                                                    |");
     System.out.print("|  Exam average                  : ");
     System.out.printf("%-10.4f", meanExam);
-    System.out.println("       |");
+    System.out.println("        |");
     System.out.print("|  Exam standard deviation       : ");
     System.out.printf("%-10.4f", stdExam);
-    System.out.println("       |");
+    System.out.println("        |");
 
-    System.out.println("|                                                   |");
+    System.out.println("|                                                    |");
 
     double sumOther = 0;
     double meanOther = 0;
@@ -412,11 +413,11 @@ public final class RecordManager {
     stdOther = Math.sqrt(sumSquareDiffOther / m);
     System.out.print("|  Coursework average            : ");
     System.out.printf("%-10.4f", meanOther);
-    System.out.println("       |");
+    System.out.println("        |");
     System.out.print("|  Coursework standard deviation : ");
     System.out.printf("%-10.4f", stdOther);
-    System.out.println("       |");
-    System.out.println("+---------------------------------------------------+");
+    System.out.println("        |");
+    System.out.println("+----------------------------------------------------+");
   }
 
   /**
@@ -432,7 +433,7 @@ public final class RecordManager {
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {
-      // e.printStackTrace();
+      e.printStackTrace();
     }
   }
 

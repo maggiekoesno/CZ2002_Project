@@ -7,7 +7,8 @@ import scrame.boundary.Form;
 /**
  * A boundary class that helps to restrict the action performed by the user based on student role.
  */
-public final class StudentForm implements Form{
+public final class StudentForm implements Form {
+
   /**
    * A delimiter integer that helps in the implementation of other functions.
    */

@@ -32,6 +32,7 @@ import scrame.boundary.Form;
  * ScrameApp is the main boundary app that interacts with other manager classes.
  */
 public class ScrameApp {
+
   /**
    * Delimiter variable to be used in other functions.
    */
@@ -115,8 +116,6 @@ public class ScrameApp {
     
     Form form;
     Scanner sc = new Scanner(System.in);
-    
-    // userChoice = 1; // admin
 
     System.out.println();
     System.out.println("Welcome to the SCRAME application!");
@@ -403,8 +402,6 @@ public class ScrameApp {
           break;
 
         case 6:
-          // RecordManager.printStudentList();
-
           System.out.print("Enter course name: ");
           courseName = sc.next();
 
@@ -462,9 +459,7 @@ public class ScrameApp {
 
           break;
 
-        case 7:
-          // RecordManager.setCourseworkMark();
-          
+        case 7:          
           try {
             check = false;
 
@@ -549,8 +544,6 @@ public class ScrameApp {
           break;
 
         case 8:
-          // RecordManager.setExamMark();
-
           try {
             check = false;
 
@@ -619,157 +612,6 @@ public class ScrameApp {
             System.out.println(e.getMessage());
           }
           
-          break;
-
-        case 11:
-          //---------------------------------------------
-          //  AUTOMATION FOR REGISTER STUDENT TO COURSE
-          //---------------------------------------------
-          try {
-            RecordManager.registerStudentCourse("U1720120H", "CZ2001");
-            RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
-            RecordManager.registerStudentCourse("U1720120H", "CZ2003", "SSP1");
-            RecordManager.registerStudentCourse("U1720121H", "CZ2001");
-            RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
-            RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
-            RecordManager.registerStudentCourse("U1720122H", "CZ2001");
-            RecordManager.registerStudentCourse("U1720122H", "CZ2002", "BCG2");
-            RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
-            RecordManager.registerStudentCourse("U1720123H", "CZ2002", "SSP1");
-            RecordManager.registerStudentCourse("U1720123H", "CZ2003", "BCG2");
-          } catch (DuplicateRecordException e) {
-            System.out.println(e.getMessage());
-          }
-
-          break;
-
-        case 14:
-          //------------------------------------
-          //  AUTOMATION FOR REGISTER STUDENT
-          //------------------------------------
-          try {
-            StudentManager.addStudent("Margaret Claire", "CSC", "AY1718 S1", "U1720120H");
-            StudentManager.addStudent("Kevin Winata", "CSC", "AY1718 S1", "U1720121H");
-            StudentManager.addStudent("Jason Sebastian", "CSC", "AY1718 S1", "U1720122H");
-            StudentManager.addStudent("Elbert Widjaja", "CSC", "AY1718 S1", "U1720123H");
-            printRegisteredStudents();
-          } catch (IllegalStudentArgumentException e) {
-            System.out.println(e.getMessage());
-          }
-
-          break;
-
-        case 15:
-          //-----------------------------------
-          //  AUTOMATION FOR REGISTER COURSE
-          //-----------------------------------
-          HashMap<String, Integer> tempVacancies1 = new HashMap<String, Integer>();
-          HashMap<String, Integer> tempVacancies23 = new HashMap<String, Integer>();          
-          
-          tempVacancies1.put("_LEC", 4);
-          tempVacancies23.put("_LEC", 4);
-          tempVacancies23.put("SSP1", 2);
-          tempVacancies23.put("BCG2", 2);
-
-          HashMap<String, String[]> tempWeightageList1 = new HashMap<String, String[]>();
-          HashMap<String, String[]> tempWeightageList23 = new HashMap<String, String[]>();
-          
-          tempWeightageList1.put("Exam", new String[]{"60%", "false", ""});
-          tempWeightageList1.put("Coursework", new String[]{"40%", "false", ""});
-          tempWeightageList23.put("Exam", new String[]{"60%", "false", ""});
-          tempWeightageList23.put("Coursework", new String[]{"40%", "true", ""});
-          tempWeightageList23.put("Assessment", new String[]{"70%", "false", "Coursework"});
-          tempWeightageList23.put("Attendance", new String[]{"30%", "false", "Coursework"});
-
-          try {
-            CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacancies1, tempWeightageList1,
-              new FacultyMember("Arvind Easwaran", "101", "CSC", true)
-            );
-            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies23, tempWeightageList1,
-              new FacultyMember("Goh Wooi Boon", "102", "CSC", true)
-            );
-            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies23, tempWeightageList1,
-              new FacultyMember("Lua Rui Ping", "103", "CSC", true)
-            );
-
-            printRegisteredCourses();
-
-          } catch (DuplicateCourseException e) {
-            System.out.println(e.getMessage());
-          } catch (IllegalWeightageException e) {
-            System.out.println(e.getMessage());
-          } catch (IllegalVacancyException e) {
-            System.out.println(e.getMessage());
-          }
-
-          break;
-
-        case 17:
-          //--------------------------------------
-          //  AUTOMATION FOR SET COURSEWORK MARK
-          //--------------------------------------
-          int auto = 1;
-          String automatric;
-          float examScore = 50;
-          float courseworkScore = 80;
-
-          recordList = RecordManager.getRecordList();
-          for (auto = 0; auto < 4; auto++) {
-            automatric = "U172012" + Integer.toString(auto) + "H";
-
-            for (Record r : recordList) {
-              if (r.getStudent().getMatric().equals(automatric) &&
-                  r.getCourse().getCourseName().equals("CZ2001")) {
-                mark = r.getMark();
-                mark.put("Exam", examScore);
-                mark.put("Coursework", courseworkScore);
-
-                if (examScore == 100 || courseworkScore == 100) {
-                  examScore = 50;
-                  courseworkScore = 70;
-                }
-
-                examScore += 5;
-                courseworkScore += 5;
-                r.setMark(mark);
-              }
-
-              if (r.getStudent().getMatric().equals(automatric) &&
-                  r.getCourse().getCourseName().equals("CZ2002")) {
-                mark = r.getMark();
-                mark.put("Exam", examScore);
-                mark.put("Coursework", courseworkScore);
-
-                if (examScore == 100 || courseworkScore == 100) {
-                  examScore = 50;
-                  courseworkScore = 70;
-                }
-
-                examScore += 5;
-                courseworkScore += 5;
-                r.setMark(mark);
-              }
-
-              if (r.getStudent().getMatric().equals(automatric) &&
-                  r.getCourse().getCourseName().equals("CZ2003")) {
-                mark = r.getMark();
-                mark.put("Exam", examScore);
-                mark.put("Coursework", courseworkScore);
-
-                if (examScore == 100 || courseworkScore == 100) {
-                  examScore = 50;
-                  courseworkScore = 70;
-                }
-
-                examScore += 5;
-                courseworkScore += 5;
-                r.setMark(mark);
-              }
-            }
-          }
-
-          System.out.println("Coursework mark set successfully!");
-
           break;
       }
 

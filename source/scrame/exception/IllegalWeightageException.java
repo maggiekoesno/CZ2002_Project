@@ -5,6 +5,7 @@ package scrame.exception;
  * tally up correctly.
  */
 public class IllegalWeightageException extends Exception {
+
   /**
    * The exception message.
    */

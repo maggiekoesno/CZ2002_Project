@@ -4,6 +4,7 @@ package scrame.boundary;
  * An interface for abstraction between AdminForm and StudentForm.
  */
 public interface Form {
+  
   /**
    * Shows information of choice allowable.
    */
