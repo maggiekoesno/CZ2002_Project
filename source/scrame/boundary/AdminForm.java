@@ -4,16 +4,16 @@ import java.util.Scanner;
 
 import scrame.boundary.Form;
 /**
- * A boundary class that helps to restrict the action performed by the user based on admin role
+ * A boundary class that helps to restrict the action performed by the user based on admin role.
  */
 public final class AdminForm implements Form {
   /**
-   * A delimiter integer that helps in the implementation of other functions
+   * A delimiter integer that helps in the implementation of other functions.
    */
   private int choice = -1;
 
   /**
-   * A function that prints the options allowed for the admin role
+   * Prints the options allowed for the admin role.
    */
   public void showInformation() {
     System.out.println(
@@ -34,7 +34,8 @@ public final class AdminForm implements Form {
   } 
 
   /**
-   * Display and get the choice from user
+   * Display and get the choice from user.
+   * 
    * @return  integer of the selected choide of action
    */
   public int display() {
@@ -52,8 +53,9 @@ public final class AdminForm implements Form {
   }
 
   /**
-   * function that helps to validate whether a requested action is permissible
-   * @param choice  the integer of choice chosen by user
+   * Validates whether a requested action is permissible.
+   * 
+   * @param choice  int of choice chosen by user
    * @return        boolean whether the action is allowable or not
    */
   public boolean validateChoice(int choice) {
