@@ -1,9 +1,10 @@
 package scrame.exception;
 
 /**
- * The exception when someting wrong in the student details while registering
+ * The exception when someting wrong in the student details while registering.
  */
 public class IllegalStudentArgumentException extends Exception {
+  
   /**
    * The message of the exception
    */

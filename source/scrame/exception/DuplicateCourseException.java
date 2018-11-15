@@ -1,7 +1,7 @@
 package scrame.exception;
 
 /**
- * The exception thrown when you try to register the same course try
+ * The exception thrown when you try to register the same course.
  */
 public class DuplicateCourseException extends Exception {
 
@@ -11,9 +11,9 @@ public class DuplicateCourseException extends Exception {
   private String message;
   
   /**
-   * The constructor for the exception
+   * Constructor for the exception.
    * 
-   * @param courseName  The name of the course as string
+   * @param courseName  course name
    */
   public DuplicateCourseException(String courseName) {
     super();
@@ -21,7 +21,8 @@ public class DuplicateCourseException extends Exception {
   }
 
   /**
-   * The getter to the exception message
+   * Getter function to the exception message.
+   * 
    * @return the message as a string
    */
   public String getMessage() {

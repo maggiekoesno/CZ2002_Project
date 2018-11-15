@@ -2,17 +2,17 @@ package scrame.exception;
 
 /**
  * Exception thrown when you try to register to a group in a course that
- * has already full
+ * has already full.
  */
 public class GroupFullException extends Exception {
 
   /**
-   * The exception message
+   * The exception message.
    */
   private String message;
 
   /**
-   * The consructor for the exception
+   * Consructor for the exception.
    * 
    * @param courseName  The course name to which the registration is being made
    * @param groupName   The group name of the course which is full
@@ -24,7 +24,7 @@ public class GroupFullException extends Exception {
   }
 
   /**
-   * The getter of the exception message
+   * Getter of the exception message.
    * 
    * @return the message as a string
    */
