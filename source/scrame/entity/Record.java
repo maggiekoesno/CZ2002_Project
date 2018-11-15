@@ -150,6 +150,8 @@ public class Record implements Serializable {
 
   /**
    * Setter to the mark hashmap.
+   *
+   * @param mark HashMap of components of their respective marks
    */
   public void setMark(HashMap<String, Float> mark) {
     this.mark = mark;

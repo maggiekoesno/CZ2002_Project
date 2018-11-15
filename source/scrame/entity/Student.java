@@ -31,10 +31,11 @@ public class Student implements Serializable {
   /**
    * Constructor for Student object.
    * 
-   * @param name name of the student
-   * @param major major of the student
-   * @param enroll enroll time of the student
-   * @param matric matric of the student
+   * @param name                             name of the student
+   * @param major                            major of the student
+   * @param enroll                           enroll time of the student
+   * @param matric                           matric of the student
+   * @throws IllegalStudentArgumentException when any of the arguments do not follow the format
    */
   public Student(String name, String major, String enroll, String matric)
       throws IllegalStudentArgumentException {

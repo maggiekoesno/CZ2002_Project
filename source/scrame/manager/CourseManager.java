@@ -40,10 +40,14 @@ public final class CourseManager {
   /**
    * Adds course into the courseList and insert it into textfile.
    * 
-   * @param courseName corurse name
-   * @param courseType type of course
-   * @param tempVacancies vacancies
-   * @param tempWeightageList weightagelist
+   * @param courseName                  course name
+   * @param courseType                  course type
+   * @param tempVacancies               temporary vacancies
+   * @param tempWeightageList           temporary weightage list
+   * @param coordinator                 course coordinator
+   * @throws DuplicateCourseException   if course with the same name already exists
+   * @throws IllegalWeightageException  if weightage is not in proper format
+   * @throws IllegalVacancyException    if vacancy is not in proper format
    */
   public static void addCourse(String courseName, CourseType courseType,
       HashMap<String, Integer> tempVacancies, HashMap<String, String[]> tempWeightageList,
@@ -62,9 +66,9 @@ public final class CourseManager {
   /**
    * Converts course type string to enum.
    * 
-   * @param tempCourseType string of course type
-   * @return CourseType object
-   * @throws IllegalCourseTypeException
+   * @param tempCourseType              string of course type
+   * @return                            CourseType object
+   * @throws IllegalCourseTypeException if course type is not LEC, TUT or LAB
    */
   public static CourseType courseTypeToEnum(String tempCourseType)
       throws IllegalCourseTypeException {
@@ -104,9 +108,9 @@ public final class CourseManager {
   /**
    * Finds the course object based on course name.
    * 
-   * @param courseName course name
-   * @return           course object
-   * @throws           CourseNotFoundException
+   * @param courseName                course name
+   * @return                          course object
+   * @throws CourseNotFoundException  if no course found
    */
   public static Course findCourse(String courseName)
       throws CourseNotFoundException {

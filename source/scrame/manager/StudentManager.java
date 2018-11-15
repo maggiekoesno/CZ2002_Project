@@ -57,10 +57,12 @@ public final class StudentManager {
   /**
    * Adds student with the given information.
    * 
-   * @param name student's name
-   * @param major student's major
-   * @param enroll student's enrollment semester
-   * @param matric student's matric number
+   * @param name                              student's name
+   * @param major                             student's major
+   * @param enroll                            student's enrollment semester
+   * @param matric                            student's matric number
+   * @throws IllegalStudentArgumentException  if there is another student registered
+   *                                          under the same matric number
    */
   public static void addStudent(String name, String major, String enroll, String matric)
       throws IllegalStudentArgumentException {
@@ -194,8 +196,10 @@ public final class StudentManager {
   /**
    * Returns student with a given matric number.
    * 
-   * @param matric matric number
-   * @return student object
+   * @param matric                    matric number
+   * @return                          student object
+   * @throws StudentNotFoundException if there are no students found with the supplied matric
+   *                                  number
    */
   public static Student findStudent(String matric) throws StudentNotFoundException {
     if (!isStudentInList(matric)) {

@@ -4,3 +4,6 @@ classes/
 node_modules/
 data/
 *.sh
+**/.project
+bin/
+source/bin/

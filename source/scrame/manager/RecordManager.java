@@ -50,8 +50,9 @@ public final class RecordManager {
    * Registers student on a course and store in recordList. Applicable for course of
    * type LEC.
    * 
-   * @param matric     matric number
-   * @param courseName course name
+   * @param matric                    matric number
+   * @param courseName                course name
+   * @throws DuplicateRecordException if the record already exists in record list
    */
   public static void registerStudentCourse(String matric, String courseName)
       throws DuplicateRecordException {
@@ -87,9 +88,10 @@ public final class RecordManager {
    * Registers student on a course and store in recordList. Applicable for course of
    * type TUT or LAB.
    * 
-   * @param matric     matric number
-   * @param courseName course name
-   * @param groupName  group name
+   * @param matric                    matric number
+   * @param courseName                course name
+   * @param groupName                 group name
+   * @throws DuplicateRecordException if record already exists in record list
    */
   public static void registerStudentCourse(String matric, String courseName, String groupName) 
       throws DuplicateRecordException {
@@ -144,6 +146,7 @@ public final class RecordManager {
    * 
    * @param matric     student's matric number
    * @param courseName course name
+   * @return true if student is registered on course, else false
    */
   public static boolean isStudentRegisteredOnCourse(String matric, String courseName) {
     for (Record r : recordList) {
@@ -251,7 +254,8 @@ public final class RecordManager {
   /**
    * Prints course statistics based on course name.
    * 
-   * @param courseName course name
+   * @param course                        course object
+   * @throws NoRegisteredStudentException if there are no students registered to the course
    */
   public static void printCourseStatistics(Course course)
       throws NoRegisteredStudentException {

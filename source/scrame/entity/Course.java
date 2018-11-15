@@ -170,7 +170,6 @@ public class Course implements Serializable {
    * 
    * @throws IllegalCourseTypeException   if course type is not of type LEC
    * @throws LectureFullException         if lecture is full
-   * @throws GroupNotFoundException       if group name is invalid
    */
   public void register() throws IllegalCourseTypeException, LectureFullException {
     if (courseType != CourseType.LEC) {
