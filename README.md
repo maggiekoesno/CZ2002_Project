@@ -19,7 +19,7 @@ This source code is Group SS5's implementation of the application, on Academic Y
 
 ## Getting Started
 
-Clone this repository by executing the following command
+Clone this repository by executing the following command:
 
 ```bash
 git clone https://github.com/maggiekoesno/CZ2002_Project.git
