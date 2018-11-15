@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 public final class AdminForm {
   private static int choice = -1;
-  public static int display() {
-    Scanner sc = new Scanner(System.in);
 
+  public static void showInformation() {
     System.out.println(
       "\n1. Register student for a course (this includes registering for Tutorial/Lab classes).\n" 
       + "2. Check available slots in a class (Class Vacancy).\n" 
@@ -17,33 +16,29 @@ public final class AdminForm {
       + "7. Enter coursework mark – inclusive of its components.\n" 
       + "8. Enter exam mark.\n" 
       + "9. Print course statistics.\n"
-      + "Enter 0 to exit SCRAME\n"
     );
 
-    System.out.print("Enter your choice: ");
+    System.out.println("Valid choices for the app's functionalities are from 1 to 9.");
+    System.out.println("Enter 0 to exit the application.");
+    System.out.println();
+  }
+
+  public static int display() {
+    Scanner sc = new Scanner(System.in);
+    System.out.print("Select the app's functionality: ");
     choice = sc.nextInt();
 
-    while (choice < 0 || choice > 9) {
+    while (!validateChoice(choice)) {
       System.out.println("Invalid choice. Try again!");
+      System.out.print("Select the app's functionality: ");
       choice = sc.nextInt();
     }
 
     return choice;
   }
 
-  public static int displayMini() {
-    Scanner sc = new Scanner(System.in);
-    int choice = -1;
-
-    System.out.print("Enter your choice (from 1-9, 0 to exit): ");
-    choice = sc.nextInt();
-
-    while (choice < 0 || choice > 9) {
-      System.out.println("Invalid choice. Try again!");
-      choice = sc.nextInt();
-    }
-
-    return choice;
+  private static boolean validateChoice(int choice) {
+    return (choice >= 0 && choice <= 19) ? true : false;
   }
 }
 

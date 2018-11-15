@@ -1,6 +1,7 @@
 package scrame.boundary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ import scrame.helper.SortByStudentName;
 import scrame.helper.SortByCourseName;
 
 public class ScrameApp {
+  private static final int HAS_CHILD = 1;
+
   private static void printRegisteredStudents() {
     System.out.println();
     System.out.println("+-------------------------------------------------+");
@@ -76,7 +79,6 @@ public class ScrameApp {
     int functionChoice;
     boolean firstLoop = true;
     boolean flagWhile = true;
-    boolean quit = false;
 
     String matric;
     String courseName;
@@ -85,6 +87,10 @@ public class ScrameApp {
     HashMap<String, Integer> tempVacancies;
     HashMap<String, String[]> tempWeightageList;
     HashSet<Record> recordList;
+    HashMap<String, Float> mark;
+    HashMap<String, String[]> weightage;
+    float ans;
+    String yesOrNo;
     String tmp;
     boolean check;
     
@@ -108,12 +114,12 @@ public class ScrameApp {
     }
 
     if (userChoice == 2) {
-      System.out.print("Enter matriculation number: ");
+      System.out.print("Enter matric number: ");
       matric = sc.next();
 
       while (!StudentManager.isStudentInList(matric)) {
-        System.out.println("Oh no! This matriculation number is not registered yet :(");
-        System.out.print("Enter matriculation number: ");
+        System.out.println("Oh no! This matric number is not registered yet :(");
+        System.out.print("Enter matric number: ");
         matric = sc.next();
       }
     }
@@ -122,10 +128,11 @@ public class ScrameApp {
       if (userChoice == 2) {
         functionChoice = StudentForm.display();
       } else if (firstLoop) {
+        AdminForm.showInformation();
         functionChoice = AdminForm.display();
         firstLoop = false;
       } else {
-        functionChoice = AdminForm.displayMini();
+        functionChoice = AdminForm.display();
       }
 
       switch (functionChoice) {
@@ -167,23 +174,6 @@ public class ScrameApp {
           } catch (IllegalCourseTypeException e) {
             System.out.println(e.getMessage());
           }
-          
-          // try {
-          //   RecordManager.registerStudentCourse("U1720120H", "CZ2001");
-          //   RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
-          //   RecordManager.registerStudentCourse("U1720120H", "CZ2003", "SSP1");
-          //   RecordManager.registerStudentCourse("U1720121H", "CZ2001");
-          //   RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
-          //   RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
-          //   RecordManager.registerStudentCourse("U1720122H", "CZ2001");
-          //   RecordManager.registerStudentCourse("U1720122H", "CZ2002", "BCG2");
-          //   RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
-          //   RecordManager.registerStudentCourse("U1720123H", "CZ2001");
-          //   RecordManager.registerStudentCourse("U1720123H", "CZ2002", "SSP1");
-          //   RecordManager.registerStudentCourse("U1720123H", "CZ2003", "BCG2");
-          // } catch (DuplicateRecordException e) {
-          //   System.out.println(e.getMessage());
-          // }
 
           break;
 
@@ -235,7 +225,7 @@ public class ScrameApp {
           }
 
         case 3:
-          System.out.print("Enter your matriculation number: ");
+          System.out.print("Enter your matric number: ");
           matric = sc.next();
           StudentManager.printTranscript(matric);
           break;
@@ -247,7 +237,7 @@ public class ScrameApp {
           String major = sc.nextLine();
           System.out.print("Enter " + name + "'s enrollment period (e.g. AY1718 S1): ");
           String enroll = sc.nextLine();
-          System.out.print("Enter " + name + "'s matriculation number: ");
+          System.out.print("Enter " + name + "'s matric number: ");
           matric = sc.nextLine();
 
           try {
@@ -256,16 +246,6 @@ public class ScrameApp {
           } catch (IllegalStudentArgumentException e) {
             System.out.println(e.getMessage());
           }
-
-          // try {
-          //   StudentManager.addStudent("Margaret Claire", "CSC", "AY1718 S1", "U1720120H");
-          //   StudentManager.addStudent("Kevin Winata", "CSC", "AY1718 S1", "U1720121H");
-          //   StudentManager.addStudent("Jason Sebastian", "CSC", "AY1718 S1", "U1720122H");
-          //   StudentManager.addStudent("Elbert Widjaja", "CSC", "AY1718 S1", "U1720123H");
-          //   printRegisteredStudents();
-          // } catch (IllegalStudentArgumentException e) {
-          //   System.out.println(e.getMessage());
-          // }
           
           break;
 
@@ -385,41 +365,6 @@ public class ScrameApp {
             System.out.println(e.getMessage());
           }
 
-          // tempVacancies = new HashMap<String, Integer>();
-          // HashMap<String, Integer> tempVacanciesLec = new HashMap<String, Integer>();
-          
-          // tempVacanciesLec.put("_LEC", 4);
-          // tempVacancies.put("_LEC", 4);
-          // tempVacancies.put("SSP1", 2);
-          // tempVacancies.put("BCG2", 2);
-
-          // tempWeightageList = new HashMap<String, String[]>();
-          // tempWeightageList.put("Exam", new String[]{"60%", "false", ""});
-          // tempWeightageList.put("Coursework", new String[]{"40%", "true", ""});
-          // tempWeightageList.put("Assessment", new String[]{"70%", "false", "Coursework"});
-          // tempWeightageList.put("Attendance", new String[]{"30%", "false", "Coursework"});
-
-          // try {
-          //   CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacanciesLec, tempWeightageList,
-          //     new FacultyMember("Arvind Easwaran", "101", "CSC", true)
-          //   );
-          //   CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies, tempWeightageList,
-          //     new FacultyMember("Goh Wooi Boon", "102", "CSC", true)
-          //   );
-          //   CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies, tempWeightageList,
-          //     new FacultyMember("Lua Rui Ping", "103", "CSC", true)
-          //   );
-
-          //   printRegisteredCourses();
-
-          // } catch (DuplicateCourseException e) {
-          //   System.out.println(e.getMessage());
-          // } catch (IllegalWeightageException e) {
-          //   System.out.println(e.getMessage());
-          // } catch (IllegalVacancyException e) {
-          //   System.out.println(e.getMessage());
-          // }
-
           break;
 
         case 6:
@@ -485,122 +430,85 @@ public class ScrameApp {
         case 7:
           // RecordManager.setCourseworkMark();
           
-          check = false;
-          quit = false;
-          HashMap<String, Float> mark;
-          HashMap<String, String[]> weightage;
-          float ans;
-          
-          //----------------------------------------------------------------------------------------
-          //- THIS IS THE AUTOMATION FOR MARK AND COURSEWORK
-          //----------------------------------------------------------------------------------------
-        //  int auto = 1;
-        //   String automatric;
-          
-          // float examScore = 50;
-          // float courseWorkscore = 80;
-          // recordList = RecordManager.getRecordList();
-          // for(auto =1;auto<16;auto++){
-          //   if(auto<10){
-          //     automatric = "U172010"+Integer.toString(auto)+"H";
-          //   }
-          //   else{
-          //     automatric = "U17201"+Integer.toString(auto)+"H";
-          //   }
-          //   for (Record r : recordList) {
-          //     if (r.getStudent().getMatric().equals(automatric) &&
-          //         r.getCourse().getCourseName().equals("CZ2001")) {
-          //           mark = r.getMark();
-          //           mark.put("Exam", examScore);
-          //           mark.put("Coursework",courseWorkscore);
-          //           if(examScore == 100 || courseWorkscore == 100){
-          //             examScore = 50;
-          //             courseWorkscore = 70;
-          //           }
-          //           examScore +=5;
-          //           courseWorkscore+=5;
-          //           r.setMark(mark);
-                    
-          //       }
-          //   }
-          // } 
-          
+          try {
+            check = false;
 
-
-
-          System.out.print("Enter student matriculation number: ");
-          matric = sc.next();
-          
-          while (!StudentManager.isStudentInList(matric)) {
-            System.out.print("No registered student with that matriculation number! ");
-            System.out.print("Try again (enter -1 to exit): ");
+            System.out.print("Enter matric number of a registered student: ");
             matric = sc.next();
-            if (matric.equals("-1")) {
-              quit = true;
-              break;
-            }
-          }
-
-          if (quit) {
-            break;
-          }
-          
-          System.out.print("Enter course name: ");
-          courseName = sc.next();
-          while (!CourseManager.isCourseInList(courseName)) {
-            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
+            
+            String studentName = StudentManager.findStudent(matric).getName();
+            
+            System.out.print("Enter course name which " + studentName + " is registered on: ");
             courseName = sc.next();
-            if (courseName.equals("-1")) {
-              quit = true;
+  
+            if (!CourseManager.isCourseInList(courseName)) {
+              System.out.println("Oops, you have entered an invalid course name.");
               break;
             }
-          }
+  
+            if (!RecordManager.isStudentRegisteredOnCourse(matric, courseName)) {
+              System.out.println(
+                "Oops, " + studentName + " is not registered in course " + courseName + "."
+              );
+              break;
+            }
+  
+            for (Record r : RecordManager.getRecordList()) {
+              if (r.getStudent().getMatric().equals(matric) &&
+                  r.getCourse().getCourseName().equals(courseName)) {
+                check = true;
+                mark = r.getMark();
+                weightage = r.getCourse().getWeightage();
+  
+                for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
+                  String component = entry.getKey();
+                  String[] info = entry.getValue();
+                  boolean leaf = info[HAS_CHILD].equals("true") ? false : true;
+                  boolean isComponentExam = component.toLowerCase().equals("exam");
+  
+                  if (leaf && !isComponentExam) {
+                    System.out.print(
+                      "Do you want to enter mark for " + entry.getKey() + "? (y/n) "
+                    );
+                    yesOrNo = sc.next().toLowerCase();
 
-          if (quit) {
-            break;
-          }
-
-          recordList = RecordManager.getRecordList();
-
-          for (Record r : recordList) {
-            if (r.getStudent().getMatric().equals(matric) &&
-                r.getCourse().getCourseName().equals(courseName)) {
-              check = true;
-              mark = r.getMark();
-              weightage = r.getCourse().getWeightage();
-
-              for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
-                // System.out.println(entry.getKey() + " = " + entry.getValue());
-                //TODO : entry.getValue() buat apa?
-                
-                if (entry.getValue()[1].equals("false") && !(entry.getKey().toLowerCase().equals("exam"))) {
-                  System.out.print(
-                    "Do you want to enter mark for " + entry.getKey() + "? (y(1)/n(0)) "
-                  );
-                  ans = sc.nextInt();
-
-                  if (ans == 1) {
-                    System.out.print("Enter mark for " + entry.getKey() + ": ");
-                    ans = sc.nextFloat();
-                    while (ans < 0 || ans > 100) {
-                      System.out.println("WHOOPS, MARK IS OUT OF RANGE BOI");
-                      System.out.print("Try Again: ");
-                      ans = sc.nextFloat();
+                    while (!yesOrNo.equals("y") && !yesOrNo.equals("n")) {
+                      System.out.println("Please enter 'y' or 'n'.");
+                      System.out.print(
+                        "Do you want to enter mark for " + entry.getKey() + "? (y/n) "
+                      );
+                      yesOrNo = sc.next().toLowerCase();
                     }
-                    mark.put(entry.getKey(), ans);
+  
+                    if (yesOrNo.equals("y")) {
+                      System.out.print("Enter mark for " + entry.getKey() + ": ");
+                      ans = sc.nextFloat();
+  
+                      while (ans < 0 || ans > 100) {
+                        System.out.println(
+                          "Oops, you have entered an invalid mark, Please try again!"
+                        );
+                        System.out.print("Enter mark for " + entry.getKey() + ": ");
+                        ans = sc.nextFloat();
+                      }
+  
+                      mark.put(entry.getKey(), ans);
+                    }
                   }
                 }
+  
+                r.setMark(mark);
+                break;
               }
-
-              r.setMark(mark);
-              break;
             }
-          }
-
-          if (check == false) {
-            System.out.println("Student is not taking that course!");
-          } else {
-            System.out.println("Coursework mark set successfully.");
+  
+            if (check == false) {
+              System.out.println("Student is not taking that course!");
+            } else {
+              System.out.println("Coursework mark set successfully.");
+            }
+          } catch (StudentNotFoundException e) {
+            System.out.println(e.getMessage());
           }
           
           break;
@@ -608,30 +516,18 @@ public class ScrameApp {
         case 8:
           // RecordManager.setExamMark();
           check = false;
-          quit = false;
-          System.out.print("Enter student matriculation number: ");
+          System.out.print("Enter student matric number: ");
           matric = sc.next();
           while (!StudentManager.isStudentInList(matric)) {
-            System.out.print("Matriculation number doesn't exist! Try again (enter -1 to exit): ");
+            System.out.print("matric number doesn't exist! Try again (enter -1 to exit): ");
             matric = sc.next();
-            if (matric.equals("-1")) {
-              quit = true;
-              break;
-            }
           }
-          if(quit) break;
           System.out.print("Enter course name: ");
           courseName = sc.next();
           while (!CourseManager.isCourseInList(courseName)) {
             System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
             courseName = sc.next();
-
-            if (courseName.equals("-1")) {
-              quit = true;
-              break;
-            }
           }
-          if(quit) break;
           recordList = RecordManager.getRecordList();
 
           for (Record r : recordList) {
@@ -664,23 +560,137 @@ public class ScrameApp {
           break;
 
         case 9:
-        
-          quit = false;
           System.out.print("Input the course name for statistics: ");
           courseName = sc.next();
 
           while (!CourseManager.isCourseInList(courseName)) {
             System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
             courseName = sc.next();
-            if (courseName.equals("-1")) {
-              quit = true;
-              break;
-            }
           }
-          if(quit) break;
           RecordManager.printCourseStatistics(courseName);
 
           // RecordManager.printCourseStatistics("CZ2001");
+          break;
+
+        case 11:
+          //---------------------------------------------
+          //  AUTOMATION FOR REGISTER STUDENT TO COURSE
+          //---------------------------------------------
+          try {
+            RecordManager.registerStudentCourse("U1720120H", "CZ2001");
+            RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
+            RecordManager.registerStudentCourse("U1720120H", "CZ2003", "SSP1");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
+            RecordManager.registerStudentCourse("U1720122H", "CZ2001");
+            RecordManager.registerStudentCourse("U1720122H", "CZ2002", "BCG2");
+            RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
+            RecordManager.registerStudentCourse("U1720123H", "CZ2001");
+            RecordManager.registerStudentCourse("U1720123H", "CZ2002", "SSP1");
+            RecordManager.registerStudentCourse("U1720123H", "CZ2003", "BCG2");
+          } catch (DuplicateRecordException e) {
+            System.out.println(e.getMessage());
+          }
+
+          break;
+
+        case 14:
+          //------------------------------------
+          //  AUTOMATION FOR REGISTER STUDENT
+          //------------------------------------
+          try {
+            StudentManager.addStudent("Margaret Claire", "CSC", "AY1718 S1", "U1720120H");
+            StudentManager.addStudent("Kevin Winata", "CSC", "AY1718 S1", "U1720121H");
+            StudentManager.addStudent("Jason Sebastian", "CSC", "AY1718 S1", "U1720122H");
+            StudentManager.addStudent("Elbert Widjaja", "CSC", "AY1718 S1", "U1720123H");
+            printRegisteredStudents();
+          } catch (IllegalStudentArgumentException e) {
+            System.out.println(e.getMessage());
+          }
+
+          break;
+
+        case 15:
+          //-----------------------------------
+          //  AUTOMATION FOR REGISTER COURSE
+          //-----------------------------------
+          HashMap<String, Integer> tempVacancies1 = new HashMap<String, Integer>();
+          HashMap<String, Integer> tempVacancies23 = new HashMap<String, Integer>();          
+          
+          tempVacancies1.put("_LEC", 4);
+          tempVacancies23.put("_LEC", 4);
+          tempVacancies23.put("SSP1", 2);
+          tempVacancies23.put("BCG2", 2);
+
+          HashMap<String, String[]> tempWeightageList1 = new HashMap<String, String[]>();
+          HashMap<String, String[]> tempWeightageList23 = new HashMap<String, String[]>();
+          
+          tempWeightageList1.put("Exam", new String[]{"60%", "false", ""});
+          tempWeightageList1.put("Coursework", new String[]{"40%", "false", ""});
+          tempWeightageList23.put("Exam", new String[]{"60%", "false", ""});
+          tempWeightageList23.put("Coursework", new String[]{"40%", "true", ""});
+          tempWeightageList23.put("Assessment", new String[]{"70%", "false", "Coursework"});
+          tempWeightageList23.put("Attendance", new String[]{"30%", "false", "Coursework"});
+
+          try {
+            CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacancies1, tempWeightageList1,
+              new FacultyMember("Arvind Easwaran", "101", "CSC", true)
+            );
+            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies23, tempWeightageList23,
+              new FacultyMember("Goh Wooi Boon", "102", "CSC", true)
+            );
+            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies23, tempWeightageList23,
+              new FacultyMember("Lua Rui Ping", "103", "CSC", true)
+            );
+
+            printRegisteredCourses();
+
+          } catch (DuplicateCourseException e) {
+            System.out.println(e.getMessage());
+          } catch (IllegalWeightageException e) {
+            System.out.println(e.getMessage());
+          } catch (IllegalVacancyException e) {
+            System.out.println(e.getMessage());
+          }
+
+          break;
+
+        case 17:
+          //--------------------------------------
+          //  AUTOMATION FOR SET COURSEWORK MARK
+          //--------------------------------------
+          int auto = 1;
+          String automatric;
+          float examScore = 50;
+          float courseworkScore = 80;
+
+          recordList = RecordManager.getRecordList();
+          for (auto = 1; auto < 16; auto++) {
+            if (auto < 10) {
+              automatric = "U172010" + Integer.toString(auto) + "H";
+            } else {
+              automatric = "U17201" + Integer.toString(auto) + "H";
+            }
+
+            for (Record r : recordList) {
+              if (r.getStudent().getMatric().equals(automatric) &&
+                  r.getCourse().getCourseName().equals("CZ2001")) {
+                mark = r.getMark();
+                mark.put("Exam", examScore);
+                mark.put("Coursework", courseworkScore);
+
+                if (examScore == 100 || courseworkScore == 100) {
+                  examScore = 50;
+                  courseworkScore = 70;
+                }
+
+                examScore += 5;
+                courseworkScore += 5;
+                r.setMark(mark);
+              }
+            }
+          }
+
           break;
       }
 

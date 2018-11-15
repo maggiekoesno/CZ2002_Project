@@ -21,9 +21,9 @@ public class Course implements Serializable {
   /**
    * Constants for the String array inside weightage.
    */
-  public static final int WEIGHT = 0;
-  public static final int HAS_CHILD = 1;
-  public static final int PARENT = 2;
+  private static final int WEIGHT = 0;
+  private static final int HAS_CHILD = 1;
+  private static final int PARENT = 2;
 
   /**
    * The name of the course.

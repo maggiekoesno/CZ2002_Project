@@ -127,6 +127,23 @@ public final class RecordManager {
   }
 
   /**
+   * Check if student is registered in a course, given the student's matric number and course name.
+   * 
+   * @param matric student's matric number
+   * @param courseName  course name
+   */
+  public static boolean isStudentRegisteredOnCourse(String matric, String courseName) {
+    for (Record r : recordList) {
+      if (r.getStudent().getMatric().equals(matric) &&
+          r.getCourse().getCourseName().equals(courseName)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Print student list for a given course name.
    * 
    * @param courseName  course name

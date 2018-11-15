@@ -3,4 +3,4 @@ classes/
 .DS_Store
 node_modules/
 data/
-script.sh
+*.sh

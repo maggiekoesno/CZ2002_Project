@@ -33,6 +33,7 @@ import scrame.manager.RecordManager;
 public final class StudentManager {
   private static HashSet<Student> studentList = new HashSet<Student>();
   private static String fileName = "../data/students.ser";
+  
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
