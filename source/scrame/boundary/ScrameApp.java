@@ -457,7 +457,7 @@ public class ScrameApp {
               if (r.getStudent().getMatric().equals(matric) &&
                   r.getCourse().getCourseName().equals(courseName)) {
                 check = true;
-                mark = r.getMark();
+                mark = (r.getMark() != null) ? r.getMark() : new HashMap<String, Float>();
                 weightage = r.getCourse().getWeightage();
   
                 for (Map.Entry<String, String[]> entry : weightage.entrySet()) {
@@ -515,49 +515,61 @@ public class ScrameApp {
 
         case 8:
           // RecordManager.setExamMark();
-          check = false;
-          System.out.print("Enter student matric number: ");
-          matric = sc.next();
-          while (!StudentManager.isStudentInList(matric)) {
-            System.out.print("matric number doesn't exist! Try again (enter -1 to exit): ");
-            matric = sc.next();
-          }
-          System.out.print("Enter course name: ");
-          courseName = sc.next();
-          while (!CourseManager.isCourseInList(courseName)) {
-            System.out.print("Course doesn't exist! Try again (enter -1 to exit): ");
-            courseName = sc.next();
-          }
-          recordList = RecordManager.getRecordList();
 
-          for (Record r : recordList) {
-            if (r.getStudent().getMatric().equals(matric) &&
-                r.getCourse().getCourseName().equals(courseName)) {
-              check = true;
-              mark = r.getMark();
-              if (mark == null) {
-                mark = new HashMap<String, Float>();
-              }
-              System.out.print("Enter mark for exam: ");
-              ans = sc.nextFloat();
-              while(ans < 0 || ans > 100){
-                System.out.println("Wwhoops, mark is out of range (0-100)");
-                System.out.print("Try Again: ");
-                ans = sc.nextFloat();
-              }
-              mark.put("Exam", ans);
-              r.setMark(mark);
+          try {
+            check = false;
+
+            System.out.print("Enter matric number of a registered student: ");
+            matric = sc.next();
+            
+            String studentName = StudentManager.findStudent(matric).getName();
+            
+            System.out.print("Enter course name which " + studentName + " is registered on: ");
+            courseName = sc.next();
+  
+            if (!CourseManager.isCourseInList(courseName)) {
+              System.out.println("Oops, you have entered an invalid course name.");
               break;
             }
-          }
+  
+            if (!RecordManager.isStudentRegisteredOnCourse(matric, courseName)) {
+              System.out.println(
+                "Oops, " + studentName + " is not registered in course " + courseName + "."
+              );
+              break;
+            }
 
-          if (check == false) {
-            System.out.println("Student is not taking that course!");
-          } else {
-            System.out.println("Exam mark set successfully!");
-          }
+            for (Record r : RecordManager.getRecordList()) {
+              if (r.getStudent().getMatric().equals(matric) &&
+                  r.getCourse().getCourseName().equals(courseName)) {
+                check = true;
+                mark = (r.getMark() != null) ? r.getMark() : new HashMap<String, Float>();
 
-          break;  
+                System.out.print("Enter mark for exam: ");
+                ans = sc.nextFloat();
+
+                while (ans < 0 || ans > 100) {
+                  System.out.println("Oops, mark should be between 0 and 100. Please try again!");
+                  System.out.print("Enter mark for exam: ");
+                  ans = sc.nextFloat();
+                }
+
+                mark.put("Exam", ans);
+                r.setMark(mark);
+                break;
+              }
+            }
+
+            if (check == false) {
+              System.out.println("Student is not taking that course!");
+            } else {
+              System.out.println("Exam mark set successfully!");
+            }
+          } catch (StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+          }
+          
+          break;
 
         case 9:
           System.out.print("Input the course name for statistics: ");
