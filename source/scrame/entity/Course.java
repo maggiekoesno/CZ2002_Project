@@ -188,30 +188,6 @@ public class Course implements Serializable {
   }
 
   /**
-   * Checks group vacancy. Only applicable on courses only of type CourseType.TUT and
-   * CourseType.LAB.
-   * 
-   * @param groupName                     group name to check
-   * @return                              group vacancy
-   * @throws IllegalCourseTypeException   if course type is of type TUT or LAB
-   * @throws GroupNotFoundException       if group name is invalid
-   */
-  public int checkGroupVacancy(String groupName) throws IllegalCourseTypeException,
-      GroupNotFoundException {
-    if (courseType == CourseType.LEC) {
-      throw new IllegalCourseTypeException(
-        "Course " + courseName + " does not have any tutorial/lab group."
-      );
-    }
-
-    if (!tutLabGroups.containsKey(groupName)) {
-      throw new GroupNotFoundException(groupName, courseName);
-    }
-
-    return tutLabGroups.get(groupName)[0];
-  }
-
-  /**
    * Prints all groups on the course.
    * 
    * @throws IllegalCourseTypeException if course type is of type LEC

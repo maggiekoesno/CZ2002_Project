@@ -20,24 +20,14 @@ public class FacultyMember implements Serializable {
    * The faculty in which the faculty member is placed.
    */
   private String faculty;
+
+  /**
+   * Indicates if this faculty member is a course coordinator.
+   */
   private boolean isCourseCoordinator;
 
   /**
    * Constructor for FacultyMember.
-   * 
-   * @param name     name of the faculty member
-   * @param id       id of the faculty member
-   * @param faculty  faculty of the faculty member
-   */
-  public FacultyMember(String name, String id, String faculty) {
-    this.name = name;
-    this.id = id;
-    this.faculty = faculty;
-    this.isCourseCoordinator = false;
-  }
-
-  /**
-   * Overloaded constructor for FacultyMember.
    * 
    * @param name                 name of the faculty member
    * @param id                   id of the faculty member
@@ -58,60 +48,5 @@ public class FacultyMember implements Serializable {
    */
   public String getName() {
     return this.name;
-  }
-
-  /**
-   * Getter method for faculty Id.
-   * 
-   * @return the string of id of the faculty mamber
-   */
-  public String getId() {
-    return this.id;
-  }
-
-  /**
-   * Getter method for faculty name.
-   * 
-   * @return the string of the faculty name
-   */
-  public String getFaculty() {
-    return this.faculty;
-  }
-
-  /**
-   * Setter of the faculty id.
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
-   * Checks whether faculty member is the course coordinator.
-   * 
-   * @return the boolean of the mentioned expression
-   */
-  public boolean getIsCourseCoordinator() {
-    return this.isCourseCoordinator;
-  }
-
-  /**
-   * Setter method for faculty name.
-   */
-  public void setFaculty(String faculty) {
-    this.faculty = faculty;
-  }
-
-  /**
-   * Setter method for coursecoordinator.
-   */
-  public void setIsCourseCoodinator(boolean isCourseCoordinator) {
-    this.isCourseCoordinator = isCourseCoordinator;
-  }
-
-  /**
-   * Setter method for faculty member name.
-   */
-  public void setName(String name) {
-    this.name = name;
   }
 }

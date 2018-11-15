@@ -219,6 +219,9 @@ public class ScrameApp {
               case LAB:
                 System.out.println("|   Group Name   |   Vacancy   |   Total Size   |");
                 System.out.println("+----------------+-------------+----------------+");
+
+                ArrayList<String> groupNames = courseFound.getGroupNames();
+
                 HashMap<String, Integer[]> groups = courseFound.getTutLabGroups();
                 for (Map.Entry<String, Integer[]> entry : groups.entrySet()) {
                   if (entry.getKey().equals("_LEC")) {

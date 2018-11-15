@@ -100,16 +100,6 @@ public class Record implements Serializable {
   }
   
   /**
-   * Represents the record object in human readable way.
-   * 
-   * @return the human readable representation of the record object
-   */
-  @Override
-  public String toString() {
-    return student.getName() + ", " + course.getCourseName() + ", " + groupName;
-  }
-  
-  /**
    * Getter to the student object.
    * 
    * @return the student object

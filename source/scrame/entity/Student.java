@@ -57,45 +57,12 @@ public class Student implements Serializable {
   }
 
   /**
-   * Converts all of the student attribute to string.
-   * 
-   * @return string containing all of student attributes
-   */
-  @Override
-  public String toString() {
-    return (
-      "Name: " + name + "\n" +
-      "Major: " + major + "\n" +
-      "Enrolled in: " + enroll + "\n" +
-      "Matric No.: " + matric + "\n"
-    );
-  }
-
-  /**
    * Getter method for student name.
    * 
    * @return student name
    */
   public String getName() {
     return this.name;
-  }
-
-  /**
-   * Getter method for student major.
-   * 
-   * @return student major
-   */
-  public String getMajor() {
-    return this.major;
-  }
-
-  /**
-   * Getter method for enrolled time.
-   * 
-   * @return student enrollment time
-   */
-  public String getEnroll() {
-    return this.enroll;
   }
 
   /**
