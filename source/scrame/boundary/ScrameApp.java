@@ -128,11 +128,15 @@ public class ScrameApp {
             System.out.println(e.getMessage());
           }
           
-          // RecordManager.registerStudentCourse("U1720120H", "CZ2001");
-          // RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
-          // RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
-          // RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
-          // RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
+          // try {
+          //   RecordManager.registerStudentCourse("U1720120H", "CZ2001");
+          //   RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
+          //   RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
+          //   RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
+          //   RecordManager.registerStudentCourse("U1720122H", "CZ2003", "SSP1");
+          // } catch (DuplicateRecordException e) {
+          //   System.out.println(e.getMessage());
+          // }
 
           break;
 

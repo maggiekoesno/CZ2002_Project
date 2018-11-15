@@ -47,18 +47,6 @@ public final class RecordManager {
       Student studentFound = StudentManager.findStudent(matric);
       Course courseFound = CourseManager.findCourse(courseName);
 
-      if (courseFound.getCourseType() == CourseType.LEC) {
-        RecordManager.printStudentList(courseName);
-      } else {
-        System.out.println("The list of groups: ");
-        courseFound.printAllGroups();
-
-        System.out.print("\nEnter group name: ");
-        String groupName = sc.next();
-
-        RecordManager.printStudentList(courseName, groupName);
-      }
-
       validateRegisterStudentCourse(matric, courseName);
 
       for (Record r : RecordManager.getRecordList()) {
