@@ -50,6 +50,7 @@ public final class RecordManager {
       Course courseFound = CourseManager.findCourse(courseName);
 
       validateRegisterStudentCourse(matric, courseName);
+      
       courseFound.register();
       recordList.add(new Record(
         studentFound, courseFound, "_LEC", new HashMap<String, Float>()
