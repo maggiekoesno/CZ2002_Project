@@ -23,8 +23,18 @@ import scrame.exception.*;
 
 import scrame.helper.CourseType;
 
+/**
+ * Static class that manage the individual course and all courses
+ */
 public final class CourseManager {
+  /**
+   * The list of courses is stored in a HashSet
+   */
   private static HashSet<Course> courseList = new HashSet<Course>();
+
+  /**
+   * The path to where the serialized form of the data to be stored
+   */
   private static String fileName = "../data/courses.ser";
 
   /**
@@ -113,6 +123,10 @@ public final class CourseManager {
     return null;
   }
 
+  /**
+   * Getter to the courselist hashset
+   * @return the hashset of the courselist
+   */
   public static HashSet<Course> getCourseList() {
     return courseList;
   }

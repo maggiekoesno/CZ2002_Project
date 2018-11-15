@@ -30,10 +30,22 @@ import scrame.helper.CourseType;
 import scrame.manager.CourseManager;
 import scrame.manager.RecordManager;
 
+/**
+ * Static class that manages the student list and perform related actions
+ */
 public final class StudentManager {
+  /**
+   * The student list is stored in a hashset
+   */
   private static HashSet<Student> studentList = new HashSet<Student>();
+  /**
+   * The path to where the serialized form of the data is stored
+   */
   private static String fileName = "../data/students.ser";
   
+  /**
+   * Constants for the String array inside weightage.
+   */
   private static final int WEIGHT = 0;
   private static final int HAS_CHILD = 1;
   private static final int PARENT = 2;
