@@ -139,7 +139,7 @@ public class Record implements Serializable {
    * @return boolean of whether the mark is null or set
    */
   public boolean hasMark() { 
-    return mark != null ;
+    return (mark != null && !mark.isEmpty());
   }
 
   /**

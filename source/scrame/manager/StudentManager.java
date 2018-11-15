@@ -13,19 +13,23 @@ import java.io.EOFException;
 import java.io.Serializable;
 import java.nio.file.Files;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import java.util.Scanner;
+import java.util.Collections;
 
 import scrame.entity.Course;
 import scrame.entity.Record;
 import scrame.entity.Student;
+
 import scrame.exception.IllegalCourseTypeException;
 import scrame.exception.IllegalStudentArgumentException;
 import scrame.exception.StudentNotFoundException;
+
 import scrame.helper.CourseType;
+import scrame.helper.SortRecordByCourseName;
 
 import scrame.manager.CourseManager;
 import scrame.manager.RecordManager;
@@ -76,7 +80,12 @@ public final class StudentManager {
   public static void printTranscript(String matric) {
     boolean studentFound = false;
     HashSet<Record> recordList = RecordManager.getRecordList();
-    HashSet<Record> recordFound = new HashSet<Record>();
+    ArrayList<Record> recordFound = new ArrayList<Record>();
+
+    if (!isStudentInList(matric)) {
+      System.out.println("Holy guacamole, invalid matric number!");
+      return;
+    }
 
     for (Record r : recordList) {
       if (r.getStudent().getMatric().equals(matric)) {
@@ -85,31 +94,53 @@ public final class StudentManager {
       }
     }
 
-    if (!studentFound) {
-      System.out.println("Holy guacamole, invalid matric number!");
-      return;
-    }
-
-    for (Record r : recordFound) {
-      if (!r.hasMark()) {
+    try {
+      if (!studentFound) {
         System.out.println(
-          "Oops. " + r.getStudent().getName() + " haven't been marked on " +
-          r.getCourse().getCourseName() + "!");
+          "Oops, " + findStudent(matric).getName() + " hasn't registered to any course."
+        );
         return;
       }
-      System.out.println("Course name: " + r.getCourse().getCourseName());
-      System.out.println(
-        "Course average: " + Float.toString(r.calculateAverage())
-      );
 
-      System.out.println("Individual assessment: ");
-      for (Map.Entry<String, Float> entry : r.getMark().entrySet()) {
-        String component = entry.getKey();
-        float mark = entry.getValue();
-        System.out.println(component + ": " + Float.toString(mark));
+      for (Record r : recordFound) {
+        if (!r.hasMark()) {
+          System.out.println(
+            "Oops, " + r.getStudent().getName() + " hasn't been marked on " +
+            r.getCourse().getCourseName() + "!");
+          return;
+        }
       }
-
-      printIndividualAssessment(r);
+      
+      System.out.println();
+      System.out.println("+--------------------------------------------+");
+      System.out.println("|             Student Transcript             |");
+      System.out.println("+--------------------------------------------+");
+  
+      Collections.sort(recordFound, new SortRecordByCourseName());
+  
+      for (Record r : recordFound) {  
+        System.out.print("|  Course name                : " + r.getCourse().getCourseName());
+        System.out.println("       |");
+        System.out.print("|  Course average             : ");
+        System.out.printf("%-10.4f", r.calculateAverage());
+        System.out.println("   |");
+  
+        System.out.println("|                                            |");
+        for (Map.Entry<String, Float> entry : r.getMark().entrySet()) {
+          String component = entry.getKey();
+          float mark = entry.getValue();
+          System.out.printf("%-23s", "|  Your " + component + " mark");
+          System.out.print("       : ");
+          System.out.printf("%-10.4f", mark);
+          System.out.println("   |");
+        }
+  
+        System.out.println("|                                            |");
+        printIndividualAssessment(r);
+        System.out.println("+--------------------------------------------+");
+      }
+    } catch (StudentNotFoundException e) {
+      System.out.println(e.getMessage());
     }
   }
 
@@ -135,11 +166,11 @@ public final class StudentManager {
       String[] info = entry.getValue();
 
       if (info[PARENT].equals(check)) {
-        if (info[HAS_CHILD].equals("true")) {
-          System.out.println(component + ", weightage: " + info[WEIGHT]);
+        System.out.printf("%-27s", "|  Weightage for " + component);
+        System.out.print("   : " + info[WEIGHT]);
+        System.out.println("          |");
+        if (info[HAS_CHILD].equals("true")) {  
           printIndividualAssessment(r, component);
-        } else {
-          System.out.println(component + ", weightage: " + info[WEIGHT]);
         }
       }
     }
