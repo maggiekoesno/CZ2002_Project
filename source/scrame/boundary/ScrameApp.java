@@ -146,11 +146,15 @@ public class ScrameApp {
             System.out.print("Please enter matric number: ");
             matric = sc.next();
 
+            sc.nextLine();
+
             StudentManager.validateMatric(matric);
             StudentManager.findStudent(matric);
 
             System.out.print("Please enter course name: ");
             courseName = sc.next();
+            sc.nextLine();
+
             courseFound = CourseManager.findCourse(courseName);
 
             RecordManager.validateRegisterStudentCourse(matric, courseName);
@@ -572,16 +576,18 @@ public class ScrameApp {
           break;
 
         case 9:
-          System.out.print("Input the course name for statistics: ");
-          courseName = sc.next();
-
-          while (!CourseManager.isCourseInList(courseName)) {
-            System.out.print("The course is not registered. Please try again (enter -1 to exit): ");
+          try {
+            System.out.print("Input the course name for statistics: ");
             courseName = sc.next();
-          }
-          RecordManager.printCourseStatistics(courseName);
+            sc.nextLine();
 
-          // RecordManager.printCourseStatistics("CZ2001");
+            RecordManager.printCourseStatistics(CourseManager.findCourse(courseName));
+          } catch (CourseNotFoundException e) {
+            System.out.println(e.getMessage());
+          } catch (NoRegisteredStudentException e) {
+            System.out.println(e.getMessage());
+          }
+          
           break;
 
         case 11:
@@ -592,6 +598,7 @@ public class ScrameApp {
             RecordManager.registerStudentCourse("U1720120H", "CZ2001");
             RecordManager.registerStudentCourse("U1720120H", "CZ2002", "BCG2");
             RecordManager.registerStudentCourse("U1720120H", "CZ2003", "SSP1");
+            RecordManager.registerStudentCourse("U1720121H", "CZ2001");
             RecordManager.registerStudentCourse("U1720121H", "CZ2002", "SSP1");
             RecordManager.registerStudentCourse("U1720121H", "CZ2003", "BCG2");
             RecordManager.registerStudentCourse("U1720122H", "CZ2001");
@@ -648,10 +655,10 @@ public class ScrameApp {
             CourseManager.addCourse("CZ2001", CourseType.LEC, tempVacancies1, tempWeightageList1,
               new FacultyMember("Arvind Easwaran", "101", "CSC", true)
             );
-            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies23, tempWeightageList23,
+            CourseManager.addCourse("CZ2002", CourseType.TUT, tempVacancies23, tempWeightageList1,
               new FacultyMember("Goh Wooi Boon", "102", "CSC", true)
             );
-            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies23, tempWeightageList23,
+            CourseManager.addCourse("CZ2003", CourseType.LAB, tempVacancies23, tempWeightageList1,
               new FacultyMember("Lua Rui Ping", "103", "CSC", true)
             );
 
@@ -677,12 +684,8 @@ public class ScrameApp {
           float courseworkScore = 80;
 
           recordList = RecordManager.getRecordList();
-          for (auto = 1; auto < 16; auto++) {
-            if (auto < 10) {
-              automatric = "U172010" + Integer.toString(auto) + "H";
-            } else {
-              automatric = "U17201" + Integer.toString(auto) + "H";
-            }
+          for (auto = 0; auto < 4; auto++) {
+            automatric = "U172012" + Integer.toString(auto) + "H";
 
             for (Record r : recordList) {
               if (r.getStudent().getMatric().equals(automatric) &&
@@ -702,6 +705,8 @@ public class ScrameApp {
               }
             }
           }
+
+          System.out.println("Coursework mark set successfully!");
 
           break;
       }

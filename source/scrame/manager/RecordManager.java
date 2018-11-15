@@ -34,6 +34,8 @@ public final class RecordManager {
   private static HashSet<Record> recordList = new HashSet<Record>();
   private static String fileName = "../data/records.ser";
 
+  private static final int HAS_CHILD = 1;
+
   /**
    * Register student on a course and store in recordList. Applicable for course of
    * type LEC.
@@ -241,144 +243,166 @@ public final class RecordManager {
    * 
    * @param courseName course name
    */
-  public static void printCourseStatistics(String courseName) {
+  public static void printCourseStatistics(Course course)
+      throws NoRegisteredStudentException {
     int n = 0;
     float sum = 0;
     float mean = 0;
-    double std = 0;
     double sumSquareDiff = 0;
 
     int markCount = 0;
 
-    try {
-      Course courseFound = CourseManager.findCourse(courseName);
-      if (courseFound == null) {
-        System.out.println("Course is not registered !");
-        return;
+    Map<String, String[]> tmpWeightage = course.getWeightage();
+    String courseName = course.getCourseName();
+
+    for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
+      boolean hasChild = entry.getValue()[HAS_CHILD].equals("false") ? false : true;
+      if (!hasChild) {
+        markCount++;
       }
-      Map<String, String[]> tmpWeightage = courseFound.getWeightage();
-      for (Map.Entry<String, String[]> entry : tmpWeightage.entrySet()) {
-        if (entry.getValue()[1].equals("false")) {
-          markCount++;
-        }
-      }
-      
-      for (Record r1: recordList) {
-        if (r1.getCourse().getCourseName().equals(courseName)) {
-          Map<String,Float> mark = r1.getMark();
-          // System.out.println(mark.size());
-          // System.out.println(r1.hasMark());
-          if ( !r1.hasMark() || mark.size() < markCount) {
-            System.out.println("Oops. there is a student that is not marked.");
-            return;
-          }
-        }
-      }
-
-      for (Record r2 : recordList) {
-        if (r2.getCourse().getCourseName().equals(courseName)) {
-          sum += r2.calculateAverage();
-          n++;
-        }
-      }
-      mean = sum / n;
-      for (Record r : recordList) {
-        if (r.getCourse().getCourseName().equals(courseName)) {
-          sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
-          
-        }
-      }
-      
-      float[] studentScore = new float[n];
-      System.out.println("+---------------------------------------------+");
-      System.out.println(
-        "There are " + n + " students registered in this course."
-      );
-      System.out.println("***********************************************");
-      System.out.println("Overall Score Average : " + mean);
-
-      std = Math.sqrt(sumSquareDiff / n);
-      System.out.println("Standard Deviation :" + std);
-
-      int i = 0;
-      for (Record record2: recordList) {
-        if(record2.getCourse().getCourseName().equals(courseName)) {
-          studentScore[i] = record2.calculateAverage();
-          i++;
-        }
-      }
-
-      Arrays.sort(studentScore);
-      int[] borderValueIndex = new int[3];
-      borderValueIndex[0] = Math.round((float)(0.25*(n+1)));
-      borderValueIndex[1] = Math.round((float)(0.5*(n+1)));
-      borderValueIndex[2] = Math.round((float)(0.75*(n+1)));
-      System.out.println("1st Quartile (25%) : " + studentScore[borderValueIndex[0]]);
-      System.out.println("2nd Quartile (50%) : " + studentScore[borderValueIndex[1]]);
-      System.out.println("3rd Quartile (75%) : " + studentScore[borderValueIndex[2]]);
-      System.out.println("+----------------------------------------------+");
-
-      double sumExam = 0;
-      double meanExam = 0;
-      double sumSquareDiffExam = 0;
-      double stdExam = 0;
-
-      for (Record r3 : recordList) {
-        if (r3.getCourse().getCourseName().equals(courseName)) {
-          sumExam = sumExam + r3.getMark().get("Exam");
-        }
-      }
-
-      meanExam = sumExam / n;
-
-      for (Record r4 : recordList) {
-        if (r4.getCourse().getCourseName().equals(courseName)) {
-          sumSquareDiffExam  += Math.pow((r4.getMark().get("Exam") - meanExam), 2);
-        }
-      }
-
-      stdExam = Math.sqrt(sumSquareDiffExam / n);
-      System.out.println("***********************************************");
-      System.out.println("Exam Average :" + meanExam);
-      System.out.println("Exam Std     :" + stdExam);
-      System.out.println("***********************************************");
-
-      double sumOther = 0;
-      double meanOther = 0;
-      double sumSquareDiffOther = 0;
-      double stdOther = 0;
-      double m = 0;
-
-      for (Record r5 : recordList) {
-        if (r5.getCourse().getCourseName().equals(courseName)) {
-          HashMap<String,Float> tempOther = r5.getMark();
-          for(Map.Entry<String, Float> entry : tempOther.entrySet()){
-            if(!entry.getKey().equals("Exam")){
-              sumOther = sumOther + entry.getValue();
-              m++;
-            }
-          }
-        }
-      }
-
-      meanOther = sumOther / m;
-      for (Record r5 : recordList) {
-        if (r5.getCourse().getCourseName().equals(courseName)) {
-          HashMap<String,Float> tempOther = r5.getMark();
-          for (Map.Entry<String, Float> entry : tempOther.entrySet()) {
-            if (!entry.getKey().equals("Exam")) {
-              sumSquareDiffOther  += Math.pow((entry.getValue() - meanOther), 2);
-            }
-          }
-        }
-      }
-
-      stdOther = Math.sqrt(sumSquareDiffOther / m);
-      System.out.println("Other Coursework Average :" + meanOther);
-      System.out.println("Other Coursework std     :" + stdOther);
-    } catch (CourseNotFoundException e) {
-      System.out.println(e.getMessage());
     }
+    
+    if (course.getLectureTotalSize() - course.getLectureVacancy() == 0) {
+      throw new NoRegisteredStudentException(courseName);
+    }
+
+    for (Record r1 : recordList) {
+      if (r1.getCourse().getCourseName().equals(courseName)) {
+        Map<String, Float> mark = r1.getMark();
+        if (!r1.hasMark() || mark.size() < markCount) {
+          System.out.println("Oops, there is a student that is not marked.");
+          return;
+        }
+      }
+    }
+
+    for (Record r2 : recordList) {
+      if (r2.getCourse().getCourseName().equals(courseName)) {
+        sum += r2.calculateAverage();
+        n++;
+      }
+    }
+
+    mean = sum / n;
+
+    for (Record r : recordList) {
+      if (r.getCourse().getCourseName().equals(courseName)) {
+        sumSquareDiff += Math.pow((r.calculateAverage() - mean), 2);
+      }
+    }
+    
+    float[] studentScore = new float[n];
+
+    System.out.println();
+    System.out.println("+---------------------------------------------------+");
+    System.out.println("|  There are " + n + " students registered in this course.  |");
+    System.out.println("|                                                   |");
+    
+    System.out.print("|  Overall score average         : ");
+    System.out.printf("%-10.4f", mean);
+    System.out.println("       |");
+
+    System.out.print("|  Standard deviation            : ");
+    System.out.printf("%-10.4f", (float) (Math.sqrt(sumSquareDiff / n)));
+    System.out.println("       |");
+
+    System.out.println("|                                                   |");
+
+    int i = 0;
+    for (Record r2 : recordList) {
+      if (r2.getCourse().getCourseName().equals(courseName)) {
+        studentScore[i] = r2.calculateAverage();
+        i++;
+      }
+    }
+
+    Arrays.sort(studentScore);
+
+    int[] borderValueIndex = new int[3];
+    borderValueIndex[0] = Math.round((float) (0.25 * (n + 1)));
+    borderValueIndex[1] = Math.round((float) (0.5 * (n + 1)));
+    borderValueIndex[2] = Math.round((float) (0.75 * (n + 1)));
+
+    System.out.print("|  1st quartile (25%)            : ");
+    System.out.printf("%-10.4f", studentScore[borderValueIndex[0] - 1]);
+    System.out.println("       |");
+
+    System.out.print("|  2nd quartile (50%)            : ");
+    System.out.printf("%-10.4f", studentScore[borderValueIndex[1] - 1]);
+    System.out.println("       |");
+
+    System.out.print("|  3rd quartile (75%)            : ");
+    System.out.printf("%-10.4f", studentScore[borderValueIndex[2] - 1]);
+    System.out.println("       |");
+
+    double sumExam = 0;
+    double meanExam = 0;
+    double sumSquareDiffExam = 0;
+    double stdExam = 0;
+
+    for (Record r3 : recordList) {
+      if (r3.getCourse().getCourseName().equals(courseName)) {
+        sumExam = sumExam + r3.getMark().get("Exam");
+      }
+    }
+
+    meanExam = sumExam / n;
+
+    for (Record r4 : recordList) {
+      if (r4.getCourse().getCourseName().equals(courseName)) {
+        sumSquareDiffExam  += Math.pow((r4.getMark().get("Exam") - meanExam), 2);
+      }
+    }
+
+    stdExam = Math.sqrt(sumSquareDiffExam / n);
+    System.out.println("|                                                   |");
+    System.out.print("|  Exam average                  : ");
+    System.out.printf("%-10.4f", meanExam);
+    System.out.println("       |");
+    System.out.print("|  Exam standard deviation       : ");
+    System.out.printf("%-10.4f", stdExam);
+    System.out.println("       |");
+
+    System.out.println("|                                                   |");
+
+    double sumOther = 0;
+    double meanOther = 0;
+    double sumSquareDiffOther = 0;
+    double stdOther = 0;
+    double m = 0;
+
+    for (Record r5 : recordList) {
+      if (r5.getCourse().getCourseName().equals(courseName)) {
+        HashMap<String,Float> tempOther = r5.getMark();
+        for(Map.Entry<String, Float> entry : tempOther.entrySet()) {
+          if(!entry.getKey().equals("Exam")) {
+            sumOther = sumOther + entry.getValue();
+            m++;
+          }
+        }
+      }
+    }
+
+    meanOther = sumOther / m;
+    for (Record r5 : recordList) {
+      if (r5.getCourse().getCourseName().equals(courseName)) {
+        HashMap<String,Float> tempOther = r5.getMark();
+        for (Map.Entry<String, Float> entry : tempOther.entrySet()) {
+          if (!entry.getKey().equals("Exam")) {
+            sumSquareDiffOther  += Math.pow((entry.getValue() - meanOther), 2);
+          }
+        }
+      }
+    }
+
+    stdOther = Math.sqrt(sumSquareDiffOther / m);
+    System.out.print("|  Coursework average            : ");
+    System.out.printf("%-10.4f", meanOther);
+    System.out.println("       |");
+    System.out.print("|  Coursework standard deviation : ");
+    System.out.printf("%-10.4f", stdOther);
+    System.out.println("       |");
+    System.out.println("+---------------------------------------------------+");
   }
 
   /**
