@@ -2,9 +2,18 @@ package scrame.boundary;
 
 import java.util.Scanner;
 
+/**
+ * A boundary class that helps to restrict the action performed by the user based on its role
+ */
 public final class AdminForm {
+  /**
+   * A delimiter integer that helps in the implementation of other functions
+   */
   private static int choice = -1;
 
+  /**
+   * A function that prints the options allowed for the admin role
+   */
   public static void showInformation() {
     System.out.println(
       "\n1. Register student for a course (this includes registering for Tutorial/Lab classes).\n" 
@@ -23,6 +32,10 @@ public final class AdminForm {
     System.out.println();
   }
 
+  /**
+   * Display and get the choice from user
+   * @return  integer of the selected choide of action
+   */
   public static int display() {
     Scanner sc = new Scanner(System.in);
     System.out.print("Select the app's functionality: ");
@@ -37,6 +50,11 @@ public final class AdminForm {
     return choice;
   }
 
+  /**
+   * function that helps to validate whether a requested action is permissible
+   * @param choice  the integer of choice chosen by user
+   * @return        boolean whether the action is allowable or not
+   */
   private static boolean validateChoice(int choice) {
     return (choice >= 0 && choice <= 19) ? true : false;
   }
