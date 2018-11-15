@@ -28,9 +28,18 @@ import scrame.helper.SortByCourseName;
 
 import scrame.boundary.Form;
 
+/**
+ * ScrameApp is the main boundary app that interacts with other manager classes.
+ */
 public class ScrameApp {
+  /**
+   * Delimiter variable to be used in other functions.
+   */
   private static final int HAS_CHILD = 1;
 
+  /**
+   * Prints the list of registered students.
+   */
   private static void printRegisteredStudents() {
     System.out.println();
     System.out.println("+-------------------------------------------------+");
@@ -52,6 +61,9 @@ public class ScrameApp {
     System.out.println("+----------------------------+--------------------+");
   }
 
+  /**
+   * Prints the list of registered courses and its coordinators.
+   */
   private static void printRegisteredCourses() {
     System.out.println();
     System.out.println("+--------------------------------------------+");
@@ -72,6 +84,11 @@ public class ScrameApp {
     System.out.println("+-----------------+--------------------------+");
   }
 
+  /**
+   * Main function that are run in the console.
+   * 
+   * @param args the default parameter for main function, not used in this case
+   */
   public static void main(String[] args) {
     StudentManager.loadFromFile();
     CourseManager.loadFromFile();
