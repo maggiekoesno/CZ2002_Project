@@ -31,26 +31,26 @@ import scrame.manager.StudentManager;
 import scrame.helper.CourseType;
 
 /**
- * Static class that manages records list and perform related actions
+ * Static class that manages records list and perform related actions.
  */
 public final class RecordManager {
   /**
-   * The record list is stored as a hashset
+   * The record list is stored as a hashset.
    */
   private static HashSet<Record> recordList = new HashSet<Record>();
 
   /**
-   * The path to where the serialzed form of the data to be stored
+   * The path to where the serialzed form of the data to be stored.
    */
   private static String fileName = "../data/records.ser";
 
   private static final int HAS_CHILD = 1;
 
   /**
-   * Register student on a course and store in recordList. Applicable for course of
+   * Registers student on a course and store in recordList. Applicable for course of
    * type LEC.
    * 
-   * @param matric matric number
+   * @param matric     matric number
    * @param courseName course name
    */
   public static void registerStudentCourse(String matric, String courseName)
@@ -84,12 +84,12 @@ public final class RecordManager {
   }
 
   /**
-   * Register student on a course and store in recordList. Applicable for course of
+   * Registers student on a course and store in recordList. Applicable for course of
    * type TUT or LAB.
    * 
-   * @param matric matric number
+   * @param matric     matric number
    * @param courseName course name
-   * @param groupName group name
+   * @param groupName  group name
    */
   public static void registerStudentCourse(String matric, String courseName, String groupName) 
       throws DuplicateRecordException {
@@ -140,10 +140,10 @@ public final class RecordManager {
   }
 
   /**
-   * Check if student is registered in a course, given the student's matric number and course name.
+   * Checks if student is registered in a course, given the student's matric number and course name.
    * 
-   * @param matric student's matric number
-   * @param courseName  course name
+   * @param matric     student's matric number
+   * @param courseName course name
    */
   public static boolean isStudentRegisteredOnCourse(String matric, String courseName) {
     for (Record r : recordList) {
@@ -157,7 +157,7 @@ public final class RecordManager {
   }
 
   /**
-   * Print student list for a given course name.
+   * Prints student list for a given course name.
    * 
    * @param courseName  course name
    * @param byGroup     true if print by group, else print by lecture
@@ -171,7 +171,7 @@ public final class RecordManager {
   }
 
   /**
-   * Print student list by lecture, sorted by name in alphabetical order.
+   * Prints student list by lecture, sorted by name in alphabetical order.
    * 
    * @param courseName course name
    */
@@ -201,7 +201,7 @@ public final class RecordManager {
   }
 
   /**
-   * Print student list by group. Sorted by student name in alphabetical order.
+   * Prints student list by group. Sorted by student name in alphabetical order.
    * 
    * @param courseName course name
    */
@@ -249,7 +249,7 @@ public final class RecordManager {
   }
 
   /**
-   * Print course statistics based on course name.
+   * Prints course statistics based on course name.
    * 
    * @param courseName course name
    */
@@ -416,7 +416,7 @@ public final class RecordManager {
   }
 
   /**
-   * Input record list to file.
+   * Inputs record list to file.
    */
   public static void inputToFile() {
     try {
@@ -433,7 +433,7 @@ public final class RecordManager {
   }
 
   /**
-   * Load record list from file.
+   * Loads record list from file.
    */
   public static void loadFromFile() {
     try {

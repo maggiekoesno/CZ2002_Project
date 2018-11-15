@@ -4,24 +4,27 @@ import java.io.Serializable;
 
 import scrame.exception.IllegalStudentArgumentException;
 
+/**
+ * Student represent a student in the school.
+ */
 public class Student implements Serializable {
   /**
-   * The name of the student
+   * The name of the student.
    */
   private String name;
   
   /**
-   * The major of the student as a string
+   * The major of the student as a string.
    */
   private String major;
 
   /**
-   * The period in which the student is matriculated
+   * The period in which the student is matriculated.
    */
   private String enroll;
 
   /**
-   * The matriculation number of the student as a string
+   * The matriculation number of the student as a string.
    */
   private String matric;
 
@@ -54,7 +57,7 @@ public class Student implements Serializable {
   }
 
   /**
-   * Function to convert all of the student attribute to string
+   * Converts all of the student attribute to string.
    * 
    * @return string containing all of student attributes
    */

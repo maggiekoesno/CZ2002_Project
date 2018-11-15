@@ -25,28 +25,28 @@ public class Record implements Serializable {
   private static final int PARENT = 2;
   
   /**
-   * Reference to the student object
+   * Reference to the student object.
    */
   private Student student;
   
   /**
-   * Reference to the course object
+   * Reference to the course object.
    */
   private Course course;
 
   /**
-   * The group name in which the student is registered in
+   * The group name in which the student is registered in.
    */
   private String groupName;
 
   /**
    * Store the value of the leaf nodes in weightage of the course
-   * to later be calculated as the average score
+   * to later be calculated as the average score.
    */
   private HashMap<String, Float> mark;
 
   /**
-   * Constructor for Record class
+   * Constructor for Record class.
    * 
    * @param student   the student object
    * @param course    the course object
@@ -61,7 +61,8 @@ public class Record implements Serializable {
   }
 
   /**
-   * Helps abstracting the recursive functionality of calculateAverage
+   * Helps abstracting the recursive functionality of calculateAverage.
+   * 
    * @return the average of one's mark in class
    */
   public float calculateAverage() {
@@ -69,9 +70,10 @@ public class Record implements Serializable {
   }
 
   /**
-   * Return the average by calculating Mark based on Course weightage
-   * @param check The parent name whose children tally need to be calculated
-   * @return The average of the parent's child based on course weightage
+   * Return the average by calculating Mark based on Course weightage.
+   * 
+   * @param check the parent name whose children tally need to be calculated
+   * @return      the average of the parent's child based on course weightage
    */
   private float calculateAverage(String check) {
     HashMap<String, String[]> weightage = course.getWeightage();
@@ -98,7 +100,8 @@ public class Record implements Serializable {
   }
   
   /**
-   * The human readable represntation of the record object
+   * Represents the record object in human readable way.
+   * 
    * @return the human readable representation of the record object
    */
   @Override
@@ -107,7 +110,8 @@ public class Record implements Serializable {
   }
   
   /**
-   * As a getter to the student object
+   * Getter to the student object.
+   * 
    * @return the student object
    */
   public Student getStudent() {
@@ -115,7 +119,8 @@ public class Record implements Serializable {
   }
 
   /**
-   * As a getter to the course object
+   * Getter to the course object.
+   * 
    * @return the course object
    */
   public Course getCourse() {
@@ -123,7 +128,8 @@ public class Record implements Serializable {
   }
 
   /**
-   * As a getter to the mark object
+   * Getter to the mark object.
+   * 
    * @return the mark hashmap
    */
   public HashMap<String, Float> getMark() {
@@ -135,7 +141,8 @@ public class Record implements Serializable {
   }
 
   /**
-   * To help check whether the mark has already been filled
+   * Checks whether the mark has already been filled.
+   * 
    * @return boolean of whether the mark is null or set
    */
   public boolean hasMark() { 
@@ -143,7 +150,8 @@ public class Record implements Serializable {
   }
 
   /**
-   * As a getter to the group name registered
+   * Getter to the group name registered.
+   * 
    * @return the string of group name
    */
   public String getGroupName() {
@@ -151,7 +159,7 @@ public class Record implements Serializable {
   }
 
   /**
-   * As a setter tot he mark hashmap
+   * Setter to the mark hashmap.
    */
   public void setMark(HashMap<String, Float> mark) {
     this.mark = mark;
