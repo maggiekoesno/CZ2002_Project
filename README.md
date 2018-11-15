@@ -29,7 +29,7 @@ The `javadoc` HTML pages for the project is located under the `docs` folder. Ope
 
 ### Prerequisites
 
-Make sure you have installed the latest [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html) in order to use `java` and `javac`. Don't forget to add JDK's bin folder to PATH.
+Make sure you have installed the latest [Java Development Kit](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html) in order to use `java` and `javac`. Don't forget to add JDK's `bin` folder to `PATH`.
 
 Verify the installation of `java` with:
 
