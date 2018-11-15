@@ -1,17 +1,19 @@
 package scrame.exception;
 
 /**
- * The exception when you are doing something that does not permittable
- * for that type of course
+ * The exception when you are doing something that is not permitted
+ * for that type of course.
  */
 public class IllegalCourseTypeException extends Exception {
+
   /**
-   * The exception message
+   * The exception message.
    */
   private String message;
   
   /**
-   * The constructor of the exception
+   * Constructor of the exception.
+   * 
    * @param message the message to be shown later
    */
   public IllegalCourseTypeException(String message) {
@@ -20,7 +22,8 @@ public class IllegalCourseTypeException extends Exception {
   }
   
   /**
-   * Getter to the exception message
+   * Getter to the exception message.
+   * 
    * @return the message as a string
    */
   public String getMessage() {

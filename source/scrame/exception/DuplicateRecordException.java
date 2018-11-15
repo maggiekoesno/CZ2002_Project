@@ -1,17 +1,17 @@
 package scrame.exception;
 
 /**
- * Exception made when you try to register a student to the same course twice
+ * Exception made when you try to register a student to the same course twice.
  */
 public class DuplicateRecordException extends Exception {
 
   /**
-   * The message of the exception
+   * The message of the exception.
    */
   private String message;
   
   /**
-   * Constructor of the exception
+   * Constructor for the exception.
    * 
    * @param studentName the name of the student wanted to be registered
    * @param courseName  the name of the course in which the student to be registered
@@ -22,7 +22,7 @@ public class DuplicateRecordException extends Exception {
   }
 
   /**
-   * Getter of the message of the exception
+   * Getter of the message of the exception.
    * 
    * @return the message as a string
    */

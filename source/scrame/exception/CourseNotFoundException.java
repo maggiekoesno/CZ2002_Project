@@ -1,18 +1,20 @@
 package scrame.exception;
 
 /**
- * Exception when you try to find a course based on 
- * the coursename but it's not registered yet
+ * Exception when you try to find a course based on the
+ * coursename, but it's not registered yet.
  */
 public class CourseNotFoundException extends Exception {
+
   /**
-   * The message to be thrown
+   * The message to be thrown.
    */
   private String message;
 
   /**
-   * Constructor for the exception
-   * @param courseName   the name of the course as string
+   * Constructor for the exception.
+   * 
+   * @param courseName the name of the course as string
    */
   public CourseNotFoundException(String courseName) {
     super();
@@ -21,7 +23,8 @@ public class CourseNotFoundException extends Exception {
   }
 
   /**
-   * Getter to the message
+   * Getter function for message.
+   * 
    * @return the string of message
    */
   public String getMessage() {
