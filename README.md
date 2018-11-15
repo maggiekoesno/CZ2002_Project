@@ -19,7 +19,13 @@ This source code is Group SS5's implementation of the application, on Academic Y
 
 ## Getting Started
 
-Clone this repository by executing
+Clone this repository by executing the following command
+
+```
+$ git clone https://github.com/maggiekoesno/CZ2002_Project.git
+```
+
+The `javadoc` HTML pages for the project is located under the `docs` folder. Open `index.html` to access the HTML pages.
 
 ### Prerequisites
 
@@ -42,7 +48,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.181-b13, mixed mode)
 Also, verify the installation of `javac`:
 
 ```
-javac -version
+$ javac -version
 ```
 
 You'll see the following output:
@@ -56,28 +62,28 @@ javac 1.8.0_181
 Once you have cloned this repository, create a `data` folder, which contains the `.ser` files for storing the data for the application.
 
 ```
-mkdir data
-cd data
-touch courses.ser students.ser records.ser
+$ mkdir data
+$ cd data
+$ touch courses.ser students.ser records.ser
 ```
 
 Next, go back to the root folder and create a `classes` folder, which will contain all the `.class` files once the source code is compiled.
 
 ```
-cd ..
-mkdir classes
+$ cd ..
+$ mkdir classes
 ```
 
-We have provided a script file to automate the compilation process of the source code. Execute the following command to use the script.
+We have provided a script file to automate the compilation process of the source code. Execute the following command to compile the source code.
 
 ```
-./script.sh
+$ ./script.sh
 ```
 
 If the script is not executable, execute the following command:
 
 ```
-chmod 755 script.sh
+$ chmod 755 script.sh
 ```
 
 ## Authors
