@@ -1,5 +1,8 @@
 package scrame.helper;
 
+/**
+ * Obsolete class
+ */
 public class Weightage {
   private String name;
   private double value;

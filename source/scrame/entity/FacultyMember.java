@@ -3,8 +3,19 @@ package scrame.entity;
 import java.io.Serializable;
 
 public class FacultyMember implements Serializable {
+  /**
+   * the name of the faculty mamber
+   */
   private String name;
+  
+  /**
+   * The id as a string of the faculty member
+   */
   private String id;
+
+  /**
+   * The faculty in which the faculty member is placed
+   */
   private String faculty;
   private boolean isCourseCoordinator;
 
@@ -40,6 +51,7 @@ public class FacultyMember implements Serializable {
 
   /**
    * Getter method for faculty member name
+   * @return the string of get name
    */
   public String getName() {
     return this.name;
@@ -47,6 +59,7 @@ public class FacultyMember implements Serializable {
 
   /**
    * Getter method for faculty Id
+   * @return the string of id of the faculty mamber
    */
   public String getId() {
     return this.id;
@@ -54,6 +67,7 @@ public class FacultyMember implements Serializable {
 
   /**
    * Getter method for faculty name
+   * @return the string of the faculty name
    */
   public String getFaculty() {
     return this.faculty;
@@ -68,6 +82,7 @@ public class FacultyMember implements Serializable {
 
   /**
    * Check whether faculty member is the course coordinator
+   * @return the boolean of the mentioned expression
    */
   public boolean getIsCourseCoordinator() {
     return this.isCourseCoordinator;

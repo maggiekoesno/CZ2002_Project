@@ -30,8 +30,18 @@ import scrame.manager.StudentManager;
 
 import scrame.helper.CourseType;
 
+/**
+ * Static class that manages records list and perform related actions
+ */
 public final class RecordManager {
+  /**
+   * The record list is stored as a hashset
+   */
   private static HashSet<Record> recordList = new HashSet<Record>();
+
+  /**
+   * The path to where the serialzed form of the data to be stored
+   */
   private static String fileName = "../data/records.ser";
 
   private static final int HAS_CHILD = 1;

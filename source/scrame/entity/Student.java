@@ -5,9 +5,24 @@ import java.io.Serializable;
 import scrame.exception.IllegalStudentArgumentException;
 
 public class Student implements Serializable {
+  /**
+   * The name of the student
+   */
   private String name;
+  
+  /**
+   * The major of the student as a string
+   */
   private String major;
+
+  /**
+   * The period in which the student is matriculated
+   */
   private String enroll;
+
+  /**
+   * The matriculation number of the student as a string
+   */
   private String matric;
 
   /**
