@@ -15,7 +15,7 @@ The SCRAME application is a console-based application, and as the name suggests,
 * Print course statistics
 * Print student transcript
 
-This source code is Group SS5's implementation of the application, on Academic Year 2018/19 Semester 1.
+This source code is SS5 Group 1's implementation of the application, on Academic Year 2018/19 Semester 1.
 
 ## Getting Started
 
